@@ -1,7 +1,7 @@
 import React from 'react';
 import './Led.css';
 
-const Led = ({ color, width, height }) => {
+const Led = ({ color, width, height, position }) => {
   return (
     <div style={{ width: width + 'px', height: height + 'px' }} className="led">
       <div
@@ -11,7 +11,9 @@ const Led = ({ color, width, height }) => {
           width: height / 2 + 'px',
         }}
         className="light"
-      ></div>
+      >
+        {position}
+      </div>
     </div>
   );
 };
