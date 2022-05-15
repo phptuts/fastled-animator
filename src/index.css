@@ -1,0 +1,38 @@
+/** This is controlling the led circle that is being litten up **/
+.light {
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 30px;
+  height: 30px;
+}
+
+/** this is the container that our led lives in **/
+.led {
+  background-color: #f8fbd9;
+  position: relative;
+  border: solid black 1px;
+  width: 50px;
+  height: 50px;
+}
+#leds {
+  position: relative;
+  width: 1000px;
+}
+
+/** Strip controls a row of leds **/
+
+.strip {
+  display: flex;
+}
+
+.strip.right {
+  flex-direction: row-reverse;
+}
+
+.strip.right-down {
+  flex-direction: column;
+  margin-left: 950px;
+}

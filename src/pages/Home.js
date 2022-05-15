@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
-import Leds from '../components/Leds';
+import Leds from '../components/LedStrip/Leds';
 import Player from '../components/Player';
 import { generateLeds } from '../leds';
+
 const Home = () => {
   const [currentFrameIndex, setCurrentFrameIndex] = useState(1);
-  const [numberLeds, setNumberLeds] = useState(30);
+  const [numberLeds, setNumberLeds] = useState(20);
   const [leds, setLeds] = useState(generateLeds(numberLeds));
-  const [width, setWidth] = useState(50);
 
   function setNumberOfLeds(e) {
-    console.log(e.target);
     setNumberLeds(e.target.value);
     setLeds(generateLeds(+e.target.value));
-    setWidth((1200 - 2 * +e.target.value) / +e.target.value);
-    console.log((1200 - 2 * +e.target.value) / +e.target.value);
   }
 
   return (
@@ -30,7 +27,7 @@ const Home = () => {
       </div>
       <div className="row">
         <div className="col">
-          <Leds leds={leds} width={width} />
+          <Leds leds={leds} />
         </div>
       </div>
       <div className="row">
