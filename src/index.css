@@ -5,8 +5,8 @@
   left: 50%;
   top: 50%;
   transform: translateX(-50%) translateY(-50%);
-  width: 30px;
-  height: 30px;
+  width: 15px;
+  height: 15px;
 }
 
 /** this is the container that our led lives in **/
@@ -14,12 +14,13 @@
   background-color: #f8fbd9;
   position: relative;
   border: solid black 1px;
-  width: 50px;
-  height: 50px;
+  width: 20px;
+  height: 20px;
 }
 #leds {
   position: relative;
   width: 1000px;
+  margin: 10px auto;
 }
 
 /** Strip controls a row of leds **/
@@ -34,5 +35,9 @@
 
 .strip.right-down {
   flex-direction: column;
-  margin-left: 950px;
+  margin-left: 980px;
+}
+
+.strip.left-down {
+  flex-direction: column;
 }

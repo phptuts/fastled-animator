@@ -8,9 +8,7 @@ const Led = ({ color, position, connectionClass = '' }) => {
           backgroundColor: color,
         }}
         className="light"
-      >
-        {position}
-      </div>
+      ></div>
     </div>
   );
 };
