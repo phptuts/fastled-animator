@@ -5,7 +5,7 @@ import { generateLeds } from '../leds';
 
 const Home = () => {
   const [currentFrameIndex, setCurrentFrameIndex] = useState(1);
-  const [numberLeds, setNumberLeds] = useState(50);
+  const [numberLeds, setNumberLeds] = useState(250);
   const [leds, setLeds] = useState(generateLeds(numberLeds));
 
   function setNumberOfLeds(e) {

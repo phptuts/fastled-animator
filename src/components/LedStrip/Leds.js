@@ -1,11 +1,18 @@
 import React from 'react';
-import Strip from './Strip';
+import FullStrip from './FullStrip';
 import config from '../../config';
+import { chunk } from '../../helpers';
 
 const Leds = ({ leds }) => {
+  const ledFullStips = chunk(leds, config.fullStripLength);
   return (
     <div id="leds">
-      <Strip leds={leds} direction="left" />
+      {ledFullStips &&
+        ledFullStips.map((c) => {
+          return <FullStrip key={`fullstrip-${c[0].position}`} leds={c} />;
+        })}
+
+      {/* <Strip leds={leds} direction="left" />
       <Strip
         leds={leds.slice(0, 3).map((l) => {
           return { ...l, color: '#00AA00' };
@@ -26,7 +33,7 @@ const Leds = ({ leds }) => {
         })}
         direction="right-down"
       />
-      <Strip leds={leds} direction="right" />
+      <Strip leds={leds} direction="right" /> */}
     </div>
   );
 };

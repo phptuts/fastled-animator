@@ -6,7 +6,11 @@ const Strip = ({ leds, direction }) => {
     <div className={`strip ${direction}`}>
       {leds.map((led) => {
         return (
-          <Led position={led.position} key={led.position} color={led.color} />
+          <Led
+            position={led.position}
+            key={`led-${led.position}`}
+            color={led.color}
+          />
         );
       })}
     </div>
