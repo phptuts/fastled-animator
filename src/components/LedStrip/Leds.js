@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import FullStrip from './FullStrip';
 import config from '../../config';
 import { chunk } from '../../helpers';
+import ledsContext from '../../context/ledContext';
 
-const Leds = ({ leds }) => {
+const Leds = () => {
+  const { leds } = useContext(ledsContext);
+
   const ledFullStips = chunk(leds, config.fullStripLength);
   return (
     <div id="leds">

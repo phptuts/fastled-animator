@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import LedsContext from '../../context/ledContext';
 
-const Led = ({ color, position, connectionClass = '' }) => {
+const Led = ({ led }) => {
+  const { selectLed } = useContext(LedsContext);
+
+  function onSelectLed() {
+    selectLed(led);
+  }
+
   return (
-    <div className={`led ${connectionClass}`}>
+    <div
+      onClick={onSelectLed}
+      className={`led ${led.selected ? 'selected' : ''} ${led.position}`}
+    >
       <div
         style={{
-          backgroundColor: color,
+          backgroundColor: led.color,
         }}
         className="light"
       ></div>

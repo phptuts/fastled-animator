@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Leds from '../components/LedStrip/Leds';
 import Player from '../components/Player';
 import { generateLeds } from '../leds';
+import LedsContext from '../context/ledContext';
 
 const Home = () => {
   const [currentFrameIndex, setCurrentFrameIndex] = useState(1);
@@ -13,8 +14,29 @@ const Home = () => {
     setLeds(generateLeds(+e.target.value));
   }
 
+  function onChangeColor(e) {
+    setLeds(
+      leds.map((l) => {
+        if (l.selected) {
+          return { ...l, color: e.target.value };
+        }
+        return l;
+      })
+    );
+  }
+
+  function selectLed(led) {
+    const newLeds = [
+      ...leds.filter((l) => l.position !== led.position),
+      { ...led, selected: !led.selected },
+    ];
+
+    newLeds.sort((a, b) => a.position - b.position);
+    setLeds(newLeds);
+  }
+
   return (
-    <>
+    <LedsContext.Provider value={{ leds, selectLed }}>
       <div className="row">
         <div className="col">
           <h1>Home Page {numberLeds}</h1>
@@ -22,12 +44,12 @@ const Home = () => {
       </div>
       <div className="row">
         <div className="col">
-          <input type="color" name="" id="" />
+          <input type="color" onChange={onChangeColor} />
         </div>
       </div>
       <div className="row">
         <div className="col">
-          <Leds leds={leds} />
+          <Leds />
         </div>
       </div>
       <div className="row">
@@ -58,7 +80,7 @@ const Home = () => {
           </div>
         </div>
       </div>
-    </>
+    </LedsContext.Provider>
   );
 };
 

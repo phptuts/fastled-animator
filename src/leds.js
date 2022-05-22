@@ -11,5 +11,6 @@ export const generateLed = (color, position) => {
   return {
     color,
     position,
+    selected: false,
   };
 };

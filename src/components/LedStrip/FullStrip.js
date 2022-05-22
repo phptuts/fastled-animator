@@ -23,19 +23,9 @@ const FullStrip = ({ leds }) => {
   return (
     <>
       <Strip leds={leftLeds} direction="left" />
-      <Strip
-        leds={rightDownLeds.map((l) => {
-          return { ...l, color: '#00AA00' };
-        })}
-        direction="right-down"
-      />
+      <Strip leds={rightDownLeds} direction="right-down" />
       <Strip leds={rightToLeft} direction="right" />
-      <Strip
-        leds={leftDown.map((l) => {
-          return { ...l, color: '#00AA00' };
-        })}
-        direction="left-down"
-      />
+      <Strip leds={leftDown} direction="left-down" />
     </>
   );
 };
