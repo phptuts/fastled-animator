@@ -42,11 +42,22 @@ const Home = () => {
           <h1>Home Page {numberLeds}</h1>
         </div>
       </div>
-      <div className="row">
-        <div className="col">
-          <input type="color" onChange={onChangeColor} />
+      <div className=" row">
+        <label htmlFor="color-picker" className="col-sm-2 col-form-label">
+          Select Led Color
+        </label>
+      </div>
+      <div className="mb-3 row">
+        <div className="col-2">
+          <input
+            type="color"
+            className="form-control"
+            id="color-picker"
+            onChange={onChangeColor}
+          />
         </div>
       </div>
+
       <div className="row">
         <div className="col">
           <Leds />

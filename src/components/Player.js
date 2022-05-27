@@ -6,7 +6,7 @@ const Player = ({ frames, currentFrame, onStop, onPlay, onMoveTo }) => {
   };
 
   return (
-    <div>
+    <div className="row">
       <input
         type="range"
         min={0}
@@ -14,8 +14,6 @@ const Player = ({ frames, currentFrame, onStop, onPlay, onMoveTo }) => {
         value={currentFrame}
         onChange={playerChange}
       />
-      <button>Play</button>
-      <button>Stop</button>
     </div>
   );
 };
