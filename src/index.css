@@ -47,3 +47,20 @@
 .strip.left-down {
   flex-direction: column;
 }
+
+/** Player **/
+
+.player input {
+  width: 100%;
+}
+
+.controls {
+  text-align: center;
+}
+
+.controls .btn {
+  display: inline;
+  border: solid 1px black !important;
+  margin: 5px;
+  width: fit-content;
+}
