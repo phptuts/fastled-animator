@@ -5,7 +5,9 @@ import { chunk } from '../../helpers';
 import ledsContext from '../../context/ledContext';
 
 const Leds = () => {
-  const { leds } = useContext(ledsContext);
+  const { frames, currentFrameIndex } = useContext(ledsContext);
+
+  const { leds } = frames[currentFrameIndex];
 
   const ledFullStips = chunk(leds, config.fullStripLength);
   return (

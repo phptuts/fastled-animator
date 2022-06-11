@@ -1,56 +1,80 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Leds from '../components/LedStrip/Leds';
 import Player from '../components/Player';
-import { generateLeds, generateFrames } from '../leds';
+import { generateFrames } from '../leds';
 import LedsContext from '../context/ledContext';
 
 const Home = () => {
-  const [currentFrameIndex, setCurrentFrameIndex] = useState(1);
+  const [currentFrameIndex, setCurrentFrameIndex] = useState(0);
   const [numberLeds, setNumberLeds] = useState(250);
   const [totalSteps, setTotalSteps] = useState(60);
   const [timePerStep, setTimePerStep] = useState(1);
-  const [leds, setLeds] = useState(generateLeds(numberLeds));
+  const [frames, setFrames] = useState(
+    generateFrames(numberLeds, totalSteps, timePerStep, [])
+  );
 
   function setNumberOfLeds(e) {
     setNumberLeds(e.target.value);
-    setLeds(generateLeds(+e.target.value));
   }
 
-  let frames = generateFrames(50, 3, 100, []);
-  console.log(frames);
-  frames[0].leds[1].color = '#AA00AA';
-  frames[2].leds[1].color = '#BB00AA';
-  frames[2].leds[0].color = '#BBCCAA';
+  useEffect(() => {
+    setFrames((frames) => {
+      return generateFrames(numberLeds, totalSteps, timePerStep, frames);
+    });
+  }, [numberLeds, totalSteps, timePerStep]);
 
-  frames = generateFrames(25, 4, 3, frames);
-  console.log(frames);
+  //   let frames = generateFrames(50, 3, 100, []);
+  //   console.log(frames);
+  //   frames[0].leds[1].color = '#AA00AA';
+  //   frames[2].leds[1].color = '#BB00AA';
+  //   frames[2].leds[0].color = '#BBCCAA';
+
+  //   frames = generateFrames(25, 4, 3, frames);
+  //   console.log(frames);
 
   function onChangeColor(e) {
-    setLeds(
-      leds.map((l) => {
-        if (l.selected) {
-          return { ...l, color: e.target.value };
+    setFrames((frames) => {
+      const { leds } = frames[currentFrameIndex];
+
+      frames[currentFrameIndex].leds = leds.reduce((acc, next) => {
+        if (next.selected) {
+          next.color = e.target.value;
         }
-        return l;
-      })
-    );
+        acc.push({ ...next });
+        return acc;
+      }, []);
+
+      return [...frames];
+    });
   }
 
-  function selectLed(led) {
-    const newLeds = [
-      ...leds.filter((l) => l.position !== led.position),
-      { ...led, selected: !led.selected },
-    ];
+  function selectLed(position, selected) {
+    setFrames((frames) => {
+      const { leds } = frames[currentFrameIndex];
 
-    newLeds.sort((a, b) => a.position - b.position);
-    setLeds(newLeds);
+      frames[currentFrameIndex].leds = leds.reduce((acc, next) => {
+        if (next.position === 0) {
+          console.log(next.selected, next, 'before');
+        }
+        if (position === next.position) {
+          next.selected = selected;
+        }
+        if (next.position === 0) {
+          console.log(next.selected, next, 'after');
+        }
+        acc.push({ ...next });
+        return acc;
+      }, []);
+
+      return [...frames];
+    });
   }
 
   return (
-    <LedsContext.Provider value={{ leds, selectLed }}>
+    <LedsContext.Provider value={{ frames, currentFrameIndex, selectLed }}>
       <div className="row">
         <div className="col">
-          <h1>Home Page</h1>
+          <h1>Home Page {currentFrameIndex}</h1>
         </div>
       </div>
       <div className="row mb-3">
@@ -111,7 +135,7 @@ const Home = () => {
       </div>
 
       <Player
-        frames={[1, 3, 4]}
+        frames={frames}
         currentFrame={currentFrameIndex}
         onMoveTo={setCurrentFrameIndex}
         onPlay={() => console.log('onPlay')}
