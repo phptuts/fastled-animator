@@ -7,10 +7,10 @@ import LedsContext from '../context/ledContext';
 const Home = () => {
   const [currentFrameIndex, setCurrentFrameIndex] = useState(0);
   const [numberLeds, setNumberLeds] = useState(250);
-  const [totalSteps, setTotalSteps] = useState(60);
+  const [totalSteps, setTotalSteps] = useState(5);
   const [timePerStep, setTimePerStep] = useState(1);
   const [frames, setFrames] = useState(
-    generateFrames(numberLeds, totalSteps, timePerStep, [])
+    generateFrames(numberLeds, totalSteps, [])
   );
 
   function setNumberOfLeds(e) {
@@ -19,18 +19,9 @@ const Home = () => {
 
   useEffect(() => {
     setFrames((frames) => {
-      return generateFrames(numberLeds, totalSteps, timePerStep, frames);
+      return generateFrames(numberLeds, totalSteps, frames);
     });
-  }, [numberLeds, totalSteps, timePerStep]);
-
-  //   let frames = generateFrames(50, 3, 100, []);
-  //   console.log(frames);
-  //   frames[0].leds[1].color = '#AA00AA';
-  //   frames[2].leds[1].color = '#BB00AA';
-  //   frames[2].leds[0].color = '#BBCCAA';
-
-  //   frames = generateFrames(25, 4, 3, frames);
-  //   console.log(frames);
+  }, [numberLeds, totalSteps]);
 
   function onChangeColor(e) {
     setFrames((frames) => {
@@ -53,15 +44,10 @@ const Home = () => {
       const { leds } = frames[currentFrameIndex];
 
       frames[currentFrameIndex].leds = leds.reduce((acc, next) => {
-        if (next.position === 0) {
-          console.log(next.selected, next, 'before');
-        }
         if (position === next.position) {
           next.selected = selected;
         }
-        if (next.position === 0) {
-          console.log(next.selected, next, 'after');
-        }
+
         acc.push({ ...next });
         return acc;
       }, []);
@@ -71,7 +57,9 @@ const Home = () => {
   }
 
   return (
-    <LedsContext.Provider value={{ frames, currentFrameIndex, selectLed }}>
+    <LedsContext.Provider
+      value={{ frames, currentFrameIndex, setCurrentFrameIndex, selectLed }}
+    >
       <div className="row">
         <div className="col">
           <h1>Home Page {currentFrameIndex}</h1>
@@ -134,13 +122,7 @@ const Home = () => {
         </div>
       </div>
 
-      <Player
-        frames={frames}
-        currentFrame={currentFrameIndex}
-        onMoveTo={setCurrentFrameIndex}
-        onPlay={() => console.log('onPlay')}
-        onStop={() => console.log('onStop')}
-      ></Player>
+      <Player frames={frames} currentFrame={currentFrameIndex}></Player>
 
       <div className="row">
         <div className="col">

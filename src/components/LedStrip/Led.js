@@ -2,10 +2,6 @@ import React, { useContext } from 'react';
 import LedsContext from '../../context/ledContext';
 
 const Led = ({ led }) => {
-  if (led.position === 0) {
-    console.log(led);
-  }
-
   const { selectLed } = useContext(LedsContext);
 
   function onSelectLed() {

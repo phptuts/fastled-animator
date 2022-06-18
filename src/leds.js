@@ -1,9 +1,4 @@
-export const generateFrames = (
-  numLeds,
-  numSteps,
-  millisecondsPerStep,
-  currentFrames = []
-) => {
+export const generateFrames = (numLeds, numSteps, currentFrames = []) => {
   const frames = currentFrames.map((f) => {
     if (f.leds.length === numLeds) {
       return f;
@@ -15,9 +10,10 @@ export const generateFrames = (
     }
 
     let leds = f.leds;
-    for (let i = numLeds - f.leds.length - 1; i < numLeds; i += 1) {
-      leds.push(generateLed('#000000'), i);
+    for (let i = f.leds.length + 1; i <= numLeds; i += 1) {
+      leds.push(generateLed('#000000', i));
     }
+    console.log(leds, 'after operation');
     return { ...f, leds };
   });
 
