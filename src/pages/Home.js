@@ -1,65 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import Leds from '../components/LedStrip/Leds';
 import Player from '../components/Player';
-import { generateFrames } from '../leds';
-import LedsContext from '../context/ledContext';
+import { ACTION_TYPES } from '../context/led/ledActions';
+import LedsContext from '../context/led/ledContext';
 
 const Home = () => {
-  const [currentFrameIndex, setCurrentFrameIndex] = useState(0);
-  const [numberLeds, setNumberLeds] = useState(250);
-  const [totalSteps, setTotalSteps] = useState(5);
-  const [timePerStep, setTimePerStep] = useState(1);
-  const [frames, setFrames] = useState(
-    generateFrames(numberLeds, totalSteps, [])
-  );
-
-  function setNumberOfLeds(e) {
-    setNumberLeds(e.target.value);
-  }
-
-  useEffect(() => {
-    setFrames((frames) => {
-      return generateFrames(numberLeds, totalSteps, frames);
-    });
-  }, [numberLeds, totalSteps]);
-
-  function onChangeColor(e) {
-    setFrames((frames) => {
-      const { leds } = frames[currentFrameIndex];
-
-      frames[currentFrameIndex].leds = leds.reduce((acc, next) => {
-        if (next.selected) {
-          next.color = e.target.value;
-        }
-        acc.push({ ...next });
-        return acc;
-      }, []);
-
-      return [...frames];
-    });
-  }
-
-  function selectLed(position, selected) {
-    setFrames((frames) => {
-      const { leds } = frames[currentFrameIndex];
-
-      frames[currentFrameIndex].leds = leds.reduce((acc, next) => {
-        if (position === next.position) {
-          next.selected = selected;
-        }
-
-        acc.push({ ...next });
-        return acc;
-      }, []);
-
-      return [...frames];
-    });
-  }
+  const {
+    dispatch,
+    state: { currentFrameIndex, numberLeds, totalSteps, timePerStep },
+  } = useContext(LedsContext);
 
   return (
-    <LedsContext.Provider
-      value={{ frames, currentFrameIndex, setCurrentFrameIndex, selectLed }}
-    >
+    <>
       <div className="row">
         <div className="col">
           <h1>Home Page {currentFrameIndex}</h1>
@@ -76,7 +28,12 @@ const Home = () => {
             id="number-of-leds"
             placeholder="Number of leds"
             value={numberLeds}
-            onChange={setNumberOfLeds}
+            onChange={(e) => {
+              dispatch({
+                type: ACTION_TYPES.CHANGE_NUMBER_LEDS,
+                payload: e.target.value,
+              });
+            }}
           />
         </div>
         <div className="col-6">
@@ -88,7 +45,12 @@ const Home = () => {
             type="color"
             className="form-control"
             id="color-picker"
-            onChange={onChangeColor}
+            onChange={(e) => {
+              dispatch({
+                type: ACTION_TYPES.CHANGE_SELECTED_COLOR_LEDS,
+                payload: e.target.value,
+              });
+            }}
           />
         </div>
       </div>
@@ -103,7 +65,12 @@ const Home = () => {
             id="numSteps"
             placeholder="Number of steps"
             value={totalSteps}
-            onChange={(e) => setTotalSteps(+e.target.value)}
+            onChange={(e) =>
+              dispatch({
+                type: ACTION_TYPES.CHANGE_TOTAL_STEPS,
+                payload: e.target.value,
+              })
+            }
           />
         </div>
         <div className="col-6">
@@ -117,19 +84,24 @@ const Home = () => {
             step="1"
             placeholder="Milliseconds per step"
             value={timePerStep}
-            onChange={(e) => setTimePerStep(+e.target.value)}
+            onChange={(e) =>
+              dispatch({
+                type: ACTION_TYPES.CHANGE,
+                payload: e.target.value,
+              })
+            }
           />
         </div>
       </div>
 
-      <Player frames={frames} currentFrame={currentFrameIndex}></Player>
+      <Player />
 
       <div className="row">
         <div className="col">
           <Leds />
         </div>
       </div>
-    </LedsContext.Provider>
+    </>
   );
 };
 

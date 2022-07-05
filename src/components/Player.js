@@ -1,33 +1,36 @@
 import React, { useContext } from 'react';
-import ledsContext from '../context/ledContext';
+import { ACTION_TYPES } from '../context/led/ledActions';
+import LedsContext from '../context/led/ledContext';
 
 const Player = () => {
-  const { frames, currentFrameIndex, setCurrentFrameIndex } =
-    useContext(ledsContext);
+  const {
+    dispatch,
+    state: { currentFrameIndex, frames },
+  } = useContext(LedsContext);
 
-  console.log(frames);
-  const playerChange = (e) => {
-    setCurrentFrameIndex(e.target.value);
-  };
-
-  const back = () => {
-    setCurrentFrameIndex((index) => {
-      if (index === 0) {
-        return 0;
-      }
-
-      return index - 1;
+  const onPlayerChange = (e) => {
+    dispatch({
+      type: ACTION_TYPES.CHANGE_POSITION_PLAYER,
+      payload: +e.target.value,
     });
   };
 
-  const forward = () => {
-    setCurrentFrameIndex((index) => {
-      if (index >= frames.length - 1) {
-        return frames.length - 1;
-      }
+  const onBack = () => {
+    if (currentFrameIndex > 0) {
+      dispatch({
+        type: ACTION_TYPES.CHANGE_POSITION_PLAYER,
+        payload: currentFrameIndex - 1,
+      });
+    }
+  };
 
-      return index + 1;
-    });
+  const onForward = () => {
+    if (currentFrameIndex < frames.length - 1) {
+      dispatch({
+        type: ACTION_TYPES.CHANGE_POSITION_PLAYER,
+        payload: currentFrameIndex + 1,
+      });
+    }
   };
 
   return (
@@ -39,17 +42,17 @@ const Player = () => {
             min={0}
             max={frames.length - 1}
             value={currentFrameIndex}
-            onChange={playerChange}
+            onChange={onPlayerChange}
           />
         </div>
       </div>
       <div className="controls row">
         <div className="col">
-          <button onClick={back} className="btn">
+          <button onClick={onBack} className="btn">
             Back
           </button>
           <button className="btn">Play / Stop</button>
-          <button onClick={forward} className="btn">
+          <button onClick={onForward} className="btn">
             Forward
           </button>
         </div>

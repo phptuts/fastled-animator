@@ -1,11 +1,17 @@
 import React, { useContext } from 'react';
-import LedsContext from '../../context/ledContext';
+import { ACTION_TYPES } from '../../context/led/ledActions';
+import LedsContext from '../../context/led/ledContext';
 
 const Led = ({ led }) => {
-  const { selectLed } = useContext(LedsContext);
+  const { dispatch } = useContext(LedsContext);
 
   function onSelectLed() {
-    selectLed(led.position, !led.selected);
+    dispatch({
+      type: !led.selected
+        ? ACTION_TYPES.SELECT_LED
+        : ACTION_TYPES.UN_SELECT_LED,
+      payload: led.position,
+    });
   }
 
   return (
