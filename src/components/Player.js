@@ -1,18 +1,20 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ACTION_TYPES } from '../context/led/ledActions';
 import LedsContext from '../context/led/ledContext';
 
 const Player = () => {
   const {
     dispatch,
-    state: { currentFrameIndex, frames },
+    state: { currentFrameIndex, frames, timePerStep },
   } = useContext(LedsContext);
 
   const onPlayerChange = (e) => {
+    console.log('triggered');
     dispatch({
       type: ACTION_TYPES.CHANGE_POSITION_PLAYER,
       payload: +e.target.value,
     });
+    setPlaying(false);
   };
 
   const onBack = () => {
@@ -22,6 +24,7 @@ const Player = () => {
         payload: currentFrameIndex - 1,
       });
     }
+    setPlaying(false);
   };
 
   const onForward = () => {
@@ -31,7 +34,49 @@ const Player = () => {
         payload: currentFrameIndex + 1,
       });
     }
+    setPlaying(false);
   };
+
+  const [playing, setPlaying] = useState(false);
+
+  const togglePlaying = () => {
+    setPlaying((p) => {
+      return !p;
+    });
+    if (currentFrameIndex + 1 >= frames.length) {
+      dispatch({
+        type: ACTION_TYPES.RUN_SIMULATION,
+        payload: 0,
+      });
+    } else {
+      dispatch({
+        type: ACTION_TYPES.RUN_SIMULATION,
+        payload: currentFrameIndex,
+      });
+    }
+  };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (playing) {
+        if (currentFrameIndex + 1 >= frames.length) {
+          setPlaying(false);
+          dispatch({
+            type: ACTION_TYPES.STOP_SIMULATION,
+          });
+        } else {
+          dispatch({
+            type: ACTION_TYPES.RUN_SIMULATION,
+            payload: currentFrameIndex + 1,
+          });
+        }
+      }
+    }, timePerStep);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [playing, timePerStep, dispatch, frames, currentFrameIndex]);
 
   return (
     <>
@@ -51,7 +96,9 @@ const Player = () => {
           <button onClick={onBack} className="btn">
             Back
           </button>
-          <button className="btn">Play / Stop</button>
+          <button className="btn" onClick={togglePlaying}>
+            {playing ? 'Stop' : 'Play'}
+          </button>
           <button onClick={onForward} className="btn">
             Forward
           </button>

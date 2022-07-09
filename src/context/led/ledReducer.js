@@ -57,6 +57,18 @@ const ledReducer = (state, action) => {
       return cloneDeep({
         ...state,
         currentFrameIndex: action.payload,
+        playing: false,
+      });
+    case ACTION_TYPES.RUN_SIMULATION:
+      return cloneDeep({
+        ...state,
+        currentFrameIndex: action.payload,
+        playing: true,
+      });
+    case ACTION_TYPES.STOP_SIMULATION:
+      return cloneDeep({
+        ...state,
+        playing: false,
       });
     default:
       return state;

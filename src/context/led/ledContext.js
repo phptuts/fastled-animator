@@ -10,6 +10,7 @@ export const LedProvider = ({ children }) => {
     totalSteps: 5,
     timePerStep: 50,
     numberLeds: 250,
+    playing: false,
     frames: generateFrames(250, 5, []),
   };
 

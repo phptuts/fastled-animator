@@ -3,9 +3,15 @@ import { ACTION_TYPES } from '../../context/led/ledActions';
 import LedsContext from '../../context/led/ledContext';
 
 const Led = ({ led }) => {
-  const { dispatch } = useContext(LedsContext);
+  const {
+    dispatch,
+    state: { playing },
+  } = useContext(LedsContext);
 
   function onSelectLed() {
+    if (playing) {
+      return;
+    }
     dispatch({
       type: !led.selected
         ? ACTION_TYPES.SELECT_LED
@@ -17,7 +23,9 @@ const Led = ({ led }) => {
   return (
     <div
       onClick={onSelectLed}
-      className={`led ${led.selected ? 'selected' : ''} ${led.position}`}
+      className={`led ${led.selected && !playing ? 'selected' : ''} ${
+        led.position
+      }`}
     >
       <div
         style={{
