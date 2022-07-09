@@ -1,60 +1,25 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import Leds from '../components/LedStrip/Leds';
 import Player from '../components/Player';
-import { generateLeds, generateFrames } from '../leds';
-import LedsContext from '../context/ledContext';
+import SelectionTools from '../components/SelectionTools';
+import { ACTION_TYPES } from '../context/led/ledActions';
+import LedsContext from '../context/led/ledContext';
 
 const Home = () => {
-  const [currentFrameIndex, setCurrentFrameIndex] = useState(1);
-  const [numberLeds, setNumberLeds] = useState(250);
-  const [totalSteps, setTotalSteps] = useState(60);
-  const [timePerStep, setTimePerStep] = useState(1);
-  const [leds, setLeds] = useState(generateLeds(numberLeds));
-
-  function setNumberOfLeds(e) {
-    setNumberLeds(e.target.value);
-    setLeds(generateLeds(+e.target.value));
-  }
-
-  let frames = generateFrames(50, 3, 100, []);
-  console.log(frames);
-  frames[0].leds[1].color = '#AA00AA';
-  frames[2].leds[1].color = '#BB00AA';
-  frames[2].leds[0].color = '#BBCCAA';
-
-  frames = generateFrames(25, 4, 3, frames);
-  console.log(frames);
-
-  function onChangeColor(e) {
-    setLeds(
-      leds.map((l) => {
-        if (l.selected) {
-          return { ...l, color: e.target.value };
-        }
-        return l;
-      })
-    );
-  }
-
-  function selectLed(led) {
-    const newLeds = [
-      ...leds.filter((l) => l.position !== led.position),
-      { ...led, selected: !led.selected },
-    ];
-
-    newLeds.sort((a, b) => a.position - b.position);
-    setLeds(newLeds);
-  }
+  const {
+    dispatch,
+    state: { numberLeds, totalSteps, timePerStep },
+  } = useContext(LedsContext);
 
   return (
-    <LedsContext.Provider value={{ leds, selectLed }}>
+    <>
       <div className="row">
         <div className="col">
-          <h1>Home Page</h1>
+          <h1>FastLED Simulator</h1>
         </div>
       </div>
       <div className="row mb-3">
-        <div className="col-6">
+        <div className="col-3">
           <label htmlFor="number-of-leds" className="form-label">
             Number of Leds
           </label>
@@ -64,24 +29,16 @@ const Home = () => {
             id="number-of-leds"
             placeholder="Number of leds"
             value={numberLeds}
-            onChange={setNumberOfLeds}
+            onChange={(e) => {
+              dispatch({
+                type: ACTION_TYPES.CHANGE_NUMBER_LEDS,
+                payload: e.target.value,
+              });
+            }}
           />
         </div>
-        <div className="col-6">
-          <label htmlFor="color-picker" className=" col-form-label">
-            Select Led Color
-          </label>
 
-          <input
-            type="color"
-            className="form-control"
-            id="color-picker"
-            onChange={onChangeColor}
-          />
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-6">
+        <div className="col-3">
           <label htmlFor="numSteps" className="form-label">
             Number of Steps
           </label>
@@ -91,10 +48,15 @@ const Home = () => {
             id="numSteps"
             placeholder="Number of steps"
             value={totalSteps}
-            onChange={(e) => setTotalSteps(+e.target.value)}
+            onChange={(e) =>
+              dispatch({
+                type: ACTION_TYPES.CHANGE_TOTAL_STEPS,
+                payload: e.target.value,
+              })
+            }
           />
         </div>
-        <div className="col-6">
+        <div className="col-3">
           <label htmlFor="seconds-per-step" className="form-label">
             Milliseconds per Step
           </label>
@@ -105,25 +67,25 @@ const Home = () => {
             step="1"
             placeholder="Milliseconds per step"
             value={timePerStep}
-            onChange={(e) => setTimePerStep(+e.target.value)}
+            onChange={(e) =>
+              dispatch({
+                type: ACTION_TYPES.CHANGE_TIME_PER_STEP,
+                payload: e.target.value,
+              })
+            }
           />
         </div>
       </div>
+      <SelectionTools />
 
-      <Player
-        frames={[1, 3, 4]}
-        currentFrame={currentFrameIndex}
-        onMoveTo={setCurrentFrameIndex}
-        onPlay={() => console.log('onPlay')}
-        onStop={() => console.log('onStop')}
-      ></Player>
+      <Player />
 
       <div className="row">
         <div className="col">
           <Leds />
         </div>
       </div>
-    </LedsContext.Provider>
+    </>
   );
 };
 
