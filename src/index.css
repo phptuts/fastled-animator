@@ -20,12 +20,11 @@
 }
 
 .led.selected {
-  background-color: #1a2201;
+  background-color: #828380;
 }
 
 #leds {
   position: relative;
-  width: 1000px;
   margin: 10px auto;
 }
 
@@ -63,4 +62,20 @@
   border: solid 1px black !important;
   margin: 5px;
   width: fit-content;
+}
+
+/** Select **/
+#submit-select {
+  position: absolute;
+  bottom: 3px;
+}
+
+/** helpers **/
+
+.relative {
+  position: relative;
+}
+
+h1 {
+  text-align: center;
 }

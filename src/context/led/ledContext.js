@@ -9,9 +9,9 @@ export const LedProvider = ({ children }) => {
     currentFrameIndex: 0,
     totalSteps: 5,
     timePerStep: 50,
-    numberLeds: 250,
+    numberLeds: 25,
     playing: false,
-    frames: generateFrames(250, 5, []),
+    frames: generateFrames(25, 5, []),
   };
 
   const [state, dispatch] = useReducer(ledReducer, initialState);

@@ -1,16 +1,10 @@
-import React, { useContext } from 'react';
 import Leds from '../components/LedStrip/Leds';
+import LedTool from '../components/LedTool';
+import PatternTool from '../components/PatternTool';
 import Player from '../components/Player';
 import SelectionTools from '../components/SelectionTools';
-import { ACTION_TYPES } from '../context/led/ledActions';
-import LedsContext from '../context/led/ledContext';
 
 const Home = () => {
-  const {
-    dispatch,
-    state: { numberLeds, totalSteps, timePerStep },
-  } = useContext(LedsContext);
-
   return (
     <>
       <div className="row">
@@ -18,66 +12,9 @@ const Home = () => {
           <h1>FastLED Simulator</h1>
         </div>
       </div>
-      <div className="row mb-3">
-        <div className="col-3">
-          <label htmlFor="number-of-leds" className="form-label">
-            Number of Leds
-          </label>
-          <input
-            type="number"
-            className="form-control"
-            id="number-of-leds"
-            placeholder="Number of leds"
-            value={numberLeds}
-            onChange={(e) => {
-              dispatch({
-                type: ACTION_TYPES.CHANGE_NUMBER_LEDS,
-                payload: e.target.value,
-              });
-            }}
-          />
-        </div>
-
-        <div className="col-3">
-          <label htmlFor="numSteps" className="form-label">
-            Number of Steps
-          </label>
-          <input
-            type="number"
-            className="form-control"
-            id="numSteps"
-            placeholder="Number of steps"
-            value={totalSteps}
-            onChange={(e) =>
-              dispatch({
-                type: ACTION_TYPES.CHANGE_TOTAL_STEPS,
-                payload: e.target.value,
-              })
-            }
-          />
-        </div>
-        <div className="col-3">
-          <label htmlFor="seconds-per-step" className="form-label">
-            Milliseconds per Step
-          </label>
-          <input
-            type="number"
-            className="form-control"
-            id="seconds-per-step"
-            step="1"
-            placeholder="Milliseconds per step"
-            value={timePerStep}
-            onChange={(e) =>
-              dispatch({
-                type: ACTION_TYPES.CHANGE_TIME_PER_STEP,
-                payload: e.target.value,
-              })
-            }
-          />
-        </div>
-      </div>
+      <LedTool />
       <SelectionTools />
-
+      <PatternTool />
       <Player />
 
       <div className="row">

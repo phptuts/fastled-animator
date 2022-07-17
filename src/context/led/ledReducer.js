@@ -70,6 +70,46 @@ const ledReducer = (state, action) => {
         ...state,
         playing: false,
       });
+    case ACTION_TYPES.SELECTION_MODE:
+      let { selection_mode, starts_at } = action.payload;
+
+      state.frames[state.currentFrameIndex].leds = state.frames[
+        state.currentFrameIndex
+      ].leds.map((led, index) => {
+        let selected = led.selected;
+        const ledPosition = led.position + 1;
+        if (ledPosition < starts_at) {
+          return { ...led };
+        }
+        switch (selection_mode) {
+          case 'all':
+          case 'unselect_all':
+            selected = selection_mode === 'all';
+            break;
+          case 'odd':
+            selected = ledPosition % 2 === 1;
+            break;
+          case 'even':
+            selected = ledPosition % 2 === 0;
+            break;
+          case 'thirds':
+            selected = ledPosition % 3 === 0;
+            break;
+          case 'fourths':
+            selected = ledPosition % 4 === 0;
+            break;
+          default:
+        }
+        return {
+          ...led,
+          selected,
+        };
+      });
+
+      return cloneDeep({
+        ...state,
+        playing: false,
+      });
     default:
       return state;
   }

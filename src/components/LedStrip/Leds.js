@@ -4,6 +4,9 @@ import config from '../../config';
 import { chunk } from '../../helpers';
 import ledsContext from '../../context/led/ledContext';
 
+// TODO Dynamically Set the config in and have it control by state
+// Set the width programatically to show right number of pixels
+
 const Leds = () => {
   const {
     state: { frames, currentFrameIndex },
@@ -13,7 +16,7 @@ const Leds = () => {
 
   const ledFullStips = chunk(leds, config.fullStripLength);
   return (
-    <div id="leds">
+    <div style={{ width: `1000px` }} id="leds">
       {ledFullStips &&
         ledFullStips.map((c) => {
           return <FullStrip key={`fullstrip-${c[0].position}`} leds={c} />;

@@ -10,10 +10,9 @@ export const generateFrames = (numLeds, numSteps, currentFrames = []) => {
     }
 
     let leds = f.leds;
-    for (let i = f.leds.length + 1; i <= numLeds; i += 1) {
+    for (let i = f.leds.length; i < numLeds; i += 1) {
       leds.push(generateLed('#000000', i));
     }
-    console.log(leds, 'after operation');
     return { ...f, leds };
   });
 
