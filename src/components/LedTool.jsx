@@ -15,7 +15,7 @@ const LedTool = () => {
         </div>
       </div>
       <div className="row mb-3">
-        <div className="col-3">
+        <div className="col-md-3 col-sm-12">
           <label htmlFor="number-of-leds" className="form-label">
             Number of Leds
           </label>
@@ -34,7 +34,7 @@ const LedTool = () => {
           />
         </div>
 
-        <div className="col-3">
+        <div className="col-md-3 col-sm-12">
           <label htmlFor="numSteps" className="form-label">
             Number of Steps
           </label>
@@ -52,7 +52,7 @@ const LedTool = () => {
             }
           />
         </div>
-        <div className="col-3">
+        <div className="col-md-3 col-sm-12">
           <label htmlFor="seconds-per-step" className="form-label">
             Milliseconds per Step
           </label>

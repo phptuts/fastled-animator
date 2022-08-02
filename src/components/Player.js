@@ -9,7 +9,6 @@ const Player = () => {
   } = useContext(LedsContext);
 
   const onPlayerChange = (e) => {
-    console.log('triggered');
     dispatch({
       type: ACTION_TYPES.CHANGE_POSITION_PLAYER,
       payload: +e.target.value,

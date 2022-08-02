@@ -12,6 +12,11 @@ export const LedProvider = ({ children }) => {
     numberLeds: 25,
     playing: false,
     frames: generateFrames(25, 5, []),
+    ledsHorizontal: 50,
+    ledsVertical: 3,
+    fullStripLength: 106,
+    pixelAreaWidth: 1000,
+    rightMarginForRightVertical: 980,
   };
 
   const [state, dispatch] = useReducer(ledReducer, initialState);

@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import FullStrip from './FullStrip';
-import config from '../../config';
 import { chunk } from '../../helpers';
 import ledsContext from '../../context/led/ledContext';
 
@@ -9,14 +8,14 @@ import ledsContext from '../../context/led/ledContext';
 
 const Leds = () => {
   const {
-    state: { frames, currentFrameIndex },
+    state: { frames, currentFrameIndex, fullStripLength, pixelAreaWidth },
   } = useContext(ledsContext);
 
   const { leds } = frames[currentFrameIndex];
 
-  const ledFullStips = chunk(leds, config.fullStripLength);
+  const ledFullStips = chunk(leds, fullStripLength);
   return (
-    <div style={{ width: `1000px` }} id="leds">
+    <div style={{ width: `${pixelAreaWidth}px` }} id="leds">
       {ledFullStips &&
         ledFullStips.map((c) => {
           return <FullStrip key={`fullstrip-${c[0].position}`} leds={c} />;

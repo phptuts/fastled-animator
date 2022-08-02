@@ -110,6 +110,64 @@ const ledReducer = (state, action) => {
         ...state,
         playing: false,
       });
+    case ACTION_TYPES.RESIZE_PIXELS:
+      const width = action.payload;
+      if (width >= 1400) {
+        return cloneDeep({
+          ...state,
+          ledsHorizontal: 66,
+          ledsVertical: 3,
+          fullStripLength: 66 * 2 + 3 * 2,
+          pixelAreaWidth: 1320,
+          rightMarginForRightVertical: 1300,
+        });
+      } else if (width >= 1200) {
+        return cloneDeep({
+          ...state,
+          ledsHorizontal: 56,
+          ledsVertical: 3,
+          fullStripLength: 56 * 2 + 3 * 2,
+          pixelAreaWidth: 1120,
+          rightMarginForRightVertical: 1100,
+        });
+      } else if (width >= 992) {
+        return cloneDeep({
+          ...state,
+          ledsHorizontal: 48,
+          ledsVertical: 3,
+          fullStripLength: 48 * 2 + 3 * 2,
+          pixelAreaWidth: 960,
+          rightMarginForRightVertical: 940,
+        });
+      } else if (width >= 768) {
+        return cloneDeep({
+          ...state,
+          ledsHorizontal: 36,
+          ledsVertical: 3,
+          fullStripLength: 36 * 2 + 3 * 2,
+          pixelAreaWidth: 720,
+          rightMarginForRightVertical: 700,
+        });
+      } else if (width >= 576) {
+        return cloneDeep({
+          ...state,
+          ledsHorizontal: 27,
+          ledsVertical: 3,
+          fullStripLength: 27 * 2 + 3 * 2,
+          pixelAreaWidth: 540,
+          rightMarginForRightVertical: 520,
+        });
+      } else {
+        return cloneDeep({
+          ...state,
+          ledsHorizontal: 18,
+          ledsVertical: 3,
+          fullStripLength: 18 * 2 + 3 * 2,
+          pixelAreaWidth: 360,
+          rightMarginForRightVertical: 340,
+        });
+      }
+
     default:
       return state;
   }

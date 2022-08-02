@@ -22,7 +22,7 @@ const SelectionTools = () => {
         </div>
       </div>
       <div className="row">
-        <div className="col-3">
+        <div className="col-md-3 col-sm-12">
           <label htmlFor="color-picker" className="form-label">
             Color
           </label>
@@ -40,7 +40,7 @@ const SelectionTools = () => {
             }}
           />
         </div>
-        <div className="col-3">
+        <div className="col-md-3 col-sm-12">
           <label htmlFor="color-picker" className="form-label">
             Selection Mode
           </label>
@@ -63,7 +63,7 @@ const SelectionTools = () => {
             <option value="fourths">Fourths</option>
           </select>
         </div>
-        <div className="col-3">
+        <div className="col-md-3 col-sm-12">
           <label htmlFor="starts-at" className="form-label">
             Starts at led
           </label>
@@ -81,11 +81,11 @@ const SelectionTools = () => {
             }
           />
         </div>
-        <div className="col-3 relative">
+        <div className="col-md-3 col-sm-12">
           <button
             onClick={onSelectChanged}
             id="submit-select"
-            className="btn btn-primary align-text-bottom"
+            className="btn btn-primary align-text-bottom w-100 "
           >
             Select
           </button>

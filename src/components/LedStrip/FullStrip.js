@@ -1,23 +1,24 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import LedsContext from '../../context/led/ledContext';
 import Strip from './Strip';
-import config from '../../config';
 
 const FullStrip = ({ leds }) => {
-  const leftLeds = leds.slice(0, config.ledsHorizontal);
+  const {
+    state: { ledsHorizontal, ledsVertical },
+  } = useContext(LedsContext);
+
+  const leftLeds = leds.slice(0, ledsHorizontal);
   const rightDownLeds = leds.slice(
-    config.ledsHorizontal,
-    config.ledsHorizontal + config.ledsVertical
+    ledsHorizontal,
+    ledsHorizontal + ledsVertical
   );
   const rightToLeft = leds.slice(
-    config.ledsHorizontal + config.ledsVertical,
-    config.ledsHorizontal + config.ledsVertical + config.ledsHorizontal
+    ledsHorizontal + ledsVertical,
+    ledsHorizontal + ledsVertical + ledsHorizontal
   );
   const leftDown = leds.slice(
-    config.ledsHorizontal + config.ledsVertical + config.ledsHorizontal,
-    config.ledsHorizontal +
-      config.ledsVertical +
-      config.ledsHorizontal +
-      config.ledsVertical
+    ledsHorizontal + ledsVertical + ledsHorizontal,
+    ledsHorizontal + ledsVertical + ledsHorizontal + ledsVertical
   );
 
   return (
