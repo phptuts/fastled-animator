@@ -20,7 +20,8 @@
 }
 
 .led.selected {
-  background-color: #828380;
+  /* background-color: #828380; */
+  border: dashed 1px rgb(0, 0, 0);
 }
 
 #leds {

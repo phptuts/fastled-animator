@@ -1,12 +1,15 @@
-import React, { useContext, useState } from 'react';
-import { ACTION_TYPES } from '../context/led/ledActions';
-import LedsContext from '../context/led/ledContext';
+import React, { useContext, useState } from "react";
+import { ACTION_TYPES } from "../context/led/ledActions";
+import LedsContext from "../context/led/ledContext";
 
 const SelectionTools = () => {
-  const { dispatch } = useContext(LedsContext);
+  const {
+    dispatch,
+    state: { selectedColor },
+  } = useContext(LedsContext);
 
   const [state, setState] = useState({
-    make_selection: 'none',
+    make_selection: "none",
     starts_at: 1,
   });
 
@@ -31,7 +34,7 @@ const SelectionTools = () => {
             type="color"
             className="form-control form-control-color w-100"
             id="color-picker"
-            value="#AA00FF"
+            value={selectedColor}
             onChange={(e) => {
               dispatch({
                 type: ACTION_TYPES.CHANGE_SELECTED_COLOR_LEDS,
@@ -46,7 +49,6 @@ const SelectionTools = () => {
           </label>
           <select
             onChange={(e) => {
-              console.log(e.target.value);
               setState((s) => {
                 return { ...s, selection_mode: e.target.value };
               });

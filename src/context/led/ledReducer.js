@@ -1,7 +1,7 @@
-import { generateFrames } from '../../leds';
-import { ACTION_TYPES } from './ledActions';
+import { generateFrames } from "../../leds";
+import { ACTION_TYPES } from "./ledActions";
 
-import cloneDeep from 'lodash/fp/cloneDeep';
+import cloneDeep from "lodash/fp/cloneDeep";
 
 const ledReducer = (state, action) => {
   switch (action.type) {
@@ -35,6 +35,7 @@ const ledReducer = (state, action) => {
 
       return cloneDeep({
         ...state,
+        selectedColor: action.payload,
       });
     case ACTION_TYPES.SELECT_LED:
     case ACTION_TYPES.UN_SELECT_LED:
@@ -43,6 +44,9 @@ const ledReducer = (state, action) => {
       ].reduce((acc, next) => {
         if (action.payload === next.position) {
           next.selected = action.type === ACTION_TYPES.SELECT_LED;
+          if (next.selected) {
+            next.color = state.selectedColor;
+          }
         }
 
         acc.push({ ...next });
@@ -82,20 +86,20 @@ const ledReducer = (state, action) => {
           return { ...led };
         }
         switch (selection_mode) {
-          case 'all':
-          case 'unselect_all':
-            selected = selection_mode === 'all';
+          case "all":
+          case "unselect_all":
+            selected = selection_mode === "all";
             break;
-          case 'odd':
+          case "odd":
             selected = ledPosition % 2 === 1;
             break;
-          case 'even':
+          case "even":
             selected = ledPosition % 2 === 0;
             break;
-          case 'thirds':
+          case "thirds":
             selected = ledPosition % 3 === 0;
             break;
-          case 'fourths':
+          case "fourths":
             selected = ledPosition % 4 === 0;
             break;
           default:

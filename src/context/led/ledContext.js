@@ -1,6 +1,6 @@
-import { createContext, useReducer } from 'react';
-import { generateFrames } from '../../leds';
-import ledReducer from './ledReducer';
+import { createContext, useReducer } from "react";
+import { generateFrames } from "../../leds";
+import ledReducer from "./ledReducer";
 
 const LedsContext = createContext();
 
@@ -16,6 +16,7 @@ export const LedProvider = ({ children }) => {
     ledsVertical: 3,
     fullStripLength: 106,
     pixelAreaWidth: 1000,
+    selectedColor: "#AA0000",
     rightMarginForRightVertical: 980,
   };
 
