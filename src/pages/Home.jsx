@@ -1,14 +1,16 @@
-import { useContext, useEffect } from "react";
-import Leds from "../components/LedStrip/Leds";
-import LedTool from "../components/LedTool";
-import PatternTool from "../components/PatternTool";
-import Player from "../components/Player";
-import SelectionTools from "../components/SelectionTools";
-import { ACTION_TYPES } from "../context/led/ledActions";
-import LedsContext from "../context/led/ledContext";
+import { useContext, useEffect } from 'react';
+import Leds from '../components/LedStrip/Leds';
+import LedTool from '../components/LedTool';
+import Player from '../components/Player';
+import SelectionTools from '../components/SelectionTools';
+import { ACTION_TYPES } from '../context/led/ledActions';
+import LedsContext from '../context/led/ledContext';
 
 const Home = () => {
-  const { dispatch } = useContext(LedsContext);
+  const {
+    dispatch,
+    state: { currentFrameIndex },
+  } = useContext(LedsContext);
   useEffect(() => {
     dispatch({
       type: ACTION_TYPES.RESIZE_PIXELS,
@@ -20,29 +22,36 @@ const Home = () => {
         payload: e.target.outerWidth,
       });
     };
-    window.addEventListener("resize", resizeWindow);
+    const mouseDragOn = (e) => {
+      dispatch({
+        type: ACTION_TYPES.MOUSE_DRAG_ON,
+      });
+    };
+    const mouseDragOff = (e) => {
+      dispatch({
+        type: ACTION_TYPES.MOUSE_DRAG_OFF,
+      });
+    };
+
+    window.addEventListener('mousedown', mouseDragOn);
+    window.addEventListener('mouseup', mouseDragOff);
+    window.addEventListener('resize', resizeWindow);
     return () => {
-      window.removeEventListener("resize", resizeWindow);
+      window.removeEventListener('resize', resizeWindow);
+      window.removeEventListener('mousedown', mouseDragOn);
+      window.removeEventListener('mouseup', mouseDragOff);
     };
   }, [dispatch]);
   return (
     <>
-      <div className="row">
+      <div className="row mt-3">
         <div className="col">
           <h1>LED Animator</h1>
         </div>
       </div>
-      <LedTool />
-      <SelectionTools />
-      <PatternTool />
-      <div className="row">
+      <div className="row mt-3">
         <div className="col">
-          {/* Controls the frames one by one */}
-          {/* Double the size of the led component  */}
-          {/* Slide select */}
-          <button>Back</button>
-          <button>Forward</button>
-          <button>Random Color</button>
+          <h2>Frame {currentFrameIndex + 1}</h2>
         </div>
       </div>
       <div className="row">
@@ -51,6 +60,8 @@ const Home = () => {
         </div>
       </div>
       <Player />
+      <SelectionTools />
+      <LedTool />
     </>
   );
 };

@@ -1,7 +1,7 @@
-import { generateFrames } from "../../leds";
-import { ACTION_TYPES } from "./ledActions";
+import { generateFrames } from '../../leds';
+import { ACTION_TYPES } from './ledActions';
 
-import cloneDeep from "lodash/fp/cloneDeep";
+import cloneDeep from 'lodash/fp/cloneDeep';
 
 const ledReducer = (state, action) => {
   switch (action.type) {
@@ -10,6 +10,16 @@ const ledReducer = (state, action) => {
         ...state,
         numberLeds: action.payload,
         frames: generateFrames(action.payload, state.totalSteps, state.frames),
+      });
+    case ACTION_TYPES.MOUSE_DRAG_OFF:
+      return cloneDeep({
+        ...state,
+        mouseDragSelect: false,
+      });
+    case ACTION_TYPES.MOUSE_DRAG_ON:
+      return cloneDeep({
+        ...state,
+        mouseDragSelect: true,
       });
     case ACTION_TYPES.CHANGE_TOTAL_STEPS:
       return cloneDeep({
@@ -75,43 +85,49 @@ const ledReducer = (state, action) => {
         playing: false,
       });
     case ACTION_TYPES.SELECTION_MODE:
-      let { selection_mode, starts_at } = action.payload;
-
       state.frames[state.currentFrameIndex].leds = state.frames[
         state.currentFrameIndex
       ].leds.map((led, index) => {
         let selected = led.selected;
+        let color = led.color;
         const ledPosition = led.position + 1;
-        if (ledPosition < starts_at) {
-          return { ...led };
-        }
-        switch (selection_mode) {
-          case "all":
-          case "unselect_all":
-            selected = selection_mode === "all";
+
+        switch (action.payload) {
+          case 'all':
+            selected = true;
+            color = selected ? state.selectedColor : color;
             break;
-          case "odd":
+          case 'unselect_all':
+            selected = false;
+            break;
+          case 'odd':
             selected = ledPosition % 2 === 1;
+            color = selected ? state.selectedColor : color;
             break;
-          case "even":
+          case 'even':
             selected = ledPosition % 2 === 0;
+            color = selected ? state.selectedColor : color;
             break;
-          case "thirds":
+          case 'thirds':
             selected = ledPosition % 3 === 0;
+            color = selected ? state.selectedColor : color;
             break;
-          case "fourths":
+          case 'fourths':
             selected = ledPosition % 4 === 0;
+            color = selected ? state.selectedColor : color;
             break;
           default:
         }
         return {
           ...led,
           selected,
+          color,
         };
       });
 
       return cloneDeep({
         ...state,
+        selectionMode: action.payload,
         playing: false,
       });
     case ACTION_TYPES.RESIZE_PIXELS:
@@ -119,56 +135,56 @@ const ledReducer = (state, action) => {
       if (width >= 1400) {
         return cloneDeep({
           ...state,
-          ledsHorizontal: 66,
+          ledsHorizontal: 33,
           ledsVertical: 3,
-          fullStripLength: 66 * 2 + 3 * 2,
+          fullStripLength: 33 * 2 + 3 * 2,
           pixelAreaWidth: 1320,
-          rightMarginForRightVertical: 1300,
+          rightMarginForRightVertical: 1280,
         });
       } else if (width >= 1200) {
         return cloneDeep({
           ...state,
-          ledsHorizontal: 56,
+          ledsHorizontal: 28,
           ledsVertical: 3,
-          fullStripLength: 56 * 2 + 3 * 2,
+          fullStripLength: 28 * 2 + 3 * 2,
           pixelAreaWidth: 1120,
-          rightMarginForRightVertical: 1100,
+          rightMarginForRightVertical: 1080,
         });
       } else if (width >= 992) {
         return cloneDeep({
           ...state,
-          ledsHorizontal: 48,
+          ledsHorizontal: 24,
           ledsVertical: 3,
-          fullStripLength: 48 * 2 + 3 * 2,
+          fullStripLength: 24 * 2 + 3 * 2,
           pixelAreaWidth: 960,
-          rightMarginForRightVertical: 940,
+          rightMarginForRightVertical: 920,
         });
       } else if (width >= 768) {
-        return cloneDeep({
-          ...state,
-          ledsHorizontal: 36,
-          ledsVertical: 3,
-          fullStripLength: 36 * 2 + 3 * 2,
-          pixelAreaWidth: 720,
-          rightMarginForRightVertical: 700,
-        });
-      } else if (width >= 576) {
-        return cloneDeep({
-          ...state,
-          ledsHorizontal: 27,
-          ledsVertical: 3,
-          fullStripLength: 27 * 2 + 3 * 2,
-          pixelAreaWidth: 540,
-          rightMarginForRightVertical: 520,
-        });
-      } else {
         return cloneDeep({
           ...state,
           ledsHorizontal: 18,
           ledsVertical: 3,
           fullStripLength: 18 * 2 + 3 * 2,
+          pixelAreaWidth: 720,
+          rightMarginForRightVertical: 680,
+        });
+      } else if (width >= 576) {
+        return cloneDeep({
+          ...state,
+          ledsHorizontal: 13,
+          ledsVertical: 3,
+          fullStripLength: 13 * 2 + 3 * 2,
+          pixelAreaWidth: 13 * 40,
+          rightMarginForRightVertical: 12 * 40,
+        });
+      } else {
+        return cloneDeep({
+          ...state,
+          ledsHorizontal: 9,
+          ledsVertical: 3,
+          fullStripLength: 9 * 2 + 3 * 2,
           pixelAreaWidth: 360,
-          rightMarginForRightVertical: 340,
+          rightMarginForRightVertical: 320,
         });
       }
 

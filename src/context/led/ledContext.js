@@ -1,23 +1,26 @@
-import { createContext, useReducer } from "react";
-import { generateFrames } from "../../leds";
-import ledReducer from "./ledReducer";
+import { createContext, useReducer } from 'react';
+import { generateFrames } from '../../leds';
+import ledReducer from './ledReducer';
 
 const LedsContext = createContext();
 
 export const LedProvider = ({ children }) => {
   const initialState = {
+    startDragSelection: false,
     currentFrameIndex: 0,
-    totalSteps: 5,
-    timePerStep: 50,
+    totalSteps: 50,
+    timePerStep: 500,
     numberLeds: 25,
     playing: false,
-    frames: generateFrames(25, 5, []),
-    ledsHorizontal: 50,
+    frames: generateFrames(25, 50, []),
+    ledsHorizontal: 33,
     ledsVertical: 3,
-    fullStripLength: 106,
+    fullStripLength: 66,
     pixelAreaWidth: 1000,
-    selectedColor: "#AA0000",
-    rightMarginForRightVertical: 980,
+    selectedColor: '#AA0000',
+    mouseDragSelect: false,
+    selectionMode: 'none',
+    rightMarginForRightVertical: 960,
   };
 
   const [state, dispatch] = useReducer(ledReducer, initialState);

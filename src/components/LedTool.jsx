@@ -9,9 +9,9 @@ const LedTool = () => {
   } = useContext(LedsContext);
   return (
     <>
-      <div className="row">
+      <div className="row mt-5">
         <div className="col">
-          <h4>Leds / Steps</h4>
+          <h4>Setup</h4>
         </div>
       </div>
       <div className="row mb-3">
@@ -36,7 +36,7 @@ const LedTool = () => {
 
         <div className="col-md-3 col-sm-12">
           <label htmlFor="numSteps" className="form-label">
-            Number of Steps
+            Number of Frames
           </label>
           <input
             type="number"
@@ -54,7 +54,7 @@ const LedTool = () => {
         </div>
         <div className="col-md-3 col-sm-12">
           <label htmlFor="seconds-per-step" className="form-label">
-            Milliseconds per Step
+            Milliseconds per Frame
           </label>
           <input
             type="number"

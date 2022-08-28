@@ -34,6 +34,11 @@ const Player = () => {
   };
 
   const togglePlaying = () => {
+    if (playing) {
+      dispatch({ type: ACTION_TYPES.STOP_SIMULATION });
+      return;
+    }
+
     if (currentFrameIndex + 1 >= frames.length) {
       dispatch({
         type: ACTION_TYPES.RUN_SIMULATION,
@@ -60,6 +65,8 @@ const Player = () => {
             payload: currentFrameIndex + 1,
           });
         }
+      } else {
+        clearInterval(intervalId);
       }
     }, timePerStep);
 
