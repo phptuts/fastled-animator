@@ -9,6 +9,7 @@
   - Title
   - About Page
   - Contact Page
+  - Navigation Bar
 - Deploy App to netify 
 - Promote and Release LED Animator
 
