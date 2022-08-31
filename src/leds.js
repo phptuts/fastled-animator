@@ -1,3 +1,5 @@
+import { cloneDeep } from 'lodash';
+
 export const generateFrames = (numLeds, numSteps, currentFrames = []) => {
   const frames = currentFrames.map((f) => {
     if (f.leds.length === numLeds) {
@@ -57,4 +59,55 @@ export const generateLed = (color, position) => {
     position,
     selected: false,
   };
+};
+
+const moveLeds = (direction, leds) => {
+  if (direction === 'right') {
+    const lastTempLed = leds.pop();
+    leds.unshift(lastTempLed);
+  } else {
+    const firstLed = leds.shift();
+    leds.push(firstLed);
+  }
+
+  leds = leds.map((led, index) => {
+    return { ...led, position: index };
+  });
+
+  return { leds: cloneDeep(leds) };
+};
+
+const getDirection = (direction, loop) => {
+  if (loop === 1 && direction === 'bounce_right') {
+    return 'right';
+  } else if (loop === 2 && direction === 'bounce_right') {
+    return 'left';
+  } else if (loop === 1 && direction === 'bounce_left') {
+    return 'left';
+  } else if (loop === 2 && direction === 'bounce_left') {
+    return 'right';
+  }
+
+  return direction;
+};
+
+export const generatePattern = (direction, previousState) => {
+  const firstFrame = previousState.frames[0];
+  const newFrames = [cloneDeep(firstFrame)];
+
+  for (let i = 0; i < firstFrame.leds.length; i += 1) {
+    const leds = cloneDeep(newFrames[newFrames.length - 1].leds);
+    newFrames.push(moveLeds(getDirection(direction, 1), leds));
+  }
+
+  for (let i = 0; i < firstFrame.leds.length; i += 1) {
+    const leds = cloneDeep(newFrames[newFrames.length - 1].leds);
+    newFrames.push(moveLeds(getDirection(direction, 2), leds));
+  }
+
+  return cloneDeep({
+    ...previousState,
+    frames: newFrames,
+    totalSteps: newFrames.length,
+  });
 };

@@ -2,8 +2,11 @@
 
 ## TODO
 
-- Generate Pattern Feature
+- Generate Pattern Feature []
+ - Toastify Message
+ - Confirm Message becasue it's destructive
 - Generate Code with Arduino
+
 - Fix SEO STUFF
   - favicon
   - Title

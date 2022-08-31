@@ -1,4 +1,4 @@
-import { generateFrames } from '../../leds';
+import { generateFrames, generatePattern } from '../../leds';
 import { ACTION_TYPES } from './ledActions';
 
 import cloneDeep from 'lodash/fp/cloneDeep';
@@ -32,6 +32,9 @@ const ledReducer = (state, action) => {
         ...state,
         timePerStep: action.payload,
       });
+    case ACTION_TYPES.GENERATE_PATTERN:
+      const direction = action.payload;
+      return generatePattern(direction, state);
     case ACTION_TYPES.CHANGE_SELECTED_COLOR_LEDS:
       state.frames[state.currentFrameIndex].leds = state.frames[
         state.currentFrameIndex

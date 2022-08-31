@@ -6,10 +6,15 @@ import LedsContext from '../context/led/ledContext';
 const SelectionTools = () => {
   const {
     dispatch,
-    state: { selectedColor, selectionMode },
+    state: { selectedColor, selectionMode, currentFrameIndex },
   } = useContext(LedsContext);
 
-  const [pattern, setPattern] = useState('none');
+  // Only available on the first frame
+  const [pattern, setPattern] = useState('right');
+
+  const onGeneratePattern = (e) => {
+    dispatch({ type: ACTION_TYPES.GENERATE_PATTERN, payload: pattern });
+  };
 
   return (
     <>
@@ -91,31 +96,36 @@ const SelectionTools = () => {
             Unselect
           </button>
         </div>
-        <div className="col col-md-2 col-sm-12">
-          <label htmlFor="color-picker" className="form-label">
-            Create Pattern
-          </label>
-          <select
-            onChange={(e) => {
-              setPattern(e.target.value);
-            }}
-            value={pattern}
-            className="form-select"
-          >
-            <option value="all">Right</option>
-            <option value="odd">Left</option>
-            <option value="even">Bounce Right</option>
-            <option value="thirds">Bounce Left</option>
-          </select>
-        </div>
-        <div className="col col-md-2 col-sm-12">
-          <button
-            id="submit-select"
-            className="btn btn-primary align-text-bottom w-100 "
-          >
-            Generate Pattern
-          </button>
-        </div>
+        {currentFrameIndex === 0 && (
+          <>
+            <div className="col col-md-2 col-sm-12">
+              <label htmlFor="color-picker" className="form-label">
+                Create Pattern
+              </label>
+              <select
+                onChange={(e) => {
+                  setPattern(e.target.value);
+                }}
+                value={pattern}
+                className="form-select"
+              >
+                <option value="right">Right</option>
+                <option value="left">Left</option>
+                <option value="bounce_right">Bounce Right</option>
+                <option value="bounce_left">Bounce Left</option>
+              </select>
+            </div>
+            <div className="col col-md-2 col-sm-12">
+              <button
+                id="submit-select"
+                onClick={onGeneratePattern}
+                className="btn btn-primary align-text-bottom w-100 "
+              >
+                Generate Pattern
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </>
   );
