@@ -50,6 +50,40 @@ const ledReducer = (state, action) => {
         ...state,
         selectedColor: action.payload,
       });
+    case ACTION_TYPES.CHANGE_DRAG_MODE:
+      return cloneDeep({
+        ...state,
+        dragMode: action.payload,
+      });
+    case ACTION_TYPES.LED_DRAG_MODE:
+      state.frames[state.currentFrameIndex].leds = [
+        ...state.frames[state.currentFrameIndex].leds,
+      ].reduce((acc, next) => {
+        if (action.payload === next.position) {
+          switch (state.dragMode) {
+            case 'select':
+              next.selected = true;
+              break;
+            case 'unselect':
+              next.selected = false;
+              break;
+            case 'paint':
+              next.color = state.selectedColor;
+              break;
+            case 'erase':
+              next.color = '#000';
+              next.selected = false;
+              break;
+            default:
+              console.error(state.dragMode, 'not found');
+          }
+        }
+
+        acc.push({ ...next });
+        return acc;
+      }, []);
+
+      return cloneDeep({ ...state });
     case ACTION_TYPES.SELECT_LED:
     case ACTION_TYPES.UN_SELECT_LED:
       state.frames[state.currentFrameIndex].leds = [
@@ -57,9 +91,6 @@ const ledReducer = (state, action) => {
       ].reduce((acc, next) => {
         if (action.payload === next.position) {
           next.selected = action.type === ACTION_TYPES.SELECT_LED;
-          if (next.selected) {
-            next.color = state.selectedColor;
-          }
         }
 
         acc.push({ ...next });
@@ -92,39 +123,32 @@ const ledReducer = (state, action) => {
         state.currentFrameIndex
       ].leds.map((led, index) => {
         let selected = led.selected;
-        let color = led.color;
         const ledPosition = led.position + 1;
 
         switch (action.payload) {
           case 'all':
             selected = true;
-            color = selected ? state.selectedColor : color;
             break;
           case 'unselect_all':
             selected = false;
             break;
           case 'odd':
             selected = ledPosition % 2 === 1;
-            color = selected ? state.selectedColor : color;
             break;
           case 'even':
             selected = ledPosition % 2 === 0;
-            color = selected ? state.selectedColor : color;
             break;
           case 'thirds':
             selected = ledPosition % 3 === 0;
-            color = selected ? state.selectedColor : color;
             break;
           case 'fourths':
             selected = ledPosition % 4 === 0;
-            color = selected ? state.selectedColor : color;
             break;
           default:
         }
         return {
           ...led,
           selected,
-          color,
         };
       });
 

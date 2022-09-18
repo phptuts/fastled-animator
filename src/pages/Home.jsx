@@ -60,8 +60,9 @@ const Home = () => {
         </div>
       </div>
       <Player />
-      <SelectionTools />
       <LedTool />
+
+      <SelectionTools />
     </>
   );
 };

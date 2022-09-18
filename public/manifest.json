@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "LED Animator",
+  "name": "LED Animator",
   "icons": [
     {
       "src": "favicon.ico",

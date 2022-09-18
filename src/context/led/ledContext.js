@@ -7,12 +7,13 @@ const LedsContext = createContext();
 export const LedProvider = ({ children }) => {
   const initialState = {
     startDragSelection: false,
+    dragMode: 'select',
     currentFrameIndex: 0,
     totalSteps: 50,
     timePerStep: 500,
-    numberLeds: 25,
+    numberLeds: 30,
     playing: false,
-    frames: generateFrames(25, 50, []),
+    frames: generateFrames(30, 50, []),
     ledsHorizontal: 33,
     ledsVertical: 3,
     fullStripLength: 66,

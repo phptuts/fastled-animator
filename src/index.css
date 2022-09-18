@@ -13,7 +13,6 @@
 .led {
   background-color: #f8fbd9;
   position: relative;
-  border: solid black 1px;
   width: 40px;
   height: 40px;
   cursor: pointer;
@@ -21,7 +20,15 @@
 
 .led.selected {
   /* background-color: #828380; */
-  border: dashed 1px rgb(0, 0, 0);
+  border: dashed 2px rgb(13, 13, 13);
+}
+
+.led.mode-erase {
+  cursor: url('./assets/images/eraser.png') 10 10, auto;
+}
+
+.led.mode-paint {
+  cursor: url('./assets/images/paint-roller.png') 10 10, auto;
 }
 
 #leds {
@@ -77,4 +84,29 @@
 
 h1 {
   text-align: center;
+}
+
+/** Context Menu **/
+#content-menu {
+  width: 100px;
+  position: absolute;
+  background-color: #efefef;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  /** Reddit feedback **/
+  border: solid 1px gray;
+  border-bottom: none;
+  z-index: 100;
+}
+
+#content-menu li {
+  text-decoration: none;
+  cursor: pointer;
+  border-bottom: 1px solid gray;
+  padding: 10px;
+}
+
+#content-menu li:hover {
+  background-color: #dddddd;
 }

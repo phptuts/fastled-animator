@@ -6,7 +6,7 @@ import LedsContext from '../context/led/ledContext';
 const SelectionTools = () => {
   const {
     dispatch,
-    state: { selectedColor, selectionMode, currentFrameIndex },
+    state: { selectedColor, selectionMode, currentFrameIndex, dragMode },
   } = useContext(LedsContext);
 
   // Only available on the first frame
@@ -82,6 +82,27 @@ const SelectionTools = () => {
             <option value="fourths">Fourths</option>
           </select>
         </div>
+        <div className="col col-md-2 col-sm-12">
+          <label htmlFor="color-picker" className="form-label">
+            Drag Selection Tool
+          </label>
+          <select
+            onChange={(e) => {
+              dispatch({
+                type: ACTION_TYPES.CHANGE_DRAG_MODE,
+                payload: e.target.value,
+              });
+            }}
+            value={dragMode}
+            className="form-select"
+          >
+            <option value="select">Select</option>
+            <option value="unselect">UnSelect</option>
+            <option value="paint">Paint</option>
+            <option value="erase">Erase</option>
+          </select>
+        </div>
+
         <div className="col-md-2 col-sm-12">
           <button
             onClick={() =>
@@ -96,8 +117,15 @@ const SelectionTools = () => {
             Unselect
           </button>
         </div>
-        {currentFrameIndex === 0 && (
-          <>
+      </div>
+      {currentFrameIndex === 0 && (
+        <>
+          <div className="row mt-5">
+            <div className="col">
+              <h4>Pattern</h4>
+            </div>
+          </div>
+          <div className="row">
             <div className="col col-md-2 col-sm-12">
               <label htmlFor="color-picker" className="form-label">
                 Create Pattern
@@ -124,9 +152,9 @@ const SelectionTools = () => {
                 Generate Pattern
               </button>
             </div>
-          </>
-        )}
-      </div>
+          </div>
+        </>
+      )}
     </>
   );
 };

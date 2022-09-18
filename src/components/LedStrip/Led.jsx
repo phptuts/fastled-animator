@@ -5,7 +5,7 @@ import LedsContext from '../../context/led/ledContext';
 const Led = ({ led }) => {
   const {
     dispatch,
-    state: { playing, mouseDragSelect },
+    state: { playing, mouseDragSelect, dragMode },
   } = useContext(LedsContext);
 
   function onSelectLed() {
@@ -23,7 +23,7 @@ const Led = ({ led }) => {
   function onMouseOver() {
     if (mouseDragSelect) {
       dispatch({
-        type: ACTION_TYPES.SELECT_LED,
+        type: ACTION_TYPES.LED_DRAG_MODE,
         payload: led.position,
       });
     }
@@ -35,7 +35,7 @@ const Led = ({ led }) => {
       onClick={onSelectLed}
       className={`led ${led.selected && !playing ? 'selected' : ''} ${
         led.position
-      }`}
+      } mode-${dragMode}`}
     >
       <div
         style={{
