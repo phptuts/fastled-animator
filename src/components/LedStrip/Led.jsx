@@ -9,13 +9,8 @@ const Led = ({ led }) => {
   } = useContext(LedsContext);
 
   function onSelectLed() {
-    if (playing) {
-      return;
-    }
     dispatch({
-      type: !led.selected
-        ? ACTION_TYPES.SELECT_LED
-        : ACTION_TYPES.UN_SELECT_LED,
+      type: ACTION_TYPES.LED_DRAG_MODE,
       payload: led.position,
     });
   }
@@ -33,6 +28,7 @@ const Led = ({ led }) => {
     <div
       onMouseOver={onMouseOver}
       onClick={onSelectLed}
+      onTouchEnd={onSelectLed}
       className={`led ${led.selected && !playing ? 'selected' : ''} ${
         led.position
       } mode-${dragMode}`}

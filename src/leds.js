@@ -36,7 +36,8 @@ export const generateFrames = (numLeds, numSteps, currentFrames = []) => {
     return frames;
   }
 
-  return frames.slice(0, frames.length + 1);
+  // If it's less
+  return frames.slice(0, numSteps);
 };
 
 const generateFrame = (numLeds) => {
@@ -94,13 +95,14 @@ const getDirection = (direction, loop) => {
 export const generatePattern = (direction, previousState) => {
   const firstFrame = previousState.frames[0];
   const newFrames = [cloneDeep(firstFrame)];
-
-  for (let i = 0; i < firstFrame.leds.length; i += 1) {
+  let frameLength = firstFrame.leds.length - 1;
+  const useLongerLength = direction.indexOf('bounce') === -1;
+  for (let i = 0; i < frameLength; i += 1) {
     const leds = cloneDeep(newFrames[newFrames.length - 1].leds);
     newFrames.push(moveLeds(getDirection(direction, 1), leds));
   }
-
-  for (let i = 0; i < firstFrame.leds.length; i += 1) {
+  frameLength += useLongerLength ? 1 : -1;
+  for (let i = 0; i < frameLength; i += 1) {
     const leds = cloneDeep(newFrames[newFrames.length - 1].leds);
     newFrames.push(moveLeds(getDirection(direction, 2), leds));
   }

@@ -31,6 +31,14 @@
   cursor: url('./assets/images/paint-roller.png') 10 10, auto;
 }
 
+.led.mode-select {
+  cursor: url('./assets/images/selection.png') 10 10, auto;
+}
+
+.led.mode-unselect {
+  cursor: url('./assets/images/unselect.png') 10 10, auto;
+}
+
 #leds {
   position: relative;
   margin: 10px auto;
@@ -72,8 +80,8 @@
 }
 
 /** Select **/
-#submit-select {
-  margin-top: 30px;
+.select-btn {
+  margin-top: 32px;
 }
 
 /** helpers **/

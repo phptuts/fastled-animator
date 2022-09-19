@@ -7,10 +7,15 @@ const LedsContext = createContext();
 export const LedProvider = ({ children }) => {
   const initialState = {
     startDragSelection: false,
-    dragMode: 'select',
+    dragMode: 'paint',
+    chipSet: 'WS2811',
+    microController: 'uno',
+    analogPin: 'A0',
+    rgbOrder: 'GRB',
+    brightnessLevel: 10,
     currentFrameIndex: 0,
     totalSteps: 50,
-    timePerStep: 500,
+    timePerStep: 0.5,
     numberLeds: 30,
     playing: false,
     frames: generateFrames(30, 50, []),

@@ -2,9 +2,42 @@ import { generateFrames, generatePattern } from '../../leds';
 import { ACTION_TYPES } from './ledActions';
 
 import cloneDeep from 'lodash/fp/cloneDeep';
+import { arduinoMegaPins, arduinoUnoPins } from '../../config';
 
 const ledReducer = (state, action) => {
   switch (action.type) {
+    case ACTION_TYPES.CHANGE_BRIGHTNESS_LEVEL:
+      return cloneDeep({
+        ...state,
+        brightnessLevel: action.payload,
+      });
+    case ACTION_TYPES.CHANGE_MICROCONTROLLER:
+      let analogPin = state.analogPin;
+      if (action.payload === 'uno') {
+        analogPin = arduinoUnoPins.includes(analogPin) ? analogPin : 'A0';
+      } else if (action.payload === 'mega') {
+        analogPin = arduinoMegaPins.includes(analogPin) ? analogPin : 'A0';
+      }
+      return cloneDeep({
+        ...state,
+        microController: action.payload,
+        analogPin,
+      });
+    case ACTION_TYPES.CHANGE_ANALOG_PIN:
+      return cloneDeep({
+        ...state,
+        analogPin: action.payload,
+      });
+    case ACTION_TYPES.CHANGE_RGB_ORDER:
+      return cloneDeep({
+        ...state,
+        rgbOrder: action.payload,
+      });
+    case ACTION_TYPES.CHANGE_CHIPSET:
+      return cloneDeep({
+        ...state,
+        chipSet: action.payload,
+      });
     case ACTION_TYPES.CHANGE_NUMBER_LEDS:
       return cloneDeep({
         ...state,
@@ -71,7 +104,7 @@ const ledReducer = (state, action) => {
               next.color = state.selectedColor;
               break;
             case 'erase':
-              next.color = '#000';
+              next.color = '#000000';
               next.selected = false;
               break;
             default:

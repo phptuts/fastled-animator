@@ -57,7 +57,8 @@ const Player = () => {
       if (playing) {
         if (currentFrameIndex + 1 >= frames.length) {
           dispatch({
-            type: ACTION_TYPES.STOP_SIMULATION,
+            type: ACTION_TYPES.RUN_SIMULATION,
+            payload: 0,
           });
         } else {
           dispatch({
@@ -68,7 +69,7 @@ const Player = () => {
       } else {
         clearInterval(intervalId);
       }
-    }, timePerStep);
+    }, timePerStep * 1000);
 
     return () => {
       clearInterval(intervalId);

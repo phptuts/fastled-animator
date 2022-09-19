@@ -7,6 +7,7 @@ const LedTool = () => {
     dispatch,
     state: { numberLeds, totalSteps, timePerStep },
   } = useContext(LedsContext);
+
   return (
     <>
       <div className="row mt-5">
@@ -15,9 +16,9 @@ const LedTool = () => {
         </div>
       </div>
       <div className="row mb-3">
-        <div className="col-md-2 col-sm-12">
+        <div className="col-md-4 col-sm-12">
           <label htmlFor="number-of-leds" className="form-label">
-            Number of Leds
+            Number of leds
           </label>
           <input
             type="number"
@@ -34,9 +35,9 @@ const LedTool = () => {
           />
         </div>
 
-        <div className="col-md-2 col-sm-12">
+        <div className="col-md-4 col-sm-12">
           <label htmlFor="numSteps" className="form-label">
-            Number of Frames
+            Number of frames
           </label>
           <input
             type="number"
@@ -52,15 +53,15 @@ const LedTool = () => {
             }
           />
         </div>
-        <div className="col-md-2 col-sm-12">
+        <div className="col-md-4 col-sm-12">
           <label htmlFor="seconds-per-step" className="form-label">
-            Milliseconds per Frame
+            Seconds per frame
           </label>
           <input
             type="number"
             className="form-control"
             id="seconds-per-step"
-            step="1"
+            step=".01"
             placeholder="Milliseconds per step"
             value={timePerStep}
             onChange={(e) =>

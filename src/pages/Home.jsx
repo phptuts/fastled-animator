@@ -1,4 +1,6 @@
 import { useContext, useEffect } from 'react';
+import ArduinoConfig from '../components/ArduinoConfig';
+import Code from '../components/Code';
 import Leds from '../components/LedStrip/Leds';
 import LedTool from '../components/LedTool';
 import Player from '../components/Player';
@@ -61,8 +63,9 @@ const Home = () => {
       </div>
       <Player />
       <LedTool />
-
       <SelectionTools />
+      <ArduinoConfig />
+      <Code />
     </>
   );
 };
