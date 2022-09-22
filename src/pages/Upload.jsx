@@ -11,7 +11,8 @@ import 'prismjs/plugins/line-numbers/prism-line-numbers.js';
 
 import 'prismjs/plugins/highlight-keywords/prism-highlight-keywords.js';
 import { useEffect } from 'react';
-const Code = () => {
+import ArduinoConfig from '../components/ArduinoConfig';
+const Upload = () => {
   const { state } = useContext(LedsContext);
   // TODO MOVE TO OWN PAGE
   useEffect(() => {
@@ -21,7 +22,18 @@ const Code = () => {
     <>
       <div className="row mb-2 mt-2">
         <div className="col">
-          <h2>Code</h2>
+          <h2>Upload Code</h2>
+        </div>
+      </div>
+      <ArduinoConfig />
+      <div className="row mt-3 mb-3">
+        <div className="col">
+          <button className="btn btn-success w-100">Upload Code</button>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col">
+          <h3>Code</h3>
         </div>
       </div>
       <pre className="line-numbers language-c ">
@@ -31,4 +43,4 @@ const Code = () => {
   );
 };
 
-export default Code;
+export default Upload;

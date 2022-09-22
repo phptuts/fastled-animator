@@ -15,11 +15,6 @@ const ArduinoConfig = () => {
   } = useContext(LedsContext);
   return (
     <>
-      <div className="row mt-3">
-        <div className="col">
-          <h3>FastLED Config </h3>
-        </div>
-      </div>
       <div className="row">
         <div className="col-md-3 col-sm-12">
           <label htmlFor="seconds-per-step" className="form-label">
@@ -86,12 +81,8 @@ const ArduinoConfig = () => {
           />
         </div>
       </div>
-      <div className="row mt-2">
-        <div className="col">
-          <h3>Arduino </h3>
-        </div>
-      </div>
-      <div className="row">
+
+      <div className="row mt-3">
         <div className="col-md-3 col-sm-12">
           <label htmlFor="microcontroller" className="form-label">
             Microcontroller

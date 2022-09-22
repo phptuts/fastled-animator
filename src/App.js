@@ -5,18 +5,20 @@ import Home from './pages/Home';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Contact from './pages/Contact';
 import { LedProvider } from './context/led/ledContext';
+import Upload from './pages/Upload';
 
 function App() {
   return (
     <>
       <BrowserRouter>
-        <Navigation />
         <LedProvider>
+          <Navigation />
           <main className="container">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/upload" element={<Upload />} />
               <Route path="/contact" element={<Contact />} />
             </Routes>
           </main>

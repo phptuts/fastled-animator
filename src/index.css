@@ -94,6 +94,11 @@ h1 {
   text-align: center;
 }
 
+/** Navigation **/
+span.nav-link {
+  cursor: pointer;
+}
+
 /** Context Menu **/
 #content-menu {
   width: 100px;

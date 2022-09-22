@@ -1,6 +1,4 @@
 import { useContext, useEffect } from 'react';
-import ArduinoConfig from '../components/ArduinoConfig';
-import Code from '../components/Code';
 import Leds from '../components/LedStrip/Leds';
 import LedTool from '../components/LedTool';
 import Player from '../components/Player';
@@ -9,10 +7,7 @@ import { ACTION_TYPES } from '../context/led/ledActions';
 import LedsContext from '../context/led/ledContext';
 
 const Home = () => {
-  const {
-    dispatch,
-    state: { currentFrameIndex },
-  } = useContext(LedsContext);
+  const { dispatch } = useContext(LedsContext);
   useEffect(() => {
     dispatch({
       type: ACTION_TYPES.RESIZE_PIXELS,
@@ -51,11 +46,6 @@ const Home = () => {
           <h1>LED Animator</h1>
         </div>
       </div>
-      <div className="row mt-3">
-        <div className="col">
-          <h2>Frame {currentFrameIndex + 1}</h2>
-        </div>
-      </div>
       <div className="row">
         <div className="col">
           <Leds />
@@ -64,8 +54,6 @@ const Home = () => {
       <Player />
       <LedTool />
       <SelectionTools />
-      <ArduinoConfig />
-      <Code />
     </>
   );
 };

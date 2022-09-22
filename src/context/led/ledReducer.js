@@ -6,6 +6,12 @@ import { arduinoMegaPins, arduinoUnoPins } from '../../config';
 
 const ledReducer = (state, action) => {
   switch (action.type) {
+    case ACTION_TYPES.OPEN_NEW_PROGRAM:
+      return cloneDeep({
+        ...state,
+        ...action.payload,
+        playing: false,
+      });
     case ACTION_TYPES.CHANGE_BRIGHTNESS_LEVEL:
       return cloneDeep({
         ...state,
