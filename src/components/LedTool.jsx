@@ -10,11 +10,6 @@ const LedTool = () => {
 
   return (
     <>
-      <div className="row mt-5">
-        <div className="col">
-          <h4>Setup</h4>
-        </div>
-      </div>
       <div className="row mb-3">
         <div className="col-md-4 col-sm-12">
           <label htmlFor="number-of-leds" className="form-label">

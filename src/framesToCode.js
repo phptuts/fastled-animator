@@ -1,6 +1,6 @@
 // https://javascript.plainenglish.io/convert-hex-to-rgb-with-javascript-4984d16219c3
 function convertToRGB(hex) {
-  var aRgbHex = hex.substring(1, 6).match(/.{1,2}/g);
+  var aRgbHex = hex.substring(1, 7).match(/.{1,2}/g);
   var aRgb = [
     parseInt(aRgbHex[0], 16),
     parseInt(aRgbHex[1], 16),
@@ -32,20 +32,26 @@ export const frameToCode = (state) => {
     frameIndex = parseInt(frameIndex);
     framesToCCode += `\n\t//Frame ${frameIndex + 1}\n`;
     const leds = frames[frameIndex].leds;
+    let generateCode = false;
+
     for (let led of leds) {
       if (frameIndex === 0) {
+        generateCode = true;
         framesToCCode += ledToCode(led);
         continue;
       }
 
       const prevLeds = frames[frameIndex - 1].leds;
       const prevLed = prevLeds.find((l) => l.position === led.position);
-
       if (prevLed.color !== led.color) {
         framesToCCode += ledToCode(led);
+        generateCode = true;
       }
     }
-    framesToCCode += '\tFastLED.show();\n';
+
+    if (generateCode) {
+      framesToCCode += '\tFastLED.show();\n';
+    }
     framesToCCode += `\tdelay(${millisecondsPerStep});\n`;
   }
 

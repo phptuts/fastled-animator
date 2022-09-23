@@ -102,6 +102,11 @@ const Player = () => {
           </button>
         </div>
       </div>
+      <div className="row mt-2">
+        <div className="col">
+          <h4 className="text-center">Frame {currentFrameIndex + 1}</h4>
+        </div>
+      </div>
     </>
   );
 };

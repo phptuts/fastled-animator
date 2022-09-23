@@ -1,16 +1,22 @@
 import React, { useContext } from 'react';
-import { useState } from 'react';
 import { ACTION_TYPES } from '../context/led/ledActions';
 import LedsContext from '../context/led/ledContext';
 
 const SelectionTools = () => {
   const {
     dispatch,
-    state: { selectedColor, currentFrameIndex, dragMode, playing },
+    state: {
+      selectedColor,
+      currentFrameIndex,
+      dragMode,
+      removeFramesLoop1,
+      removeFramesLoop2,
+      playing,
+      pattern,
+    },
   } = useContext(LedsContext);
 
   // Only available on the first frame
-  const [pattern, setPattern] = useState('right');
 
   const onGeneratePattern = (e) => {
     dispatch({ type: ACTION_TYPES.GENERATE_PATTERN, payload: pattern });
@@ -20,7 +26,7 @@ const SelectionTools = () => {
     <>
       <div className="row mt-2">
         <div className="col">
-          <h4>Color</h4>
+          <h4>Selected Color</h4>
         </div>
       </div>
       <div className="row">
@@ -227,12 +233,19 @@ const SelectionTools = () => {
         </div>
       </div>
       <div className="row">
-        <div className="col col-md-4 col-sm-12">
+        <div className="col col-md-2 col-sm-12">
+          <label htmlFor="pattern-type" className="form-label">
+            Pattern Type
+          </label>
           <select
             onChange={(e) => {
-              setPattern(e.target.value);
+              dispatch({
+                type: ACTION_TYPES.SET_PATTERN,
+                payload: e.target.value,
+              });
             }}
             value={pattern}
+            id="pattern-type"
             className="form-select"
           >
             <option value="right">Right</option>
@@ -241,14 +254,61 @@ const SelectionTools = () => {
             <option value="bounce_left">Bounce Left</option>
           </select>
         </div>
+        <div className="col-md-2 col-sm-12">
+          <label htmlFor="subtract-frames-loop-1" className="form-label">
+            Remove Frames Loop 1
+          </label>
+          <input
+            type="number"
+            className="form-control"
+            id="subtract-frames-loop-1"
+            step="1"
+            placeholder="Subtract Frames"
+            value={removeFramesLoop1}
+            onChange={(e) =>
+              dispatch({
+                type: ACTION_TYPES.CHANGE_REMOVE_FRAMES,
+                payload: { frames: e.target.value, loop: 1 },
+              })
+            }
+          />
+        </div>
+
+        <div className="col-md-2 col-sm-12">
+          <label htmlFor="subtract-frames-loop-2" className="form-label">
+            Remove Frames Loop 2
+          </label>
+          <input
+            type="number"
+            className="form-control"
+            id="subtract-frames-loop-2"
+            step="1"
+            placeholder="Subtract Frames"
+            value={removeFramesLoop2}
+            onChange={(e) =>
+              dispatch({
+                type: ACTION_TYPES.CHANGE_REMOVE_FRAMES,
+                payload: { frames: e.target.value, loop: 2 },
+              })
+            }
+          />
+        </div>
         <div className="col col-md-4 col-sm-12">
           <button
             onClick={onGeneratePattern}
             disabled={currentFrameIndex !== 0 || playing}
-            className="btn btn-primary align-text-bottom w-100 "
+            className="btn btn-primary align-text-bottom w-100 select-btn"
           >
-            Generate Pattern
+            Create Pattern
           </button>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col">
+          <div className="alert alert-primary mt-3" role="alert">
+            Clicking "Create Pattern" will replace everything you have created
+            with the pattern.
+          </div>
         </div>
       </div>
     </>

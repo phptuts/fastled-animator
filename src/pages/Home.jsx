@@ -5,9 +5,10 @@ import Player from '../components/Player';
 import SelectionTools from '../components/SelectionTools';
 import { ACTION_TYPES } from '../context/led/ledActions';
 import LedsContext from '../context/led/ledContext';
-
+import { useNavigate } from 'react-router-dom';
 const Home = () => {
   const { dispatch } = useContext(LedsContext);
+  const navigate = useNavigate();
   useEffect(() => {
     dispatch({
       type: ACTION_TYPES.RESIZE_PIXELS,
@@ -43,7 +44,7 @@ const Home = () => {
     <>
       <div className="row mt-3">
         <div className="col">
-          <h1>LED Animator</h1>
+          <h1>FastLED Animator</h1>
         </div>
       </div>
       <div className="row">
@@ -54,6 +55,16 @@ const Home = () => {
       <Player />
       <LedTool />
       <SelectionTools />
+      <div className="row">
+        <div className="col">
+          <button
+            onClick={() => navigate('/upload')}
+            className="btn btn-success w-100 btn-lg"
+          >
+            Upload Code Page
+          </button>
+        </div>
+      </div>
     </>
   );
 };

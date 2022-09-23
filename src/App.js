@@ -6,11 +6,16 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import Contact from './pages/Contact';
 import { LedProvider } from './context/led/ledContext';
 import Upload from './pages/Upload';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Feedback from './pages/Feedback';
+import Tutorial from './pages/Tutorial';
 
 function App() {
   return (
     <>
       <BrowserRouter>
+        <ToastContainer />
         <LedProvider>
           <Navigation />
           <main className="container">
@@ -20,6 +25,8 @@ function App() {
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/upload" element={<Upload />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/feedback" element={<Feedback />} />
+              <Route path="/tutorial" element={<Tutorial />} />
             </Routes>
           </main>
         </LedProvider>

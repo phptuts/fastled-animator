@@ -3,17 +3,57 @@ import { ACTION_TYPES } from './ledActions';
 
 import cloneDeep from 'lodash/fp/cloneDeep';
 import { arduinoMegaPins, arduinoUnoPins } from '../../config';
+import { initialState } from './initialState';
 
 const ledReducer = (state, action) => {
   switch (action.type) {
+    case ACTION_TYPES.NEW_PROJECT:
+      return saveState({
+        ...initialState,
+        ledsHorizontal: state.ledsHorizontal,
+        ledsVertical: state.ledsVertical,
+        fullStripLength: state.fullStripLength,
+        pixelAreaWidth: state.pixelAreaWidth,
+        rightMarginForRightVertical: state.rightMarginForRightVertical,
+      });
+    case ACTION_TYPES.SET_PATTERN:
+      return saveState({
+        ...state,
+        pattern: action.payload,
+      });
+    case ACTION_TYPES.ON_UPLOADING_CODE:
+      return saveState({
+        ...state,
+        uploadingCode: true,
+      });
+    case ACTION_TYPES.STOP_UPLOADING_CODE:
+      return saveState({
+        ...state,
+        uploadingCode: false,
+      });
+    case ACTION_TYPES.CHANGE_REMOVE_FRAMES:
+      const { frames, loop } = action.payload;
+
+      if (loop === 1) {
+        return saveState({
+          ...state,
+          removeFramesLoop1: frames,
+        });
+      }
+      return saveState({
+        ...state,
+        removeFramesLoop2: frames,
+      });
+
     case ACTION_TYPES.OPEN_NEW_PROGRAM:
-      return cloneDeep({
+      return saveState({
         ...state,
         ...action.payload,
         playing: false,
+        uploadingCode: false,
       });
     case ACTION_TYPES.CHANGE_BRIGHTNESS_LEVEL:
-      return cloneDeep({
+      return saveState({
         ...state,
         brightnessLevel: action.payload,
       });
@@ -24,50 +64,50 @@ const ledReducer = (state, action) => {
       } else if (action.payload === 'mega') {
         analogPin = arduinoMegaPins.includes(analogPin) ? analogPin : 'A0';
       }
-      return cloneDeep({
+      return saveState({
         ...state,
         microController: action.payload,
         analogPin,
       });
     case ACTION_TYPES.CHANGE_ANALOG_PIN:
-      return cloneDeep({
+      return saveState({
         ...state,
         analogPin: action.payload,
       });
     case ACTION_TYPES.CHANGE_RGB_ORDER:
-      return cloneDeep({
+      return saveState({
         ...state,
         rgbOrder: action.payload,
       });
     case ACTION_TYPES.CHANGE_CHIPSET:
-      return cloneDeep({
+      return saveState({
         ...state,
         chipSet: action.payload,
       });
     case ACTION_TYPES.CHANGE_NUMBER_LEDS:
-      return cloneDeep({
+      return saveState({
         ...state,
         numberLeds: action.payload,
         frames: generateFrames(action.payload, state.totalSteps, state.frames),
       });
     case ACTION_TYPES.MOUSE_DRAG_OFF:
-      return cloneDeep({
+      return saveState({
         ...state,
         mouseDragSelect: false,
       });
     case ACTION_TYPES.MOUSE_DRAG_ON:
-      return cloneDeep({
+      return saveState({
         ...state,
         mouseDragSelect: true,
       });
     case ACTION_TYPES.CHANGE_TOTAL_STEPS:
-      return cloneDeep({
+      return saveState({
         ...state,
         totalSteps: action.payload,
         frames: generateFrames(state.numberLeds, action.payload, state.frames),
       });
     case ACTION_TYPES.CHANGE_TIME_PER_STEP:
-      return cloneDeep({
+      return saveState({
         ...state,
         timePerStep: action.payload,
       });
@@ -85,12 +125,12 @@ const ledReducer = (state, action) => {
         return acc;
       }, []);
 
-      return cloneDeep({
+      return saveState({
         ...state,
         selectedColor: action.payload,
       });
     case ACTION_TYPES.CHANGE_DRAG_MODE:
-      return cloneDeep({
+      return saveState({
         ...state,
         dragMode: action.payload,
       });
@@ -122,7 +162,7 @@ const ledReducer = (state, action) => {
         return acc;
       }, []);
 
-      return cloneDeep({ ...state });
+      return saveState({ ...state });
     case ACTION_TYPES.SELECT_LED:
     case ACTION_TYPES.UN_SELECT_LED:
       state.frames[state.currentFrameIndex].leds = [
@@ -136,24 +176,24 @@ const ledReducer = (state, action) => {
         return acc;
       }, []);
 
-      return cloneDeep({ ...state });
+      return saveState({ ...state });
     case ACTION_TYPES.MOVE_PLAYER_BACKWARD:
     case ACTION_TYPES.MOVE_PLAYER_FORWARD:
-      return cloneDeep({ ...state, currentFrameIndex: action.payload });
+      return saveState({ ...state, currentFrameIndex: action.payload });
     case ACTION_TYPES.CHANGE_POSITION_PLAYER:
-      return cloneDeep({
+      return saveState({
         ...state,
         currentFrameIndex: action.payload,
         playing: false,
       });
     case ACTION_TYPES.RUN_SIMULATION:
-      return cloneDeep({
+      return saveState({
         ...state,
         currentFrameIndex: action.payload,
         playing: true,
       });
     case ACTION_TYPES.STOP_SIMULATION:
-      return cloneDeep({
+      return saveState({
         ...state,
         playing: false,
       });
@@ -191,7 +231,7 @@ const ledReducer = (state, action) => {
         };
       });
 
-      return cloneDeep({
+      return saveState({
         ...state,
         selectionMode: action.payload,
         playing: false,
@@ -199,7 +239,7 @@ const ledReducer = (state, action) => {
     case ACTION_TYPES.RESIZE_PIXELS:
       const width = action.payload;
       if (width >= 1400) {
-        return cloneDeep({
+        return saveState({
           ...state,
           ledsHorizontal: 33,
           ledsVertical: 3,
@@ -208,7 +248,7 @@ const ledReducer = (state, action) => {
           rightMarginForRightVertical: 1280,
         });
       } else if (width >= 1200) {
-        return cloneDeep({
+        return saveState({
           ...state,
           ledsHorizontal: 28,
           ledsVertical: 3,
@@ -217,7 +257,7 @@ const ledReducer = (state, action) => {
           rightMarginForRightVertical: 1080,
         });
       } else if (width >= 992) {
-        return cloneDeep({
+        return saveState({
           ...state,
           ledsHorizontal: 24,
           ledsVertical: 3,
@@ -226,7 +266,7 @@ const ledReducer = (state, action) => {
           rightMarginForRightVertical: 920,
         });
       } else if (width >= 768) {
-        return cloneDeep({
+        return saveState({
           ...state,
           ledsHorizontal: 18,
           ledsVertical: 3,
@@ -235,7 +275,7 @@ const ledReducer = (state, action) => {
           rightMarginForRightVertical: 680,
         });
       } else if (width >= 576) {
-        return cloneDeep({
+        return saveState({
           ...state,
           ledsHorizontal: 13,
           ledsVertical: 3,
@@ -244,7 +284,7 @@ const ledReducer = (state, action) => {
           rightMarginForRightVertical: 12 * 40,
         });
       } else {
-        return cloneDeep({
+        return saveState({
           ...state,
           ledsHorizontal: 9,
           ledsVertical: 3,
@@ -257,6 +297,12 @@ const ledReducer = (state, action) => {
     default:
       return state;
   }
+};
+
+const saveState = (state) => {
+  const freshState = cloneDeep(state);
+  localStorage.setItem('led_animator_last_state', JSON.stringify(state));
+  return freshState;
 };
 
 export default ledReducer;

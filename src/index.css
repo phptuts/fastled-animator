@@ -84,6 +84,11 @@
   margin-top: 32px;
 }
 
+.spinner-image {
+  display: block;
+  margin: auto;
+}
+
 /** helpers **/
 
 .relative {
@@ -122,4 +127,10 @@ span.nav-link {
 
 #content-menu li:hover {
   background-color: #dddddd;
+}
+
+/** Navbar **/
+
+.navbar-brand img {
+  margin-right: 10px;
 }
