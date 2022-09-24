@@ -242,8 +242,8 @@ const ledReducer = (state, action) => {
         return saveState({
           ...state,
           ledsHorizontal: 33,
-          ledsVertical: 3,
-          fullStripLength: 33 * 2 + 3 * 2,
+          ledsVertical: 1,
+          fullStripLength: 33 * 2 + 1 * 2,
           pixelAreaWidth: 1320,
           rightMarginForRightVertical: 1280,
         });
@@ -251,8 +251,8 @@ const ledReducer = (state, action) => {
         return saveState({
           ...state,
           ledsHorizontal: 28,
-          ledsVertical: 3,
-          fullStripLength: 28 * 2 + 3 * 2,
+          ledsVertical: 1,
+          fullStripLength: 28 * 2 + 1 * 2,
           pixelAreaWidth: 1120,
           rightMarginForRightVertical: 1080,
         });
@@ -260,8 +260,8 @@ const ledReducer = (state, action) => {
         return saveState({
           ...state,
           ledsHorizontal: 24,
-          ledsVertical: 3,
-          fullStripLength: 24 * 2 + 3 * 2,
+          ledsVertical: 1,
+          fullStripLength: 24 * 2 + 1 * 2,
           pixelAreaWidth: 960,
           rightMarginForRightVertical: 920,
         });
@@ -269,8 +269,8 @@ const ledReducer = (state, action) => {
         return saveState({
           ...state,
           ledsHorizontal: 18,
-          ledsVertical: 3,
-          fullStripLength: 18 * 2 + 3 * 2,
+          ledsVertical: 1,
+          fullStripLength: 18 * 2 + 1 * 2,
           pixelAreaWidth: 720,
           rightMarginForRightVertical: 680,
         });
@@ -278,8 +278,8 @@ const ledReducer = (state, action) => {
         return saveState({
           ...state,
           ledsHorizontal: 13,
-          ledsVertical: 3,
-          fullStripLength: 13 * 2 + 3 * 2,
+          ledsVertical: 1,
+          fullStripLength: 13 * 2 + 1 * 2,
           pixelAreaWidth: 13 * 40,
           rightMarginForRightVertical: 12 * 40,
         });
@@ -287,8 +287,8 @@ const ledReducer = (state, action) => {
         return saveState({
           ...state,
           ledsHorizontal: 9,
-          ledsVertical: 3,
-          fullStripLength: 9 * 2 + 3 * 2,
+          ledsVertical: 1,
+          fullStripLength: 9 * 2 + 1 * 2,
           pixelAreaWidth: 360,
           rightMarginForRightVertical: 320,
         });
@@ -300,9 +300,8 @@ const ledReducer = (state, action) => {
 };
 
 const saveState = (state) => {
-  const freshState = cloneDeep(state);
   localStorage.setItem('led_animator_last_state', JSON.stringify(state));
-  return freshState;
+  return state;
 };
 
 export default ledReducer;

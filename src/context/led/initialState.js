@@ -17,7 +17,7 @@ export const initialState = {
   playing: false,
   frames: generateFrames(30, 50, []),
   ledsHorizontal: 33,
-  ledsVertical: 3,
+  ledsVertical: 1,
   fullStripLength: 66,
   pixelAreaWidth: 1000,
   selectedColor: '#AA0000',

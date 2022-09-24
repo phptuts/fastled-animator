@@ -13,11 +13,13 @@ const LedTool = () => {
       <div className="row mb-3">
         <div className="col-md-4 col-sm-12">
           <label htmlFor="number-of-leds" className="form-label">
-            Number of leds
+            LEDs {numberLeds}
           </label>
           <input
-            type="number"
-            className="form-control"
+            type="range"
+            className="form-range"
+            min={1}
+            max={250}
             id="number-of-leds"
             placeholder="Number of leds"
             value={numberLeds}

@@ -73,7 +73,6 @@ const Upload = () => {
     return await response.text();
   };
 
-  // TODO MOVE TO OWN PAGE
   useEffect(() => {
     Prism.highlightAll();
   }, [state]);

@@ -18,8 +18,8 @@
   - marketing video show on first visit []
   - About Page
   - Tutorial Page
-  - Contact Page
-  - Feedback Page
+  - Contact Page [x]
+  - Feedback Page [x]
 - Deploy App to netify 
 - Promote and Release LED Animator
 
