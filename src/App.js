@@ -10,26 +10,30 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Feedback from './pages/Feedback';
 import Tutorial from './pages/Tutorial';
+import { store } from './app/store';
+import { Provider } from 'react-redux';
 
 function App() {
   return (
     <>
       <BrowserRouter>
-        <ToastContainer />
-        <LedProvider>
-          <Navigation />
-          <main className="container">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/upload" element={<Upload />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/feedback" element={<Feedback />} />
-              <Route path="/tutorial" element={<Tutorial />} />
-            </Routes>
-          </main>
-        </LedProvider>
+        <Provider store={store}>
+          <ToastContainer />
+          <LedProvider>
+            <Navigation />
+            <main className="container">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/upload" element={<Upload />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/feedback" element={<Feedback />} />
+                <Route path="/tutorial" element={<Tutorial />} />
+              </Routes>
+            </main>
+          </LedProvider>
+        </Provider>
       </BrowserRouter>
     </>
   );
