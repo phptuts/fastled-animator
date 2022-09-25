@@ -51,18 +51,18 @@ const ledReducer = (state, action) => {
         ...state,
         compilingCode: false,
       });
-    case ACTION_TYPES.CHANGE_REMOVE_FRAMES:
+    case ACTION_TYPES.ADD_FRAMES_TO_LOOP:
       const { frames, loop } = action.payload;
 
       if (loop === 1) {
         return saveState({
           ...state,
-          removeFramesLoop1: frames,
+          addFramesLoop1: frames,
         });
       }
       return saveState({
         ...state,
-        removeFramesLoop2: frames,
+        addFramesLoop2: frames,
       });
 
     case ACTION_TYPES.OPEN_NEW_PROGRAM:

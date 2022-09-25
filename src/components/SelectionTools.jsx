@@ -10,8 +10,8 @@ const SelectionTools = () => {
       selectedColor,
       currentFrameIndex,
       dragMode,
-      removeFramesLoop1,
-      removeFramesLoop2,
+      addFramesLoop1,
+      addFramesLoop2,
       playing,
       pattern,
     },
@@ -257,7 +257,7 @@ const SelectionTools = () => {
         </div>
         <div className="col-md-2 col-sm-12">
           <label htmlFor="subtract-frames-loop-1" className="form-label">
-            Remove Frames Loop 1
+            Add Frames Loop 1
           </label>
           <input
             type="number"
@@ -265,11 +265,11 @@ const SelectionTools = () => {
             id="subtract-frames-loop-1"
             step="1"
             placeholder="Subtract Frames"
-            value={removeFramesLoop1}
+            value={addFramesLoop1}
             onChange={(e) =>
               dispatch({
-                type: ACTION_TYPES.CHANGE_REMOVE_FRAMES,
-                payload: { frames: e.target.value, loop: 1 },
+                type: ACTION_TYPES.ADD_FRAMES_TO_LOOP,
+                payload: { frames: +e.target.value, loop: 1 },
               })
             }
           />
@@ -277,7 +277,7 @@ const SelectionTools = () => {
 
         <div className="col-md-2 col-sm-12">
           <label htmlFor="subtract-frames-loop-2" className="form-label">
-            Remove Frames Loop 2
+            Add Frames Loop 2
           </label>
           <input
             type="number"
@@ -285,11 +285,11 @@ const SelectionTools = () => {
             id="subtract-frames-loop-2"
             step="1"
             placeholder="Subtract Frames"
-            value={removeFramesLoop2}
+            value={addFramesLoop2}
             onChange={(e) =>
               dispatch({
-                type: ACTION_TYPES.CHANGE_REMOVE_FRAMES,
-                payload: { frames: e.target.value, loop: 2 },
+                type: ACTION_TYPES.ADD_FRAMES_TO_LOOP,
+                payload: { frames: +e.target.value, loop: 2 },
               })
             }
           />

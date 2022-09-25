@@ -27,7 +27,7 @@ const LedTool = () => {
             onChange={(e) => {
               dispatchDebounce({
                 type: ACTION_TYPES.CHANGE_NUMBER_LEDS,
-                payload: e.target.value,
+                payload: +e.target.value,
               });
             }}
           />
@@ -49,7 +49,7 @@ const LedTool = () => {
             onChange={(e) =>
               dispatchDebounce({
                 type: ACTION_TYPES.CHANGE_TOTAL_STEPS,
-                payload: e.target.value,
+                payload: +e.target.value,
               })
             }
           />

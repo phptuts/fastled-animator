@@ -94,17 +94,17 @@ const getDirection = (direction, loop) => {
 
 export const generatePattern = (direction, previousState) => {
   const firstFrame = previousState.frames[0];
-  const removeFramesLoop1 = previousState.removeFramesLoop1;
-  const removeFramesLoop2 = previousState.removeFramesLoop2;
+  const addFramesLoop1 = previousState.addFramesLoop1;
+  const addFramesLoop2 = previousState.addFramesLoop2;
   const newFrames = [cloneDeep(firstFrame)];
   let frameLength = firstFrame.leds.length;
 
-  for (let i = 0; i < frameLength - removeFramesLoop1 - 1; i += 1) {
+  for (let i = 0; i < frameLength + addFramesLoop1 - 1; i += 1) {
     const leds = cloneDeep(newFrames[newFrames.length - 1].leds);
     newFrames.push(moveLeds(getDirection(direction, 1), leds));
   }
 
-  for (let i = 0; i < frameLength - removeFramesLoop2; i += 1) {
+  for (let i = 0; i < frameLength + addFramesLoop2; i += 1) {
     const leds = cloneDeep(newFrames[newFrames.length - 1].leds);
     newFrames.push(moveLeds(getDirection(direction, 2), leds));
   }
