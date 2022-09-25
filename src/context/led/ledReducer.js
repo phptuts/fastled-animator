@@ -329,9 +329,7 @@ const ledReducer = (state, action) => {
   }
 };
 const saveLocalStorage = (state) => {
-  localForage
-    .setItem('led_animator_last_state', state)
-    .then(() => console.log('saved'));
+  localForage.setItem('led_animator_last_state', state);
 };
 const debounceSaveLocalStorage = debounce(saveLocalStorage, 1000, false);
 const saveState = (state) => {

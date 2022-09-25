@@ -10,7 +10,6 @@ import 'prismjs/plugins/highlight-keywords/prism-highlight-keywords.js';
 
 const Code = ({ code }) => {
   useEffect(() => {
-    console.log(code);
     Prism.highlightAll();
   }, [code]);
   return (

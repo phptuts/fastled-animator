@@ -97,9 +97,9 @@ export const generatePattern = (direction, previousState) => {
   const removeFramesLoop1 = previousState.removeFramesLoop1;
   const removeFramesLoop2 = previousState.removeFramesLoop2;
   const newFrames = [cloneDeep(firstFrame)];
-  let frameLength = firstFrame.leds.length - 1;
+  let frameLength = firstFrame.leds.length;
 
-  for (let i = 0; i < frameLength - removeFramesLoop1; i += 1) {
+  for (let i = 0; i < frameLength - removeFramesLoop1 - 1; i += 1) {
     const leds = cloneDeep(newFrames[newFrames.length - 1].leds);
     newFrames.push(moveLeds(getDirection(direction, 1), leds));
   }

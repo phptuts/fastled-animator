@@ -59,7 +59,7 @@ const Upload = () => {
             closeOnClick: true,
           });
         } else {
-          console.log(error);
+          console.log(error, 'avrgirl-error');
           setHasError(true);
           toast.error('There was an error uploading your code!', {
             position: 'top-right',
@@ -70,7 +70,7 @@ const Upload = () => {
         }
       });
     } catch (e) {
-      console.log(e);
+      console.log(e, 'compiling error');
       setHasError(true);
       dispatch({ type: ACTION_TYPES.STOP_UPLOADING_CODE });
       toast.error('There was an error uploading your code!', {

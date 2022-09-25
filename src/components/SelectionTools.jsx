@@ -38,7 +38,6 @@ const SelectionTools = () => {
             id="color-picker"
             value={selectedColor}
             onChange={(e) => {
-              console.log('called', e.target.value);
               dispatchDebounce({
                 type: ACTION_TYPES.CHANGE_SELECTED_COLOR_LEDS,
                 payload: e.target.value,
