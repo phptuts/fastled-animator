@@ -5,6 +5,7 @@ import LedsContext from '../context/led/ledContext';
 const SelectionTools = () => {
   const {
     dispatch,
+    dispatchDebounce,
     state: {
       selectedColor,
       currentFrameIndex,
@@ -37,7 +38,8 @@ const SelectionTools = () => {
             id="color-picker"
             value={selectedColor}
             onChange={(e) => {
-              dispatch({
+              console.log('called', e.target.value);
+              dispatchDebounce({
                 type: ACTION_TYPES.CHANGE_SELECTED_COLOR_LEDS,
                 payload: e.target.value,
               });

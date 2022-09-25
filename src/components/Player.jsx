@@ -5,11 +5,12 @@ import LedsContext from '../context/led/ledContext';
 const Player = () => {
   const {
     dispatch,
+    dispatchDebounce,
     state: { currentFrameIndex, frames, timePerStep, playing },
   } = useContext(LedsContext);
 
   const onPlayerChange = (e) => {
-    dispatch({
+    dispatchDebounce({
       type: ACTION_TYPES.CHANGE_POSITION_PLAYER,
       payload: +e.target.value,
     });

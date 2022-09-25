@@ -5,6 +5,7 @@ import LedsContext from '../context/led/ledContext';
 const LedTool = () => {
   const {
     dispatch,
+    dispatchDebounce,
     state: { numberLeds, totalSteps, timePerStep },
   } = useContext(LedsContext);
 
@@ -13,7 +14,7 @@ const LedTool = () => {
       <div className="row mb-3">
         <div className="col-md-4 col-sm-12">
           <label htmlFor="number-of-leds" className="form-label">
-            LEDs {numberLeds}
+            {numberLeds} LEDs
           </label>
           <input
             type="range"
@@ -24,7 +25,7 @@ const LedTool = () => {
             placeholder="Number of leds"
             value={numberLeds}
             onChange={(e) => {
-              dispatch({
+              dispatchDebounce({
                 type: ACTION_TYPES.CHANGE_NUMBER_LEDS,
                 payload: e.target.value,
               });
@@ -34,16 +35,19 @@ const LedTool = () => {
 
         <div className="col-md-4 col-sm-12">
           <label htmlFor="numSteps" className="form-label">
-            Number of frames
+            {totalSteps} frames
           </label>
           <input
-            type="number"
-            className="form-control"
+            type="range"
+            className="form-range"
             id="numSteps"
+            step="1"
+            min="1"
+            max="500"
             placeholder="Number of steps"
             value={totalSteps}
             onChange={(e) =>
-              dispatch({
+              dispatchDebounce({
                 type: ACTION_TYPES.CHANGE_TOTAL_STEPS,
                 payload: e.target.value,
               })
@@ -52,7 +56,7 @@ const LedTool = () => {
         </div>
         <div className="col-md-4 col-sm-12">
           <label htmlFor="seconds-per-step" className="form-label">
-            Seconds per frame
+            {timePerStep} seconds per frame
           </label>
           <input
             type="number"

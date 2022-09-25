@@ -72,7 +72,7 @@ const moveLeds = (direction, leds) => {
   }
 
   leds = leds.map((led, index) => {
-    return { ...led, position: index };
+    return { ...led, position: index, selected: false };
   });
 
   return { leds: cloneDeep(leds) };

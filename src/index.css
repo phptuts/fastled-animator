@@ -24,19 +24,19 @@
 }
 
 .led.mode-erase {
-  cursor: url('./assets/images/eraser.png') 10 10, auto;
+  cursor: url('./assets/images/eraser.png'), auto;
 }
 
 .led.mode-paint {
-  cursor: url('./assets/images/paint-roller.png') 10 10, auto;
+  cursor: url('./assets/images/paint-roller.png'), auto;
 }
 
 .led.mode-select {
-  cursor: url('./assets/images/selection.png') 10 10, auto;
+  cursor: url('./assets/images/selection.png'), auto;
 }
 
 .led.mode-unselect {
-  cursor: url('./assets/images/unselect.png') 10 10, auto;
+  cursor: url('./assets/images/unselect.png'), auto;
 }
 
 #leds {
@@ -93,6 +93,11 @@
 
 .relative {
   position: relative;
+}
+
+.clickable {
+  cursor: pointer;
+  font-weight: bold;
 }
 
 h1 {

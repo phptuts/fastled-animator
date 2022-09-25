@@ -42,20 +42,22 @@ const Home = () => {
   }, [dispatch]);
   return (
     <>
-      <div className="row mt-3">
+      <div className="row mt-3 mb-2">
         <div className="col">
           <h1>FastLED Animator</h1>
         </div>
       </div>
-      <div className="row">
+      <LedTool />
+
+      <div className="row mt-4">
         <div className="col">
           <Leds />
         </div>
       </div>
+
       <Player />
-      <LedTool />
       <SelectionTools />
-      <div className="row">
+      <div className="row mb-3">
         <div className="col">
           <button
             onClick={() => navigate('/upload')}

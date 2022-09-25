@@ -25,5 +25,6 @@ export const initialState = {
   selectionMode: 'none',
   rightMarginForRightVertical: 960,
   uploadingCode: false,
+  compilingCode: false,
   pattern: 'right',
 };

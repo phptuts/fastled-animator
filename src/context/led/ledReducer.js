@@ -1,12 +1,22 @@
 import { generateFrames, generatePattern } from '../../leds';
 import { ACTION_TYPES } from './ledActions';
+import localForage from 'localforage';
 
-import cloneDeep from 'lodash/fp/cloneDeep';
 import { arduinoMegaPins, arduinoUnoPins } from '../../config';
 import { initialState } from './initialState';
+import { debounce } from 'lodash';
 
 const ledReducer = (state, action) => {
   switch (action.type) {
+    case ACTION_TYPES.SET_SAVED_STATE:
+      return saveState({
+        ...action.payload,
+        ledsHorizontal: state.ledsHorizontal,
+        ledsVertical: state.ledsVertical,
+        fullStripLength: state.fullStripLength,
+        pixelAreaWidth: state.pixelAreaWidth,
+        rightMarginForRightVertical: state.rightMarginForRightVertical,
+      });
     case ACTION_TYPES.NEW_PROJECT:
       return saveState({
         ...initialState,
@@ -30,6 +40,16 @@ const ledReducer = (state, action) => {
       return saveState({
         ...state,
         uploadingCode: false,
+      });
+    case ACTION_TYPES.ON_COMPILE_CODE:
+      return saveState({
+        ...state,
+        compilingCode: true,
+      });
+    case ACTION_TYPES.STOP_COMPILE_CODE:
+      return saveState({
+        ...state,
+        compilingCode: false,
       });
     case ACTION_TYPES.CHANGE_REMOVE_FRAMES:
       const { frames, loop } = action.payload;
@@ -101,10 +121,20 @@ const ledReducer = (state, action) => {
         mouseDragSelect: true,
       });
     case ACTION_TYPES.CHANGE_TOTAL_STEPS:
+      const newFrames = generateFrames(
+        state.numberLeds,
+        action.payload,
+        state.frames
+      );
+      const currentFrameIndex =
+        state.currentFrameIndex > newFrames.length - 1
+          ? newFrames.length - 1
+          : state.currentFrameIndex;
       return saveState({
         ...state,
         totalSteps: action.payload,
         frames: generateFrames(state.numberLeds, action.payload, state.frames),
+        currentFrameIndex,
       });
     case ACTION_TYPES.CHANGE_TIME_PER_STEP:
       return saveState({
@@ -298,9 +328,14 @@ const ledReducer = (state, action) => {
       return state;
   }
 };
-
+const saveLocalStorage = (state) => {
+  localForage
+    .setItem('led_animator_last_state', state)
+    .then(() => console.log('saved'));
+};
+const debounceSaveLocalStorage = debounce(saveLocalStorage, 1000, false);
 const saveState = (state) => {
-  localStorage.setItem('led_animator_last_state', JSON.stringify(state));
+  debounceSaveLocalStorage(state);
   return state;
 };
 
