@@ -25,8 +25,36 @@
     - Wiring and rgb led strip [ ]
   - Contact Page [x]
   - Feedback Page [x]
-- Deploy App to github [ ]
+- Deploy App to vercel [x]
 - Promote and Release LED Animator [ ]
+- Product Hunt [ ]
+- Indie Hacker [ ]
+
+## Release Party
+
+- Deploy Site [x]
+- Signup for Amazon Affiliates [ ]
+- Upload Videos [ ]
+- Finish About Page [ ] 
+- Finish Tutorial Page [ ] 
+  - Wiring Diagrams for Arduino [ ]
+- Write up product hunt [ ]
+- Write up indiehacker post [ ]
+- Post on freecodecamp slack [ ]
+- Post on codeselfstudy slack [ ]
+- Post on reddit [ ]
+  - React [ ]
+  - Learn Javascript [ ]
+  - WebDev  [ ]
+  - Arduino [ ]
+  - Arduino Project [ ]
+  - FastLEDs [ ]
+  - LEDs [ ]
+- Post on linkedin [ ]
+- Post on work slack [ ]
+- Product Hunt [ ]
+- Indiehacker [ ]
+
 
 
 ## Future LED Object

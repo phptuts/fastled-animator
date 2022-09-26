@@ -129,14 +129,7 @@ const Navigation = () => {
                 About
               </Link>
             </li>
-            <li className="nav-item">
-              <Link
-                className={`nav-link ${pathname === '/contact' && 'active'}`}
-                to="/contact"
-              >
-                Contact
-              </Link>
-            </li>
+
             <li className="nav-item">
               <Link
                 className={`nav-link ${pathname === '/tutorial' && 'active'}`}
