@@ -19,7 +19,7 @@ const ledReducer = (state, action) => {
       });
     case ACTION_TYPES.NEW_PROJECT:
       return saveState({
-        ...initialState,
+        ...initialState(),
         ledsHorizontal: state.ledsHorizontal,
         ledsVertical: state.ledsVertical,
         fullStripLength: state.fullStripLength,

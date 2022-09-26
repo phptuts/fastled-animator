@@ -48,10 +48,19 @@ const Upload = () => {
       const hex = await compileCode();
       const enc = new TextEncoder();
       const avrgirl = new AvrGirlArduino();
+      // This is a fail safe in case it stuck or in error state
+      // that the function can not catch
+      setTimeout(() => {
+        if (state.uploadingCode) {
+          dispatch({ type: ACTION_TYPES.STOP_UPLOADING_CODE });
+          setHasError(true);
+        }
+      }, 25000);
       avrgirl.flash(enc.encode(hex), (error) => {
         dispatch({ type: ACTION_TYPES.STOP_UPLOADING_CODE });
 
         if (!error) {
+          setHasError(false);
           toast.success('🦄 Upload Complete!!', {
             position: 'top-right',
             autoClose: 2000,

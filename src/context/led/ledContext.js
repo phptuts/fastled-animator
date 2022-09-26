@@ -7,7 +7,7 @@ import { ACTION_TYPES } from './ledActions';
 const LedsContext = createContext();
 
 export const LedProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(ledReducer, initialState);
+  const [state, dispatch] = useReducer(ledReducer, initialState());
   const dispatchDebounce = debounce(5, dispatch);
   useEffect(() => {
     localForage.getItem('led_animator_last_state').then((savedState) => {
