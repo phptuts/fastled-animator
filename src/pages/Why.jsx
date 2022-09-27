@@ -13,7 +13,7 @@ const Why = () => {
           <p>
             My mission is to empower noncoders to make art with RGB-led light
             strips. Not knowing how to code should not stop you from creating. I
-            want to enable artists, hobbyists,s and the curious to build amazing
+            want to enable artists, hobbyists, and the curious to build amazing
             things. If you have any feedback or use cases, please email me at
             glaserpower [] gmail.com.
           </p>
