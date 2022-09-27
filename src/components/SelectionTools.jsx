@@ -59,7 +59,7 @@ const SelectionTools = () => {
             }}
             className="btn btn-success align-text-bottom w-100 "
           >
-            Randon Color
+            Random Color
           </button>
         </div>
       </div>

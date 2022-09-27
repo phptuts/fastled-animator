@@ -122,13 +122,33 @@ const Upload = () => {
             <img className="spinner-image" src={spinner} alt="uploading code" />
           </div>
         )}
-        {!state.uploadingCode && codeState === 'code' && !hasError && (
+        {!state.uploadingCode &&
+          codeState === 'code' &&
+          !hasError &&
+          navigator.serial && (
+            <div className="col">
+              <button onClick={uploadCode} className="btn btn-success w-100">
+                Upload Code
+              </button>
+            </div>
+          )}
+
+        {!navigator.serial && (
           <div className="col">
-            <button onClick={uploadCode} className="btn btn-success w-100">
-              Upload Code
-            </button>
+            <div className="alert alert-warning mt-3" role="alert">
+              Your browser does not support uploading code to the Arduino.
+              Consider{' '}
+              <span className="clickable" onClick={downloadCode}>
+                downloading the code
+              </span>{' '}
+              or using{' '}
+              <a href="https://www.google.com/chrome/downloads/">Chrome</a>. You
+              can use the <Link to="/tutorial">tutorial page</Link> to learn how
+              to upload the code using the Arduino IDE.
+            </div>
           </div>
         )}
+
         {hasError && (
           <div className="col">
             <div className="alert alert-danger mt-3" role="alert">

@@ -44,7 +44,15 @@ const Home = () => {
     <>
       <div className="row mt-3 mb-2">
         <div className="col">
-          <h1>FastLED Animator</h1>
+          <h1 className="text-center">FastLED Animator</h1>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col">
+          <p>
+            Adjust the settings and use the selection tools to create your own
+            led animations to upload to an Arduino or another microcontrollers.
+          </p>
         </div>
       </div>
       <LedTool />

@@ -101,10 +101,6 @@
   font-weight: bold;
 }
 
-h1 {
-  text-align: center;
-}
-
 /** Navigation **/
 span.nav-link {
   cursor: pointer;

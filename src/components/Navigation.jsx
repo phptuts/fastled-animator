@@ -123,10 +123,10 @@ const Navigation = () => {
 
             <li className="nav-item">
               <Link
-                className={`nav-link ${pathname === '/about' && 'active'}`}
-                to="/about"
+                className={`nav-link ${pathname === '/why' && 'active'}`}
+                to="/why"
               >
-                About
+                Why
               </Link>
             </li>
 
@@ -135,7 +135,7 @@ const Navigation = () => {
                 className={`nav-link ${pathname === '/tutorial' && 'active'}`}
                 to="/tutorial"
               >
-                Tutorial
+                How to use
               </Link>
             </li>
             <li className="nav-item">

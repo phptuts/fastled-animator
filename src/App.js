@@ -1,6 +1,6 @@
 import Navigation from './components/Navigation';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
-import About from './pages/About';
+import Why from './pages/Why';
 import Home from './pages/Home';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import { LedProvider } from './context/led/ledContext';
@@ -20,7 +20,7 @@ function App() {
           <main className="container">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
+              <Route path="/why" element={<Why />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/upload" element={<Upload />} />
               <Route path="/feedback" element={<Feedback />} />
