@@ -33,7 +33,6 @@
 ## Release Party
 
 - Deploy Site [x]
-- Signup for Amazon Affiliates [ ]
 - Upload Videos [x]
 - Block non Chrome Desktop Browsers [x]
 - Finish About Page [x] 

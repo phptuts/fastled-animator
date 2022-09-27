@@ -51,7 +51,7 @@ const Home = () => {
         <div className="col">
           <p>
             Adjust the settings and use the selection tools to create your own
-            led animations to upload to an Arduino or another microcontrollers.
+            led animations to upload to an Arduino or another microcontroller.
           </p>
         </div>
       </div>

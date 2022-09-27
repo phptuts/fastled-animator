@@ -29,6 +29,7 @@ const Led = ({ led }) => {
       onMouseOver={onMouseOver}
       onClick={onSelectLed}
       onTouchEnd={onSelectLed}
+      onTouchStart={onSelectLed}
       className={`led ${led.selected && !playing ? 'selected' : ''} ${
         led.position
       } mode-${dragMode}`}

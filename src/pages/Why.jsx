@@ -11,14 +11,14 @@ const Why = () => {
       <div className="row">
         <div className="col">
           <p>
-            My mission is to empower non coders make art with rgb led
-            lightstrips. I feel that not knowing how to code should not stop you
-            from creating. I want to empower artist, hobbiest and the curious to
-            build amazing things. If you have any feedback or use cases, please
-            email me at glaserpower [] gmail.com.
+            My mission is to empower noncoders to make art with RGB-led light
+            strips. Not knowing how to code should not stop you from creating. I
+            want to enable artists, hobbyists,s and the curious to build amazing
+            things. If you have any feedback or use cases, please email me at
+            glaserpower [] gmail.com.
           </p>
           <p>
-            The code used to run every on the Arduino is{' '}
+            The code used to run the rgb LEDs on the Arduino is{' '}
             <a href="https://fastled.io/">FastLED Library</a>. It's a free,
             open-source project. I would not have been able to build the website
             without them. Thank you{' '}
@@ -40,7 +40,7 @@ const Why = () => {
       </div>
       <div className="row">
         <div className="col">
-          <div class="text-center my-5 ratio ratio-16x9">
+          <div className="text-center my-5 ratio ratio-16x9">
             <iframe src="//www.youtube.com/embed/xf72kJfU0lk"></iframe>
           </div>
         </div>
