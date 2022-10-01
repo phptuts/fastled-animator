@@ -19,7 +19,10 @@ const Tutorial = () => {
       <div className="row">
         <div className="col">
           <div class="text-center my-5 ratio ratio-16x9">
-            <iframe src="//www.youtube.com/embed/K8jEDaRds6A"></iframe>
+            <iframe
+              title="fastled animator tutorial"
+              src="//www.youtube.com/embed/IwF8ZtjOz4M"
+            ></iframe>
           </div>
         </div>
       </div>
@@ -31,7 +34,10 @@ const Tutorial = () => {
       <div className="row">
         <div className="col">
           <div class="text-center my-5 ratio ratio-16x9">
-            <iframe src="//www.youtube.com/embed/k2DR5a1SokY"></iframe>
+            <iframe
+              title="uploading code to the arduino"
+              src="//www.youtube.com/embed/4ZCZa8IfJ_I"
+            ></iframe>
           </div>
         </div>
       </div>

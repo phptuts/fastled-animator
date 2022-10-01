@@ -1,78 +1,45 @@
-import { useContext, useEffect } from 'react';
-import Leds from '../components/LedStrip/Leds';
-import LedTool from '../components/LedTool';
-import Player from '../components/Player';
-import SelectionTools from '../components/SelectionTools';
-import { ACTION_TYPES } from '../context/led/ledActions';
-import LedsContext from '../context/led/ledContext';
-import { useNavigate } from 'react-router-dom';
-const Home = () => {
-  const { dispatch } = useContext(LedsContext);
-  const navigate = useNavigate();
-  useEffect(() => {
-    dispatch({
-      type: ACTION_TYPES.RESIZE_PIXELS,
-      payload: window.outerWidth,
-    });
-    const resizeWindow = (e) => {
-      dispatch({
-        type: ACTION_TYPES.RESIZE_PIXELS,
-        payload: e.target.outerWidth,
-      });
-    };
-    const mouseDragOn = (e) => {
-      dispatch({
-        type: ACTION_TYPES.MOUSE_DRAG_ON,
-      });
-    };
-    const mouseDragOff = (e) => {
-      dispatch({
-        type: ACTION_TYPES.MOUSE_DRAG_OFF,
-      });
-    };
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-    window.addEventListener('mousedown', mouseDragOn);
-    window.addEventListener('mouseup', mouseDragOff);
-    window.addEventListener('resize', resizeWindow);
-    return () => {
-      window.removeEventListener('resize', resizeWindow);
-      window.removeEventListener('mousedown', mouseDragOn);
-      window.removeEventListener('mouseup', mouseDragOff);
-    };
-  }, [dispatch]);
+const Home = () => {
   return (
     <>
-      <div className="row mt-3 mb-2">
-        <div className="col">
-          <h1 className="text-center">FastLED Animator</h1>
+      <div className="row">
+        <div className="col text-center">
+          <h1>FastLED Animator</h1>
+          <p>Make amazing led art without having to learn how to code!</p>
         </div>
       </div>
       <div className="row">
         <div className="col">
-          <p>
-            Adjust the settings and use the selection tools to create your own
-            led animations to upload to an Arduino or another microcontroller.
-          </p>
+          <h2>Demo</h2>
         </div>
       </div>
-      <LedTool />
-
+      <div className="row">
+        <div className="col">
+          <div className="text-center ratio ratio-16x9">
+            <iframe
+              src="https://www.youtube.com/embed/E4Oqn3NQUi4?autoplay=1"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
+        </div>
+      </div>
       <div className="row mt-4">
         <div className="col">
-          <Leds />
+          <Link to="/create" className="btn btn-primary w-100 btn-lg">
+            Create
+          </Link>
         </div>
       </div>
-
-      <Player />
-      <SelectionTools />
-      <div className="row mb-3">
+      <div className="row mt-4">
         <div className="col">
-          <button
-            onClick={() => navigate('/upload')}
-            className="btn btn-success w-100 btn-lg"
-          >
-            Upload Code Page
-          </button>
+          <Link to="/tutorial" className="btn btn-success w-100 btn-lg">
+            Tutorial
+          </Link>
         </div>
       </div>
     </>

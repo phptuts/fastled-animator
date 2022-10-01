@@ -41,7 +41,10 @@ const Why = () => {
       <div className="row">
         <div className="col">
           <div className="text-center my-5 ratio ratio-16x9">
-            <iframe src="//www.youtube.com/embed/xf72kJfU0lk"></iframe>
+            <iframe
+              title="Origin Story for fastled animator"
+              src="//www.youtube.com/embed/g6CkVp1Gexc"
+            ></iframe>
           </div>
         </div>
       </div>

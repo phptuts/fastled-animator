@@ -86,7 +86,14 @@ const Navigation = () => {
                 Home
               </Link>
             </li>
-
+            <li className="nav-item">
+              <Link
+                className={`nav-link ${pathname === '/create' && 'active'}`}
+                to="/create"
+              >
+                Create
+              </Link>
+            </li>
             <li className="nav-item">
               <Link
                 className={`nav-link ${pathname === '/upload' && 'active'}`}
@@ -135,7 +142,7 @@ const Navigation = () => {
                 className={`nav-link ${pathname === '/tutorial' && 'active'}`}
                 to="/tutorial"
               >
-                How to use
+                Tutorials
               </Link>
             </li>
             <li className="nav-item">
