@@ -49,8 +49,8 @@ const Navigation = () => {
             </li>
             {isLoggedIn && (
               <li className="nav-item">
-                <NavLink className="nav-link " to="/my-projects">
-                  My Projects
+                <NavLink className="nav-link " to="/me">
+                  Me
                 </NavLink>
               </li>
             )}
@@ -89,6 +89,11 @@ const Navigation = () => {
                 </span>
               </li>
             )}
+            <li className="nav-item">
+              <NavLink className="nav-link " to="/privacy-policy">
+                Privacy Policy
+              </NavLink>
+            </li>
           </ul>
         </div>
       </div>

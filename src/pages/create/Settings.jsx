@@ -6,7 +6,7 @@ import { ACTION_TYPES } from '../../context/editor/editorActions';
 import { toast } from 'react-toastify';
 import { AuthContext } from '../../context/auth/authContext';
 import { Link } from 'react-router-dom';
-import { saveProject, togglePublish } from '../../firebase/db';
+import { saveProject } from '../../firebase/db';
 import spinner from '../../assets/images/spinner.gif';
 
 const Settings = () => {
@@ -50,11 +50,14 @@ const Settings = () => {
       payload: true,
     });
     try {
-      const published = !state.published;
-      await togglePublish(state.firebaseId, published);
-      dispatch({ type: ACTION_TYPES.SET_PUBLISHED, payload: published });
+      const newState = { ...state, published: !state.published };
+      await saveProject(newState, userId);
+      dispatch({
+        type: ACTION_TYPES.SET_PUBLISHED,
+        payload: newState.published,
+      });
       toast.success(
-        published
+        newState.published
           ? 'Your project visible to the world!'
           : 'You project is now private.'
       );
@@ -152,10 +155,22 @@ const Settings = () => {
           <div className="row mt-4">
             <div className="col">
               <button onClick={onSaveProject} className="btn btn-success w-100">
-                Save to cloud
+                Save
               </button>
             </div>
           </div>
+          {state.firebaseId && (
+            <div className="row mt-4">
+              <div className="col">
+                <Link
+                  to={`/projects/${userId}/${state.firebaseId}`}
+                  className="btn btn-primary w-100"
+                >
+                  Preview
+                </Link>
+              </div>
+            </div>
+          )}
           <div className="row mt-4">
             <div className="col">
               <button

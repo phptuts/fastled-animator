@@ -31,6 +31,7 @@ const ProjectTable = ({ projects, showPublished }) => {
             <tr>
               <th scope="col">Project Name</th>
               <th scope="col">Description</th>
+              <th scope="col">Creator</th>
               {showPublished && <th scope="col">Published</th>}
               <th scope="col"></th>
               <th scope="col"></th>
@@ -42,6 +43,7 @@ const ProjectTable = ({ projects, showPublished }) => {
                 <tr key={p.id}>
                   <td>{p.title}</td>
                   <td>{p.description}</td>
+                  <td>{p.displayName}</td>
                   {showPublished && <td>{p.published ? 'yes' : 'no'}</td>}
                   <td>
                     <button

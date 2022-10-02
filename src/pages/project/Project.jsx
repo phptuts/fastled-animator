@@ -7,38 +7,57 @@ import spinner from '../../assets/images/spinner.gif';
 import ProjectShowContext from '../../context/project-show/projectShowContext';
 import {
   useParams,
-  useLocation,
   NavLink,
   Outlet,
   useNavigate,
+  Link,
 } from 'react-router-dom';
 import { useEffect } from 'react';
-import { downloadProjectFile } from '../../firebase/db';
+import { downloadProjectFile, getUserDisplayName } from '../../firebase/db';
 import { ACTION_TYPES } from '../../context/editor/editorActions';
-import { DiscussionEmbed } from 'disqus-react';
 import { toast } from 'react-toastify';
 
 const Project = () => {
   const { state, dispatch } = useContext(ProjectShowContext);
-  const location = useLocation();
   const navigate = useNavigate();
   let { projectId, userId } = useParams();
   const [loadPage, setLoadPage] = useState(false);
+  const [displayName, setDisplayName] = useState('');
 
   useEffect(() => {
+    if (state.firebaseId === projectId) {
+      setLoadPage(true);
+      getUserDisplayName(userId).then((displayName) => {
+        setDisplayName(displayName);
+      });
+
+      return;
+    }
     downloadProjectFile(userId, projectId)
-      .then((text) => {
+      .then(async (text) => {
+        const newState = JSON.parse(text);
         dispatch({
           type: ACTION_TYPES.SET_SAVED_STATE,
-          payload: JSON.parse(text),
+          payload: newState,
         });
+
+        dispatch({
+          type: ACTION_TYPES.CHANGE_POSITION_PLAYER,
+          payload: 0,
+        });
+
+        try {
+          const displayName = await getUserDisplayName(userId);
+          setDisplayName(displayName);
+        } catch (e) {}
+
         setLoadPage(true);
       })
       .catch((e) => {
         toast.error('This project is private!');
         navigate('/');
       });
-  }, [projectId, userId, dispatch, navigate]);
+  }, [projectId, userId, dispatch, navigate, state.firebaseId]);
 
   if (!loadPage) {
     return (
@@ -64,6 +83,16 @@ const Project = () => {
         </div>
       </div>
       <Player editable={false} />
+      <div className="row ">
+        <div className="col">
+          <h3 className="mb-3">
+            Created By: <Link to={`/projects/${userId}`}>{displayName}</Link>
+          </h3>
+
+          <pre>{state.description}</pre>
+        </div>
+      </div>
+
       <ul className="nav nav-tabs mb-4 mt-5">
         <li className="nav-item">
           <NavLink
@@ -71,7 +100,7 @@ const Project = () => {
             to={`/projects/${userId}/${projectId}`}
             end
           >
-            Description
+            Comments
           </NavLink>
         </li>
         <li className="nav-item">
@@ -91,17 +120,8 @@ const Project = () => {
           </NavLink>
         </li>
       </ul>
-      <Outlet />
-      <hr className="mb-3" />
 
-      <DiscussionEmbed
-        shortname="fastled-animator"
-        config={{
-          url: 'http://fastledanimator.com' + location.pathname,
-          identifier: projectId,
-          title: state.title,
-        }}
-      />
+      <Outlet />
     </>
   );
 };

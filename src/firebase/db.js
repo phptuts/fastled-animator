@@ -9,6 +9,9 @@ import {
   where,
   orderBy,
   limit,
+  setDoc,
+  getDoc,
+  documentId,
 } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getBlob } from 'firebase/storage';
 export const saveProject = async (state, userId) => {
@@ -46,10 +49,6 @@ export const saveProject = async (state, userId) => {
   return firebaseId;
 };
 
-export const togglePublish = async (firebaseId, published) => {
-  await updateDoc(doc(getProjectCollection(), firebaseId), { published });
-};
-
 export const downloadProjectFile = async (userId, firebaseId) => {
   const storage = getStorage();
   const storageRef = ref(storage, `projects/${userId}/${firebaseId}.json`);
@@ -65,9 +64,26 @@ export const getProjectsByUserId = async (userId) => {
     orderBy('savedTime', 'desc')
   );
   const docs = await getDocs(q);
-  return docs.docs.map((d) => {
+  const projects = docs.docs.map((d) => {
     return { ...d.data(), id: d.id };
   });
+
+  return addDisplayName(projects);
+};
+
+export const getPublishedProjectsByUserId = async (userId) => {
+  const q = query(
+    getProjectCollection(),
+    where('userId', '==', userId),
+    where('published', '==', true),
+    orderBy('savedTime', 'desc')
+  );
+  const docs = await getDocs(q);
+  const projects = docs.docs.map((d) => {
+    return { ...d.data(), id: d.id };
+  });
+
+  return addDisplayName(projects);
 };
 
 export const getMostRecentProjects = async (limitNumber) => {
@@ -78,12 +94,52 @@ export const getMostRecentProjects = async (limitNumber) => {
     limit(limitNumber)
   );
   const docs = await getDocs(q);
-  return docs.docs.map((d) => {
+  const projects = docs.docs.map((d) => {
     return { ...d.data(), id: d.id };
   });
+  return addDisplayName(projects);
 };
 
 const getProjectCollection = () => {
   const db = getFirestore();
   return collection(db, 'projects');
+};
+
+export const saveUser = async (userId, displayName) => {
+  const db = getFirestore();
+
+  await setDoc(doc(db, 'users', userId), {
+    displayName,
+  });
+};
+
+export const addDisplayName = async (projects) => {
+  if (projects.length === 0) {
+    return [];
+  }
+
+  const userIds = [...new Set(projects.map((p) => p.userId))];
+
+  const q = query(
+    collection(getFirestore(), 'users'),
+    where(documentId(), 'in', userIds)
+  );
+
+  const docs = await getDocs(q);
+  const displayNameMap = docs.docs.reduce((acc, next) => {
+    console.log(acc, next.id, next.data().displayName);
+    acc[next.id] = next.data().displayName;
+    return acc;
+  }, {});
+  return projects.map((p) => {
+    return { ...p, displayName: displayNameMap[p.userId] };
+  });
+};
+
+export const getUserDisplayName = async (userId) => {
+  const db = getFirestore();
+
+  const docRef = await getDoc(doc(db, 'users', userId));
+
+  return docRef.data().displayName;
 };

@@ -17,6 +17,12 @@ const Player = ({ editable }) => {
     });
   };
 
+  useEffect(() => {
+    return () => {
+      dispatch({ type: ACTION_TYPES.STOP_SIMULATION });
+    };
+  }, [dispatch]);
+
   const onBack = () => {
     if (currentFrameIndex > 0) {
       dispatch({
