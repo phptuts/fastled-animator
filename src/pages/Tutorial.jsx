@@ -21,7 +21,7 @@ const Tutorial = () => {
           <div className="text-center my-5 ratio ratio-16x9">
             <iframe
               title="fastled animator tutorial"
-              src="//www.youtube.com/embed/IwF8ZtjOz4M"
+              src="//www.youtube.com/embed/EwM0j3a8j-Y"
             ></iframe>
           </div>
         </div>

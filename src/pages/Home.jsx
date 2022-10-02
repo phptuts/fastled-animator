@@ -10,16 +10,14 @@ const Home = () => {
           <p>Make amazing led art without having to learn how to code!</p>
         </div>
       </div>
+
       <div className="row">
         <div className="col">
-          <h2>Demo</h2>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col">
-          <div className="text-center ratio ratio-16x9">
+          <div className="text-center ">
             <iframe
-              src="https://www.youtube.com/embed/E4Oqn3NQUi4?autoplay=1"
+              width="560"
+              height="430"
+              src="https://www.youtube.com/embed/900u02AsfJQ"
               title="YouTube video player"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

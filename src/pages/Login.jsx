@@ -10,7 +10,7 @@ const Login = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (firebaseControlled && userId) {
-      navigate('/my-projects');
+      navigate('/create/settings');
     }
   }, [firebaseControlled, userId, navigate]);
   const auth = getAuth();
