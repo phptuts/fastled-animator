@@ -55,7 +55,7 @@ const Project = () => {
     <>
       <div className="row mt-4">
         <div className="col">
-          <h1>Title: {state.title}</h1>
+          <h1>{state.title}</h1>
         </div>
       </div>
       <div className="row mt-4">
@@ -97,7 +97,7 @@ const Project = () => {
       <DiscussionEmbed
         shortname="fastled-animator"
         config={{
-          url: location.pathname,
+          url: 'http://fastledanimator.com' + location.pathname,
           identifier: projectId,
           title: state.title,
         }}
