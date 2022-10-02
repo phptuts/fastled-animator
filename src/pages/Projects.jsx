@@ -41,7 +41,7 @@ const Projects = () => {
           <h1>Recently Published Projects</h1>
         </div>
       </div>
-      <ProjectTable projects={projects} />
+      <ProjectTable showPublished={false} projects={projects} />
     </>
   );
 };

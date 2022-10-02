@@ -37,7 +37,7 @@ const MyProjects = () => {
           <h1>My Projects</h1>
         </div>
       </div>
-      <ProjectTable projects={projects} />
+      <ProjectTable showPublished={true} projects={projects} />
     </>
   );
 };

@@ -5,7 +5,7 @@ import { ACTION_TYPES } from '../context/editor/editorActions';
 import EditorContext from '../context/editor/editorContext';
 import { downloadProjectFile } from '../firebase/db';
 
-const ProjectTable = ({ projects }) => {
+const ProjectTable = ({ projects, showPublished }) => {
   const { userId } = useContext(AuthContext);
   const { dispatch } = useContext(EditorContext);
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ const ProjectTable = ({ projects }) => {
             <tr>
               <th scope="col">Project Name</th>
               <th scope="col">Description</th>
-              <th scope="col">Published</th>
+              {showPublished && <th scope="col">Published</th>}
               <th scope="col"></th>
               <th scope="col"></th>
             </tr>
@@ -42,7 +42,7 @@ const ProjectTable = ({ projects }) => {
                 <tr key={p.id}>
                   <td>{p.title}</td>
                   <td>{p.description}</td>
-                  <td>{p.published ? 'yes' : 'no'}</td>
+                  {showPublished && <td>{p.published ? 'yes' : 'no'}</td>}
                   <td>
                     <button
                       onClick={() => navigateToView(p)}
@@ -61,6 +61,7 @@ const ProjectTable = ({ projects }) => {
                       </button>
                     </td>
                   )}
+                  {p.userId === userId && <td></td>}
                 </tr>
               );
             })}
