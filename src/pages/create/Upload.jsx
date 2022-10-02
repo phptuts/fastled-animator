@@ -1,18 +1,18 @@
 import React, { useContext, useEffect, useRef } from 'react';
-import LedsContext from '../context/led/ledContext';
-import { frameToCode } from '../framesToCode';
+import EditorContext from '../../context/editor/editorContext';
+import { frameToCode } from '../../framesToCode';
 import { toast } from 'react-toastify';
-import ArduinoConfig from '../components/ArduinoConfig';
+import ArduinoConfig from '../../components/ArduinoConfig';
 import AvrGirlArduino from 'avrgirl-arduino/dist/avrgirl-arduino';
-import { ACTION_TYPES } from '../context/led/ledActions';
-import spinner from '../assets/images/spinner.gif';
+import { ACTION_TYPES } from '../../context/editor/editorActions';
+import spinner from '../../assets/images/spinner.gif';
 import { saveAs } from 'file-saver';
 import { Link } from 'react-router-dom';
-import Code from '../components/Code';
+import Code from '../../components/Code';
 import { useState } from 'react';
 
 const Upload = () => {
-  const { state, dispatch } = useContext(LedsContext);
+  const { state, dispatch } = useContext(EditorContext);
   const isMounted = useRef(false);
 
   const [codeState, setCodeState] = useState('loading');
@@ -109,11 +109,6 @@ const Upload = () => {
 
   return (
     <>
-      <div className="row mb-2 mt-2">
-        <div className="col">
-          <h2>Upload Code</h2>
-        </div>
-      </div>
       <ArduinoConfig />
       <div className="row mt-3 mb-3">
         {state.uploadingCode && (

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { ACTION_TYPES } from '../context/led/ledActions';
-import LedsContext from '../context/led/ledContext';
+import { ACTION_TYPES } from '../context/editor/editorActions';
+import EditorContext from '../context/editor/editorContext';
 
 const SelectionTools = () => {
   const {
@@ -15,7 +15,7 @@ const SelectionTools = () => {
       playing,
       pattern,
     },
-  } = useContext(LedsContext);
+  } = useContext(EditorContext);
 
   // Only available on the first frame
 

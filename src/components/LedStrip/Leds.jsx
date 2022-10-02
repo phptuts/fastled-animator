@@ -1,15 +1,13 @@
 import React, { useContext } from 'react';
 import FullStrip from './FullStrip';
 import { chunk } from '../../helpers';
-import ledsContext from '../../context/led/ledContext';
+import EditorContext from '../../context/editor/editorContext';
+import ProjectShowContext from '../../context/project-show/projectShowContext';
 
-// TODO Dynamically Set the config in and have it control by state
-// Set the width programatically to show right number of pixels
-
-const Leds = () => {
+const Leds = ({ editable = true }) => {
   const {
     state: { frames, currentFrameIndex, fullStripLength, pixelAreaWidth },
-  } = useContext(ledsContext);
+  } = useContext(editable ? EditorContext : ProjectShowContext);
 
   const { leds } = frames[currentFrameIndex];
 
@@ -18,7 +16,13 @@ const Leds = () => {
     <div style={{ width: `${pixelAreaWidth}px` }} id="leds">
       {ledFullStips &&
         ledFullStips.map((c) => {
-          return <FullStrip key={`fullstrip-${c[0].position}`} leds={c} />;
+          return (
+            <FullStrip
+              editable={editable}
+              key={`fullstrip-${c[0].position}`}
+              leds={c}
+            />
+          );
         })}
     </div>
   );

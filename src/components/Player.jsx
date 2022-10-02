@@ -1,13 +1,14 @@
 import React, { useContext, useEffect } from 'react';
-import { ACTION_TYPES } from '../context/led/ledActions';
-import LedsContext from '../context/led/ledContext';
+import { ACTION_TYPES } from '../context/editor/editorActions';
+import EditorContext from '../context/editor/editorContext';
+import ProjectShowContext from '../context/project-show/projectShowContext';
 
-const Player = () => {
+const Player = ({ editable }) => {
   const {
     dispatch,
     dispatchDebounce,
     state: { currentFrameIndex, frames, timePerStep, playing },
-  } = useContext(LedsContext);
+  } = useContext(editable ? EditorContext : ProjectShowContext);
 
   const onPlayerChange = (e) => {
     dispatchDebounce({

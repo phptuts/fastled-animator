@@ -1,12 +1,13 @@
 import React, { useContext } from 'react';
-import { ACTION_TYPES } from '../../context/led/ledActions';
-import LedsContext from '../../context/led/ledContext';
+import { ACTION_TYPES } from '../../context/editor/editorActions';
+import EditorContext from '../../context/editor/editorContext';
+import ProjectShowContext from '../../context/project-show/projectShowContext';
 
-const Led = ({ led }) => {
+const Led = ({ led, editable }) => {
   const {
     dispatch,
     state: { playing, mouseDragSelect, dragMode },
-  } = useContext(LedsContext);
+  } = useContext(editable ? EditorContext : ProjectShowContext);
 
   function onSelectLed() {
     dispatch({
@@ -24,16 +25,28 @@ const Led = ({ led }) => {
     }
   }
 
+  if (editable) {
+    return (
+      <div
+        onMouseOver={onMouseOver}
+        onClick={onSelectLed}
+        onTouchEnd={onSelectLed}
+        onTouchStart={onSelectLed}
+        className={`led ${led.selected && !playing ? 'selected' : ''} ${
+          led.position
+        } mode-${dragMode}`}
+      >
+        <div
+          style={{
+            backgroundColor: led.color,
+          }}
+          className="light"
+        ></div>
+      </div>
+    );
+  }
   return (
-    <div
-      onMouseOver={onMouseOver}
-      onClick={onSelectLed}
-      onTouchEnd={onSelectLed}
-      onTouchStart={onSelectLed}
-      className={`led ${led.selected && !playing ? 'selected' : ''} ${
-        led.position
-      } mode-${dragMode}`}
-    >
+    <div className="led">
       <div
         style={{
           backgroundColor: led.color,

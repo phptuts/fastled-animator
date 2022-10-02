@@ -5,14 +5,14 @@ import {
   chipSets,
   rgbOptions,
 } from '../config';
-import { ACTION_TYPES } from '../context/led/ledActions';
-import LedsContext from '../context/led/ledContext';
+import { ACTION_TYPES } from '../context/editor/editorActions';
+import EditorContext from '../context/editor/editorContext';
 
 const ArduinoConfig = () => {
   const {
     dispatch,
     state: { rgbOrder, chipSet, microController, analogPin, brightnessLevel },
-  } = useContext(LedsContext);
+  } = useContext(EditorContext);
   return (
     <>
       <div className="row">
