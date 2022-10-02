@@ -61,7 +61,7 @@ const ProjectTable = ({ projects, showPublished }) => {
                       </button>
                     </td>
                   )}
-                  {p.userId === userId && <td></td>}
+                  {p.userId !== userId && <td></td>}
                 </tr>
               );
             })}
