@@ -51,7 +51,6 @@ const Settings = () => {
     });
     try {
       const published = !state.published;
-      console.log(published);
       await togglePublish(state.firebaseId, published);
       dispatch({ type: ACTION_TYPES.SET_PUBLISHED, payload: published });
       toast.success(

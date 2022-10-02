@@ -65,7 +65,6 @@ export const getProjectsByUserId = async (userId) => {
     orderBy('savedTime', 'desc')
   );
   const docs = await getDocs(q);
-  console.log(docs);
   return docs.docs.map((d) => {
     return { ...d.data(), id: d.id };
   });
@@ -79,7 +78,6 @@ export const getMostRecentProjects = async (limitNumber) => {
     limit(limitNumber)
   );
   const docs = await getDocs(q);
-  console.log(docs);
   return docs.docs.map((d) => {
     return { ...d.data(), id: d.id };
   });

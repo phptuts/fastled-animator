@@ -13,12 +13,13 @@ export const EditorProvider = ({ children }) => {
   const { isLoggedIn, userId } = useContext(AuthContext);
   const dispatchDebounce = debounce(5, dispatch);
   useEffect(() => {
-    console.log('loading localstorage');
     localForage.getItem('led_animator_last_state').then((savedState) => {
-      dispatch({
-        type: ACTION_TYPES.SET_SAVED_STATE,
-        payload: savedState,
-      });
+      if (savedState) {
+        dispatch({
+          type: ACTION_TYPES.SET_SAVED_STATE,
+          payload: savedState,
+        });
+      }
     });
   }, [dispatch]);
 

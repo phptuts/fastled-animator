@@ -9,7 +9,6 @@ const Login = () => {
   const { firebaseControlled, userId } = useContext(AuthContext);
   const navigate = useNavigate();
   useEffect(() => {
-    console.log(firebaseControlled, userId);
     if (firebaseControlled && userId) {
       navigate('/my-projects');
     }
@@ -17,8 +16,7 @@ const Login = () => {
   const auth = getAuth();
   const signIn = async () => {
     try {
-      const user = await signInWithPopup(auth, new GoogleAuthProvider());
-      console.log(user, 'user');
+      await signInWithPopup(auth, new GoogleAuthProvider());
     } catch (e) {
       // Most of the errror here are user errors
     }
