@@ -1,158 +1,94 @@
-import React from 'react';
-import { useRef } from 'react';
-import { useContext } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { ACTION_TYPES } from '../context/led/ledActions';
-import LedsContext from '../context/led/ledContext';
-import { frameToCode } from '../framesToCode';
-import { saveAs } from 'file-saver';
+import React, { useContext } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import logo from '../assets/images/logo192.png';
+import { AuthContext } from '../context/auth/authContext';
+import { getAuth, signOut } from 'firebase/auth';
 
 const Navigation = () => {
-  const { pathname } = useLocation();
-  const { state, dispatch } = useContext(LedsContext);
-  const inputFile = useRef(null);
+  const { isLoggedIn } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const [showNav, setShowNav] = useState(false);
-
-  const uploadProject = () => {
-    inputFile.current.click();
-  };
-
-  const onDownloadProject = () => {
-    saveAs(
-      new Blob([JSON.stringify(state)], { type: 'text/json;charset=utf-8' }),
-      'led-animator.json'
-    );
-  };
-
-  const onDownloadCode = () => {
-    saveAs(
-      new Blob([frameToCode(state)], { type: 'text/play;charset=utf-8' }),
-      'led-animator.ino'
-    );
-  };
 
   const onToggleNav = () => {
     setShowNav((prevState) => !prevState);
   };
 
-  const uploadFile = (e) => {
-    const files = e.target.files;
+  const onLogout = async () => {
+    const auth = getAuth();
+    await signOut(auth);
 
-    if (files.length !== 1) {
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = function () {
-      dispatch({
-        type: ACTION_TYPES.OPEN_NEW_PROGRAM,
-        payload: JSON.parse(reader.result),
-      });
-    };
-    reader.readAsText(files[0]);
+    navigate('/');
   };
 
   return (
     <nav className="navbar navbar-expand-lg bg-light ">
-      <input
-        type="file"
-        id="file"
-        ref={inputFile}
-        style={{ display: 'none' }}
-        onChange={uploadFile}
-      />
-
       <div className="container-fluid">
         <button onClick={onToggleNav} className="navbar-toggler" type="button">
           <span className="navbar-toggler-icon"></span>
         </button>
-        <Link className="navbar-brand" to="/">
+        <NavLink className="navbar-brand" to="/" end>
           <img src={logo} alt="fast led logo" width="30" height="30" />
           FastLED Animator
-        </Link>
+        </NavLink>
         <div
           className={`collapse navbar-collapse ${showNav && 'show'} `}
           id="navbarTogglerDemo03"
         >
           <ul className="navbar-nav">
             <li className="nav-item">
-              <Link
-                className={`nav-link ${pathname === '/' && 'active'}`}
-                to="/"
-              >
+              <NavLink className="nav-link " to="/" end>
                 Home
-              </Link>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <Link
-                className={`nav-link ${pathname === '/create' && 'active'}`}
-                to="/create"
-              >
+              <NavLink className="nav-link " to="/create">
                 Create
-              </Link>
+              </NavLink>
+            </li>
+            {isLoggedIn && (
+              <li className="nav-item">
+                <NavLink className="nav-link " to="/my-projects">
+                  My Projects
+                </NavLink>
+              </li>
+            )}
+            <li className="nav-item">
+              <NavLink className="nav-link " to="/projects">
+                Projects
+              </NavLink>
             </li>
             <li className="nav-item">
-              <Link
-                className={`nav-link ${pathname === '/upload' && 'active'}`}
-                to="/upload"
-              >
-                Upload
-              </Link>
-            </li>
-            <li>
-              <span
-                onClick={() => {
-                  dispatch({ type: ACTION_TYPES.NEW_PROJECT });
-                }}
-                className="nav-link"
-              >
-                New Project
-              </span>
-            </li>
-            <li>
-              <span onClick={uploadProject} className="nav-link">
-                Open
-              </span>
-            </li>
-            <li>
-              <span onClick={onDownloadProject} className="nav-link">
-                Download Project
-              </span>
-            </li>
-            <li>
-              <span onClick={onDownloadCode} className="nav-link">
-                Download Code
-              </span>
-            </li>
-
-            <li className="nav-item">
-              <Link
-                className={`nav-link ${pathname === '/why' && 'active'}`}
-                to="/why"
-              >
+              <NavLink className="nav-link " to="/why">
                 Why
-              </Link>
+              </NavLink>
             </li>
 
             <li className="nav-item">
-              <Link
-                className={`nav-link ${pathname === '/tutorial' && 'active'}`}
-                to="/tutorial"
-              >
+              <NavLink className="nav-link " to="/tutorial">
                 Tutorials
-              </Link>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <Link
-                className={`nav-link ${pathname === '/feedback' && 'active'}`}
-                to="/feedback"
-              >
+              <NavLink className="nav-link " to="/feedback">
                 Feedback
-              </Link>
+              </NavLink>
             </li>
+            {!isLoggedIn && (
+              <li className="nav-item">
+                <NavLink className="nav-link " to="/login">
+                  Login
+                </NavLink>
+              </li>
+            )}
+            {isLoggedIn && (
+              <li className="nav-item">
+                <span onClick={onLogout} className="nav-link ">
+                  Logout
+                </span>
+              </li>
+            )}
           </ul>
         </div>
       </div>

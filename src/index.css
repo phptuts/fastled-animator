@@ -42,7 +42,6 @@
 
 #leds {
   position: relative;
-  margin: 10px auto;
 }
 
 /** Strip controls a row of leds **/

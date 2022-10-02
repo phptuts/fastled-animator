@@ -1,14 +1,13 @@
 import { useContext, useEffect } from 'react';
-import Leds from '../components/LedStrip/Leds';
-import LedTool from '../components/LedTool';
-import Player from '../components/Player';
-import SelectionTools from '../components/SelectionTools';
-import { ACTION_TYPES } from '../context/led/ledActions';
-import LedsContext from '../context/led/ledContext';
-import { useNavigate } from 'react-router-dom';
-const Create = () => {
-  const { dispatch } = useContext(LedsContext);
-  const navigate = useNavigate();
+import Leds from '../../components/LedStrip/Leds';
+import LedTool from '../../components/LedTool';
+import Player from '../../components/Player';
+import SelectionTools from '../../components/SelectionTools';
+import { ACTION_TYPES } from '../../context/editor/editorActions';
+import EditorContext from '../../context/editor/editorContext';
+
+const Editor = () => {
+  const { dispatch } = useContext(EditorContext);
   useEffect(() => {
     dispatch({
       type: ACTION_TYPES.RESIZE_PIXELS,
@@ -42,11 +41,6 @@ const Create = () => {
   }, [dispatch]);
   return (
     <>
-      <div className="row mt-3 mb-2">
-        <div className="col">
-          <h1 className="text-center">FastLED Animator</h1>
-        </div>
-      </div>
       <div className="row">
         <div className="col">
           <p>
@@ -59,19 +53,19 @@ const Create = () => {
 
       <div className="row mt-4">
         <div className="col">
-          <Leds />
+          <Leds editable={true} />
         </div>
       </div>
 
-      <Player />
+      <Player editable={true} />
       <SelectionTools />
       <div className="row mb-3">
         <div className="col">
           <button
-            onClick={() => navigate('/upload')}
-            className="btn btn-success w-100 btn-lg"
+            onClick={() => dispatch({ type: ACTION_TYPES.NEW_PROJECT })}
+            className="btn btn-danger w-100 btn-lg"
           >
-            Upload Code Page
+            New Project
           </button>
         </div>
       </div>
@@ -79,4 +73,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default Editor;

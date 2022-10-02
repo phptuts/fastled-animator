@@ -1,11 +1,12 @@
 import React, { useContext } from 'react';
-import LedsContext from '../../context/led/ledContext';
+import EditorContext from '../../context/editor/editorContext';
+import ProjectShowContext from '../../context/project-show/projectShowContext';
 import Strip from './Strip';
 
-const FullStrip = ({ leds }) => {
+const FullStrip = ({ leds, editable }) => {
   const {
     state: { ledsHorizontal, ledsVertical },
-  } = useContext(LedsContext);
+  } = useContext(editable ? EditorContext : ProjectShowContext);
 
   const leftLeds = leds.slice(0, ledsHorizontal);
   const rightDownLeds = leds.slice(
@@ -23,10 +24,10 @@ const FullStrip = ({ leds }) => {
 
   return (
     <>
-      <Strip leds={leftLeds} direction="left" />
-      <Strip leds={rightDownLeds} direction="right-down" />
-      <Strip leds={rightToLeft} direction="right" />
-      <Strip leds={leftDown} direction="left-down" />
+      <Strip leds={leftLeds} editable={editable} direction="left" />
+      <Strip leds={rightDownLeds} editable={editable} direction="right-down" />
+      <Strip leds={rightToLeft} editable={editable} direction="right" />
+      <Strip leds={leftDown} editable={editable} direction="left-down" />
     </>
   );
 };

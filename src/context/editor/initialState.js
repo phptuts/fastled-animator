@@ -2,6 +2,9 @@ import { generateFrames } from '../../leds';
 
 export const initialState = () => {
   return {
+    firebaseId: '',
+    title: '',
+    description: '',
     startDragSelection: false,
     dragMode: 'paint',
     chipSet: 'WS2811',
@@ -27,6 +30,8 @@ export const initialState = () => {
     rightMarginForRightVertical: 960,
     uploadingCode: false,
     compilingCode: false,
+    saving: false,
+    published: false,
     pattern: 'right',
   };
 };

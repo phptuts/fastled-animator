@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
-import { ACTION_TYPES } from '../context/led/ledActions';
-import LedsContext from '../context/led/ledContext';
+import { ACTION_TYPES } from '../context/editor/editorActions';
+import EditorContext from '../context/editor/editorContext';
 
 const LedTool = () => {
   const {
     dispatch,
     dispatchDebounce,
     state: { numberLeds, totalSteps, timePerStep },
-  } = useContext(LedsContext);
+  } = useContext(EditorContext);
 
   return (
     <>

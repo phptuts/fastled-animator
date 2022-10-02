@@ -1,13 +1,38 @@
 import { generateFrames, generatePattern } from '../../leds';
-import { ACTION_TYPES } from './ledActions';
+import { ACTION_TYPES } from './editorActions';
 import localForage from 'localforage';
 
 import { arduinoMegaPins, arduinoUnoPins } from '../../config';
 import { initialState } from './initialState';
 import { debounce } from 'lodash';
 
-const ledReducer = (state, action) => {
+const editorReducer = (state, action) => {
   switch (action.type) {
+    case ACTION_TYPES.SET_FIREBASE_ID:
+      return saveState({
+        ...state,
+        firebaseId: action.payload,
+      });
+    case ACTION_TYPES.SET_PUBLISHED:
+      return saveState({
+        ...state,
+        published: action.payload,
+      });
+    case ACTION_TYPES.SET_SAVING:
+      return saveState({
+        ...state,
+        saving: action.payload,
+      });
+    case ACTION_TYPES.CHANGE_PROJECT_NAME:
+      return saveState({
+        ...state,
+        title: action.payload,
+      });
+    case ACTION_TYPES.CHANGE_PROJECT_DESCRIPTION:
+      return saveState({
+        ...state,
+        description: action.payload,
+      });
     case ACTION_TYPES.SET_SAVED_STATE:
       return saveState({
         ...action.payload,
@@ -16,6 +41,12 @@ const ledReducer = (state, action) => {
         fullStripLength: state.fullStripLength,
         pixelAreaWidth: state.pixelAreaWidth,
         rightMarginForRightVertical: state.rightMarginForRightVertical,
+        startDragSelection: false,
+        mouseDragSelect: false,
+        uploadingCode: false,
+        compilingCode: false,
+        playing: false,
+        saving: false,
       });
     case ACTION_TYPES.NEW_PROJECT:
       return saveState({
@@ -25,6 +56,13 @@ const ledReducer = (state, action) => {
         fullStripLength: state.fullStripLength,
         pixelAreaWidth: state.pixelAreaWidth,
         rightMarginForRightVertical: state.rightMarginForRightVertical,
+        startDragSelection: false,
+        mouseDragSelect: false,
+        uploadingCode: false,
+        compilingCode: false,
+        playing: false,
+        saving: false,
+        published: false,
       });
     case ACTION_TYPES.SET_PATTERN:
       return saveState({
@@ -329,6 +367,7 @@ const ledReducer = (state, action) => {
   }
 };
 const saveLocalStorage = (state) => {
+  state.savedTime = Date.now();
   localForage.setItem('led_animator_last_state', state);
 };
 const debounceSaveLocalStorage = debounce(saveLocalStorage, 1000, false);
@@ -337,4 +376,4 @@ const saveState = (state) => {
   return state;
 };
 
-export default ledReducer;
+export default editorReducer;

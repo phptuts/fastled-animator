@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
-import LedsContext from '../../context/led/ledContext';
+import EditorContext from '../../context/editor/editorContext';
 import Led from './Led';
 
-const Strip = ({ leds, direction }) => {
+const Strip = ({ leds, direction, editable }) => {
   const {
     state: { rightMarginForRightVertical },
-  } = useContext(LedsContext);
+  } = useContext(EditorContext);
 
   return (
     <div
@@ -16,7 +16,9 @@ const Strip = ({ leds, direction }) => {
       className={`strip ${direction}`}
     >
       {leds.map((led) => {
-        return <Led led={led} key={`led-${led.position}`} />;
+        return (
+          <Led editable={editable} led={led} key={`led-${led.position}`} />
+        );
       })}
     </div>
   );
