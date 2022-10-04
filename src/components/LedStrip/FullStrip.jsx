@@ -21,13 +21,25 @@ const FullStrip = ({ leds, editable }) => {
     ledsHorizontal + ledsVertical + ledsHorizontal,
     ledsHorizontal + ledsVertical + ledsHorizontal + ledsVertical
   );
+  const ledChunks = [
+    { leds: leftLeds, direction: 'left' },
+    { leds: rightDownLeds, direction: 'right-down' },
+    { leds: rightToLeft, direction: 'right' },
+    { leds: leftDown, direction: 'left-down' },
+  ];
 
   return (
     <>
-      <Strip leds={leftLeds} editable={editable} direction="left" />
-      <Strip leds={rightDownLeds} editable={editable} direction="right-down" />
-      <Strip leds={rightToLeft} editable={editable} direction="right" />
-      <Strip leds={leftDown} editable={editable} direction="left-down" />
+      {ledChunks.map((s) => {
+        return (
+          <Strip
+            key={s.direction}
+            leds={s.leds}
+            editable={editable}
+            direction={s.direction}
+          />
+        );
+      })}
     </>
   );
 };

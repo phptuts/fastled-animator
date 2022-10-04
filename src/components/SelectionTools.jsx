@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { toast } from 'react-toastify';
 import { ACTION_TYPES } from '../context/editor/editorActions';
 import EditorContext from '../context/editor/editorContext';
 
@@ -20,7 +21,17 @@ const SelectionTools = () => {
   // Only available on the first frame
 
   const onGeneratePattern = (e) => {
-    dispatch({ type: ACTION_TYPES.GENERATE_PATTERN, payload: pattern });
+    if (currentFrameIndex === 0) {
+      dispatch({ type: ACTION_TYPES.GENERATE_PATTERN, payload: pattern });
+    } else {
+      toast.info(
+        'Taking you to the first frame, click generate pattern again to generate the pattern.'
+      );
+      dispatch({
+        type: ACTION_TYPES.CHANGE_POSITION_PLAYER,
+        payload: 0,
+      });
+    }
   };
 
   return (
@@ -297,7 +308,7 @@ const SelectionTools = () => {
         <div className="col col-md-4 col-sm-12">
           <button
             onClick={onGeneratePattern}
-            disabled={currentFrameIndex !== 0 || playing}
+            disabled={playing}
             className="btn btn-primary align-text-bottom w-100 select-btn"
           >
             Create Pattern

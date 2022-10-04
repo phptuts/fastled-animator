@@ -17,26 +17,32 @@ const Player = ({ editable }) => {
     });
   };
 
-  useEffect(() => {
-    return () => {
-      dispatch({ type: ACTION_TYPES.STOP_SIMULATION });
-    };
-  }, [dispatch]);
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const onBack = () => {
     if (currentFrameIndex > 0) {
       dispatch({
         type: ACTION_TYPES.CHANGE_POSITION_PLAYER,
         payload: currentFrameIndex - 1,
       });
+    } else {
+      dispatch({
+        type: ACTION_TYPES.CHANGE_POSITION_PLAYER,
+        payload: frames.length - 1,
+      });
     }
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const onForward = () => {
     if (currentFrameIndex < frames.length - 1) {
       dispatch({
         type: ACTION_TYPES.CHANGE_POSITION_PLAYER,
         payload: currentFrameIndex + 1,
+      });
+    } else {
+      dispatch({
+        type: ACTION_TYPES.CHANGE_POSITION_PLAYER,
+        payload: 0,
       });
     }
   };
@@ -83,6 +89,27 @@ const Player = ({ editable }) => {
       clearInterval(intervalId);
     };
   }, [playing, timePerStep, dispatch, frames, currentFrameIndex]);
+  useEffect(() => {
+    return () => {
+      dispatch({ type: ACTION_TYPES.STOP_SIMULATION });
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    const onKeyPress = (e) => {
+      if (e.key === 'ArrowRight') {
+        onForward();
+      }
+      if (e.key === 'ArrowLeft') {
+        onBack();
+      }
+    };
+
+    window.addEventListener('keyup', onKeyPress);
+    return () => {
+      window.removeEventListener('keyup', onKeyPress);
+    };
+  }, [onForward, onBack]);
 
   return (
     <>
