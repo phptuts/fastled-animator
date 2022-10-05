@@ -63,7 +63,7 @@ const Me = () => {
         </div>
       </div>
       <div className="row">
-        <div className="col">
+        <div className="col-4">
           <label htmlFor="title" className="form-label">
             Display Name
           </label>
@@ -77,13 +77,8 @@ const Me = () => {
             id="display-name"
           />
         </div>
-      </div>
-      <div className="row">
-        <div className="col">
-          <button
-            onClick={saveDisplayName}
-            className="btn btn-success w-100 mt-3"
-          >
+        <div className="col-1 form-btn">
+          <button onClick={saveDisplayName} className="btn btn-success w-100">
             Save
           </button>
         </div>
