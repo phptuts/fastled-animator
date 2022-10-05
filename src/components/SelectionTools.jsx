@@ -309,7 +309,7 @@ const SelectionTools = () => {
           <button
             onClick={onGeneratePattern}
             disabled={playing}
-            className="btn btn-primary align-text-bottom w-100 select-btn"
+            className="btn btn-primary align-text-bottom w-100 form-btn"
           >
             Create Pattern
           </button>
