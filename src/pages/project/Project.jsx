@@ -16,6 +16,7 @@ import { useEffect } from 'react';
 import { downloadProjectFile, getUserDisplayName } from '../../firebase/db';
 import { ACTION_TYPES } from '../../context/editor/editorActions';
 import { toast } from 'react-toastify';
+import { useRef } from 'react';
 
 const Project = () => {
   const { state, dispatch } = useContext(ProjectShowContext);
@@ -23,18 +24,15 @@ const Project = () => {
   let { projectId, userId } = useParams();
   const [loadPage, setLoadPage] = useState(false);
   const [displayName, setDisplayName] = useState('');
-
+  const cacheKey = useRef('');
   useEffect(() => {
-    if (state.firebaseId === projectId) {
-      setLoadPage(true);
-      getUserDisplayName(userId).then((displayName) => {
-        setDisplayName(displayName);
-      });
-
+    if (cacheKey.current === `${userId}-${projectId}`) {
       return;
     }
+    cacheKey.current = `${userId}-${projectId}`;
     downloadProjectFile(userId, projectId)
       .then(async (text) => {
+        console.log('new download');
         const newState = JSON.parse(text);
         dispatch({
           type: ACTION_TYPES.SET_SAVED_STATE,
