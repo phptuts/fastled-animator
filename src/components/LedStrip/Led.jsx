@@ -29,7 +29,7 @@ const Led = ({ led, editable }) => {
     return (
       <div
         onMouseEnter={onMouseOver}
-        onClick={onSelectLed}
+        onMouseDown={onSelectLed}
         onTouchEnd={onSelectLed}
         onTouchStart={onSelectLed}
         className={`led ${led.selected && !playing ? 'selected' : ''} ${
