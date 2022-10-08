@@ -12,7 +12,7 @@ const Led = ({ led, editable }) => {
   function onSelectLed() {
     dispatch({
       type: ACTION_TYPES.LED_DRAG_MODE,
-      payload: led.position,
+      payload: { ...led },
     });
   }
 
@@ -20,7 +20,7 @@ const Led = ({ led, editable }) => {
     if (mouseDragSelect) {
       dispatch({
         type: ACTION_TYPES.LED_DRAG_MODE,
-        payload: led.position,
+        payload: { ...led },
       });
     }
   }
@@ -28,8 +28,8 @@ const Led = ({ led, editable }) => {
   if (editable) {
     return (
       <div
-        onMouseOver={onMouseOver}
-        onClick={onSelectLed}
+        onMouseEnter={onMouseOver}
+        onMouseDown={onSelectLed}
         onTouchEnd={onSelectLed}
         onTouchStart={onSelectLed}
         className={`led ${led.selected && !playing ? 'selected' : ''} ${

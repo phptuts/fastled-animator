@@ -219,23 +219,6 @@ const SelectionTools = () => {
             <label className="btn btn-outline-primary" htmlFor="select-btn">
               Select
             </label>
-            <input
-              type="radio"
-              className="btn-check"
-              name="btnradio"
-              id="unselect-btn"
-              value="unselect"
-              onChange={(e) => {
-                dispatch({
-                  type: ACTION_TYPES.CHANGE_DRAG_MODE,
-                  payload: e.target.value,
-                });
-              }}
-              checked={dragMode === 'unselect'}
-            />
-            <label className="btn btn-outline-primary" htmlFor="unselect-btn">
-              Unselect
-            </label>
           </div>
         </div>
       </div>

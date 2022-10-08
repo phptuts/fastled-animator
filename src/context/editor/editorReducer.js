@@ -203,16 +203,14 @@ const editorReducer = (state, action) => {
         dragMode: action.payload,
       });
     case ACTION_TYPES.LED_DRAG_MODE:
+      const { position, selected } = action.payload;
       state.frames[state.currentFrameIndex].leds = [
         ...state.frames[state.currentFrameIndex].leds,
       ].reduce((acc, next) => {
-        if (action.payload === next.position) {
+        if (position === next.position) {
           switch (state.dragMode) {
             case 'select':
-              next.selected = true;
-              break;
-            case 'unselect':
-              next.selected = false;
+              next.selected = !selected;
               break;
             case 'paint':
               next.color = state.selectedColor;
