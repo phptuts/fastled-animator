@@ -1,10 +1,8 @@
 import { generateFrames, generatePattern } from '../../leds';
 import { ACTION_TYPES } from './editorActions';
-import localForage from 'localforage';
 
 import { arduinoMegaPins, arduinoUnoPins } from '../../config';
 import { initialState } from './initialState';
-import { debounce } from 'lodash';
 
 const editorReducer = (state, action) => {
   switch (action.type) {
@@ -181,6 +179,35 @@ const editorReducer = (state, action) => {
       });
     case ACTION_TYPES.GENERATE_PATTERN:
       const direction = action.payload;
+      // This will block users from being able to create 0,0 bounce patterns
+      // I think case will be incredibly rare so for now i am blocking it.
+      // In return for being able to auto set the right values for the users.
+      if (direction === 'bounce_right') {
+        const firstFrame = state.frames[0];
+        let highestFrame = 0;
+        for (let i = 0; i < firstFrame.leds.length; i += 1) {
+          if (firstFrame.leds[i].color !== '#000000') {
+            highestFrame = i;
+          }
+        }
+
+        state.addFramesLoop1 = highestFrame * -1;
+        state.addFramesLoop2 = (highestFrame + 2) * -1;
+      }
+
+      if (direction === 'bounce_left') {
+        const firstFrame = state.frames[0];
+        let highestFrame = 0;
+        for (let i = firstFrame.leds.length - 1; i >= 0; i -= 1) {
+          if (firstFrame.leds[i].color !== '#000000') {
+            highestFrame = i;
+          }
+        }
+
+        state.addFramesLoop1 = (firstFrame.leds.length - 1 - highestFrame) * -1;
+        state.addFramesLoop2 = (firstFrame.leds.length - highestFrame + 1) * -1;
+      }
+      state.patternUsed = direction;
       return generatePattern(direction, state);
     case ACTION_TYPES.CHANGE_SELECTED_COLOR_LEDS:
       state.frames[state.currentFrameIndex].leds = state.frames[
@@ -228,7 +255,7 @@ const editorReducer = (state, action) => {
         return acc;
       }, []);
 
-      return saveState({ ...state });
+      return saveState({ ...state, patternUsed: 'none' });
     case ACTION_TYPES.SELECT_LED:
     case ACTION_TYPES.UN_SELECT_LED:
       state.frames[state.currentFrameIndex].leds = [
@@ -364,13 +391,7 @@ const editorReducer = (state, action) => {
       return state;
   }
 };
-const saveLocalStorage = (state) => {
-  state.savedTime = Date.now();
-  localForage.setItem('led_animator_last_state', state);
-};
-const debounceSaveLocalStorage = debounce(saveLocalStorage, 1000, false);
 const saveState = (state) => {
-  debounceSaveLocalStorage(state);
   return state;
 };
 

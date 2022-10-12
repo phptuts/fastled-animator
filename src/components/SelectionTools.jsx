@@ -7,15 +7,7 @@ const SelectionTools = () => {
   const {
     dispatch,
     dispatchDebounce,
-    state: {
-      selectedColor,
-      currentFrameIndex,
-      dragMode,
-      addFramesLoop1,
-      addFramesLoop2,
-      playing,
-      pattern,
-    },
+    state: { selectedColor, currentFrameIndex, dragMode, playing, pattern },
   } = useContext(EditorContext);
 
   // Only available on the first frame
@@ -229,9 +221,6 @@ const SelectionTools = () => {
       </div>
       <div className="row">
         <div className="col col-md-2 col-sm-12">
-          <label htmlFor="pattern-type" className="form-label">
-            Pattern Type
-          </label>
           <select
             onChange={(e) => {
               dispatch({
@@ -249,50 +238,12 @@ const SelectionTools = () => {
             <option value="bounce_left">Bounce Left</option>
           </select>
         </div>
-        <div className="col-md-2 col-sm-12">
-          <label htmlFor="subtract-frames-loop-1" className="form-label">
-            Add Frames Loop 1
-          </label>
-          <input
-            type="number"
-            className="form-control"
-            id="subtract-frames-loop-1"
-            step="1"
-            placeholder="Subtract Frames"
-            value={addFramesLoop1}
-            onChange={(e) =>
-              dispatch({
-                type: ACTION_TYPES.ADD_FRAMES_TO_LOOP,
-                payload: { frames: +e.target.value, loop: 1 },
-              })
-            }
-          />
-        </div>
 
-        <div className="col-md-2 col-sm-12">
-          <label htmlFor="subtract-frames-loop-2" className="form-label">
-            Add Frames Loop 2
-          </label>
-          <input
-            type="number"
-            className="form-control"
-            id="subtract-frames-loop-2"
-            step="1"
-            placeholder="Subtract Frames"
-            value={addFramesLoop2}
-            onChange={(e) =>
-              dispatch({
-                type: ACTION_TYPES.ADD_FRAMES_TO_LOOP,
-                payload: { frames: +e.target.value, loop: 2 },
-              })
-            }
-          />
-        </div>
         <div className="col col-md-4 col-sm-12">
           <button
             onClick={onGeneratePattern}
             disabled={playing}
-            className="btn btn-primary align-text-bottom w-100 form-btn"
+            className="btn btn-primary align-text-bottom w-100"
           >
             Create Pattern
           </button>

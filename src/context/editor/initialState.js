@@ -33,5 +33,6 @@ export const initialState = () => {
     saving: false,
     published: false,
     pattern: 'right',
+    patternUsed: 'none',
   };
 };

@@ -99,6 +99,19 @@ export const generatePattern = (direction, previousState) => {
   const newFrames = [cloneDeep(firstFrame)];
   let frameLength = firstFrame.leds.length;
 
+  if (direction === 'right' || direction === 'left') {
+    for (let i = 0; i < frameLength - 1; i += 1) {
+      const leds = cloneDeep(newFrames[newFrames.length - 1].leds);
+      newFrames.push(moveLeds(getDirection(direction, 1), leds));
+    }
+    console.log(newFrames);
+    return cloneDeep({
+      ...previousState,
+      frames: newFrames,
+      totalSteps: newFrames.length,
+    });
+  }
+
   for (let i = 0; i < frameLength + addFramesLoop1 - 1; i += 1) {
     const leds = cloneDeep(newFrames[newFrames.length - 1].leds);
     newFrames.push(moveLeds(getDirection(direction, 1), leds));

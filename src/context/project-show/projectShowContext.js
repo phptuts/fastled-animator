@@ -1,12 +1,12 @@
 import { createContext, useReducer } from 'react';
 import { initialState } from '../editor/initialState';
-import projectShowReducer from './projectShowReducer';
 import { debounce } from 'lodash/fp';
+import editorReducer from '../editor/editorReducer';
 
 const ProjectShowContext = createContext();
 
 export const ProjectShowProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(projectShowReducer, initialState());
+  const [state, dispatch] = useReducer(editorReducer, initialState());
   const dispatchDebounce = debounce(5, dispatch);
 
   return (
