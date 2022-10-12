@@ -7,38 +7,6 @@ My mission is to empower noncoders to make art with RGB-led light strips. Not kn
 The code used to run the rgb LEDs on the Arduino is [fastled](https://fastled.io/). It's a free, open-source project. I would not have been able to build the website without them. Thank you [focalintent](https://github.com/focalintent) and [kriegsman](https://github.com/kriegsman) for this making possible!
 
 
-
-## Release Party
-
-- Deploy Site [x]
-- Upload Videos [x]
-- Block non Chrome Desktop Browsers [x]
-- Finish About Page [x] 
-- Finish Tutorial Page [x] 
-- SEO stuff [x]
-  - keywords [x]
-  - meta description [x]
-- Post on freecodecamp slack [ ]
-- Post on codeselfstudy slack [x]
-- Write up product hunt [ ]
-- Write up indiehacker post [ ]
-- Post on reddit [ ]
-  - React [ ]
-  - Learn Javascript [ ]
-  - WebDev  [ ]
-  - Arduino [ ]
-  - Arduino Project [ ]
-  - FastLEDs [ ]
-  - LEDs [ ]
-- Facebook Groups [ ]
-- Twitter [ ]
-- Coding with Noah Page [ ]
-- Post on linkedin [ ]
-- Post on work slack [ ]
-- Product Hunt [ ]
-
-
-
 ## Future LED Object
 
 ```js
