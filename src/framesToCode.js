@@ -26,117 +26,127 @@ export const patternFrameToCode = (state) => {
     frames,
   } = state;
   const millisecondsPerStep = Math.round(timePerStep * 1000);
+  let showNextFrameControlDirection = ``;
+  const colorHexArray =
+    "{" +
+    frames[0].leds.map(({ color }) => `0x${color.substring(1, 7)}`).join(",") +
+    "}";
 
-  let framesToCCode = '';
-  let reds =
-    'byte reds[] = { ' +
-    frames[0].leds.map((l) => convertToRGB(l.color)[0]).join(',') +
-    '};';
-  let greens =
-    'byte greens[] = { ' +
-    frames[0].leds.map((l) => convertToRGB(l.color)[1]).join(',') +
-    '};';
-
-  let blues =
-    'byte blues[] = { ' +
-    frames[0].leds.map((l) => convertToRGB(l.color)[2]).join(',') +
-    '};';
-
-  if (patternUsed === 'right' || patternUsed === 'left') {
-    framesToCCode = `\tfor(int i = 0; i < ${state.frames.length}; i += 1) {
-        ${
-          patternUsed === 'right'
-            ? 'shiftRight(reds, greens, blues);'
-            : 'shiftLeft(reds, greens, blues);'
-        }
-        displayLeds(reds, greens, blues);
-    }`;
+  switch (patternUsed) {
+    case "right":
+      showNextFrameControlDirection = `shiftRight(colors);`;
+      break;
+    case "left":
+      showNextFrameControlDirection = `shiftLeft(colors);`;
+      break;
+    case "bounce_right":
+      showNextFrameControlDirection = `
+      if (frame < BOUNCE_SWITCH) {
+            shiftRight(colors);
+            Serial.println("CALLED SHIFT RIGHT | FRAME " + String(frame) + " | FRAME INDEX " + String(frameIndex));
+      } else {
+            shiftLeft(colors);
+            Serial.println("CALLED SHIFT LEFT  | FRAME " + String(frame) + " | FRAME INDEX " + String(frameIndex));
+      }
+      `;
+      break;
+    default:
+      showNextFrameControlDirection = `
+      if (frame < BOUNCE_SWITCH) {
+          shiftLeft(colors);
+          Serial.println("CALLED SHIFT LEFT  | FRAME " + String(frame) + " | FRAME INDEX " + String(frameIndex));
+      } else {
+          shiftRight(colors);
+          Serial.println("CALLED SHIFT RIGHT | FRAME " + String(frame) + " | FRAME INDEX " + String(frameIndex));
+      }
+      `;
   }
 
-  if (patternUsed === 'bounce_right' || patternUsed === 'bounce_left') {
-    framesToCCode = `
-    // This means we already displayed this first time through
-    bool firstTime = true;
-    for(int i = 0; i < ${
-      state.frames[0].leds.length + state.addFramesLoop1
-    }; i += 1) {
-        if (!firstTime) {
-            ${
-              patternUsed === 'bounce_right'
-                ? 'shiftRight(reds, greens, blues);'
-                : 'shiftLeft(reds, greens, blues);'
-            }
-        }
-        firstTime = false;
-        displayLeds(reds, greens, blues);
-    }
-    for(int i = 0; i < ${
-      state.frames[0].leds.length + state.addFramesLoop2
-    }; i += 1) {
-        ${
-          patternUsed === 'bounce_right'
-            ? 'shiftLeft(reds, greens, blues);'
-            : 'shiftRight(reds, greens, blues);'
-        }
-        displayLeds(reds, greens, blues);
-    }
-    `;
+  let showNextFramFunction = `
+void showFrame(uint32_t colors[], int frameIndex) {
+  if (frameIndex == 0) {
+      displayLeds(colors);
+      return;
   }
+
+  for (int frame = 0; frame < MAX_FRAMES; frame += 1) {
+    // This because 0 should not shift the frame
+    if (frame == 0) {
+      continue;
+    }
+    
+    ${showNextFrameControlDirection}
+
+    if (frame == frameIndex) {
+      displayLeds(colors);
+      return;
+    }
+  }
+}
+  `;
 
   return `#include <FastLED.h>
 #define NUM_LEDS ${numberLeds}
 #define DATA_PIN ${analogPin}
+#define BOUNCE_SWITCH ${state.frames[0].leds.length + state.addFramesLoop1}
+#define MAX_FRAMES ${frames.length}
 
 CRGB leds[NUM_LEDS];
+int frameIndex = 0;
+long nextMillis = 0;
 
-void shiftRight(byte reds[], byte greens[], byte blues[]) {
-    int tempRed = reds[NUM_LEDS - 1];
-    int tempGreen = greens[NUM_LEDS - 1];
-    int tempBlue = blues[NUM_LEDS - 1];
+void shiftRight(uint32_t colors[]) {
+    uint32_t tempColor = colors[NUM_LEDS - 1];
     for(int ledIndex = NUM_LEDS - 1; ledIndex > 0; ledIndex -= 1) {
-        reds[ledIndex] = reds[ledIndex - 1];
-        greens[ledIndex] = greens[ledIndex - 1];
-        blues[ledIndex] = blues[ledIndex - 1];
+        colors[ledIndex] = colors[ledIndex - 1];
     }
-    reds[0] = tempRed;
-    greens[0] = tempGreen;
-    blues[0] = tempBlue;  
+    colors[0] = tempColor; 
 }
 
-void shiftLeft(byte reds[], byte greens[], byte blues[]) {
-    int tempRed = reds[0];
-    int tempGreen = greens[0];
-    int tempBlue = blues[0];
+void shiftLeft(uint32_t colors[]) {
+    uint32_t tempColor = colors[0];
+    
     for(int ledIndex = 0; ledIndex < NUM_LEDS - 1; ledIndex += 1) {
-        reds[ledIndex] = reds[ledIndex + 1];
-        greens[ledIndex] = greens[ledIndex + 1];
-        blues[ledIndex] = blues[ledIndex + 1];
+        colors[ledIndex] = colors[ledIndex + 1];
     }
-    reds[NUM_LEDS - 1] = tempRed;
-    greens[NUM_LEDS - 1] = tempGreen;
-    blues[NUM_LEDS - 1] = tempBlue;  
+    colors[NUM_LEDS - 1] = tempColor;
 }
 
-void displayLeds(byte reds[], byte greens[], byte blues[]) {
+void displayLeds(uint32_t colors[]) {
     for(int ledIndex = 0; ledIndex < NUM_LEDS; ledIndex += 1) {
-        leds[ledIndex].setRGB(reds[ledIndex], greens[ledIndex], blues[ledIndex]);
+        Serial.println("LED " + String(ledIndex) + " | COLOR " + String(colors[ledIndex]));
+        leds[ledIndex] = CRGB(colors[ledIndex]);
     }
     FastLED.show();
-    delay(${millisecondsPerStep});
 }
 
 void setup() {
+    Serial.begin(115200);
     FastLED.addLeds<${chipSet}, DATA_PIN, ${rgbOrder}>(leds, NUM_LEDS);
     FastLED.setBrightness(${brightnessLevel});
+    FastLED.clear();
 }
 
+int nextFrameIndex(int frameIndex) {
+  if (frameIndex < MAX_FRAMES - 1) {
+      return frameIndex + 1;
+    } else {
+      return 0;
+    }
+}
+
+${showNextFramFunction}
+
 void loop() {
-    // We declare these large values here for memory reasons
-    ${reds}
-    ${greens}
-    ${blues}
-    
-${framesToCCode}
+     
+      if (millis() > nextMillis) {
+        Serial.println("FRAME INDEX: " + String(frameIndex));
+        // We declare these large values here for memory reasons
+        uint32_t startColors[] = ${colorHexArray};
+        showFrame(startColors, frameIndex);
+        frameIndex = nextFrameIndex(frameIndex);
+        nextMillis = ${millisecondsPerStep} + millis();
+      }
 }
     `;
 };
@@ -152,24 +162,22 @@ export const frameToCode = (state) => {
     frames,
   } = state;
   const millisecondsPerStep = Math.round(timePerStep * 1000);
-  if (state.patternUsed && state.patternUsed !== 'none') {
+  if (state.patternUsed && state.patternUsed !== "none") {
     return patternFrameToCode(state);
   }
-  let framesToCCode = '';
+  let framesToCCode = "";
 
   for (let frameIndex in frames) {
     frameIndex = parseInt(frameIndex);
     framesToCCode += `\n\t//Frame ${frameIndex + 1}\n`;
     const leds = frames[frameIndex].leds;
     let generateCode = false;
-
     for (let led of leds) {
       if (frameIndex === 0) {
         generateCode = true;
         framesToCCode += ledToCode(led);
         continue;
       }
-
       const prevLeds = frames[frameIndex - 1].leds;
       const prevLed = prevLeds.find((l) => l.position === led.position);
       if (prevLed.color !== led.color) {
@@ -177,23 +185,19 @@ export const frameToCode = (state) => {
         generateCode = true;
       }
     }
-
     if (generateCode) {
-      framesToCCode += '\tFastLED.show();\n';
+      framesToCCode += "\tFastLED.show();\n";
     }
     framesToCCode += `\tdelay(${millisecondsPerStep});\n`;
   }
-
   return `#include <FastLED.h>
 #define NUM_LEDS ${numberLeds}
 #define DATA_PIN ${analogPin}
 CRGB leds[NUM_LEDS];
-
 void setup() {
     FastLED.addLeds<${chipSet}, DATA_PIN, ${rgbOrder}>(leds, NUM_LEDS);
     FastLED.setBrightness(${brightnessLevel});
 }
-
 void loop() {
 ${framesToCCode}
 }
