@@ -223,6 +223,7 @@ const editorReducer = (state, action) => {
       return saveState({
         ...state,
         selectedColor: action.payload,
+        patternUsed: 'none',
       });
     case ACTION_TYPES.CHANGE_DRAG_MODE:
       return saveState({
