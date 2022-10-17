@@ -6,7 +6,14 @@ import localForage from 'localforage';
 import { ACTION_TYPES } from './editorActions';
 import { AuthContext } from '../auth/authContext';
 import { downloadProjectFile } from '../../firebase/db';
+
 const EditorContext = createContext();
+const saveLocalStorage = (state) => {
+  state.savedTime = Date.now();
+  localForage.setItem('led_animator_last_state', state);
+  console.log('saved leds');
+};
+const debounceSaveLocalStorage = debounce(1000, saveLocalStorage);
 
 export const EditorProvider = ({ children }) => {
   const [state, dispatch] = useReducer(editorReducer, initialState());
@@ -37,6 +44,10 @@ export const EditorProvider = ({ children }) => {
       });
     }
   }, [isLoggedIn, state.firebaseId, userId, state.savedTime]);
+
+  useEffect(() => {
+    debounceSaveLocalStorage(state);
+  }, [state]);
 
   return (
     <EditorContext.Provider value={{ state, dispatch, dispatchDebounce }}>
