@@ -42,6 +42,10 @@ const Upload = () => {
       'led-animator.ino'
     );
   };
+  const copyCode = () => {
+    navigator.clipboard.writeText(frameToCode(state));
+  };
+
   const uploadCode = async () => {
     dispatch({ type: ACTION_TYPES.ON_UPLOADING_CODE });
     try {
@@ -159,7 +163,9 @@ const Upload = () => {
       </div>
       <div className="row">
         <div className="col">
-          <h3>Code</h3>
+          <button onClick={copyCode} className="btn btn-primary w-100">
+            Copy Code
+          </button>
         </div>
       </div>
       {codeState === 'no-code' && (
