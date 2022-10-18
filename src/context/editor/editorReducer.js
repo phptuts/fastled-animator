@@ -1,8 +1,8 @@
-import { generateFrames, generatePattern } from '../../leds';
-import { ACTION_TYPES } from './editorActions';
+import { generateFrames, generatePattern } from "../../leds";
+import { ACTION_TYPES } from "./editorActions";
 
-import { arduinoMegaPins, arduinoUnoPins } from '../../config';
-import { initialState } from './initialState';
+import { arduinoMegaPins, arduinoUnoPins } from "../../config";
+import { initialState } from "./initialState";
 
 const editorReducer = (state, action) => {
   switch (action.type) {
@@ -101,8 +101,55 @@ const editorReducer = (state, action) => {
         addFramesLoop2: frames,
       });
 
+    case ACTION_TYPES.SET_TYPE:
+      const restartState = initialState();
+      return saveState({
+        ...restartState,
+        type: action.payload,
+        frames: generateFrames(
+          action.payload === "strip" ? 30 : 100,
+          restartState.totalSteps,
+          []
+        ),
+        ledsHorizontal: state.ledsHorizontal,
+        ledsVertical: state.ledsVertical,
+        fullStripLength: state.fullStripLength,
+        pixelAreaWidth: state.pixelAreaWidth,
+        rightMarginForRightVertical: state.rightMarginForRightVertical,
+        startDragSelection: false,
+        mouseDragSelect: false,
+        uploadingCode: false,
+        compilingCode: false,
+        playing: false,
+        saving: false,
+        published: false,
+      });
+
+    case ACTION_TYPES.SET_WIDTH:
+      return saveState({
+        ...state,
+        width: +action.payload,
+        frames: generateFrames(
+          +action.payload * state.height,
+          state.totalSteps,
+          state.frames
+        ),
+      });
+
+    case ACTION_TYPES.SET_HEIGHT:
+      return saveState({
+        ...state,
+        height: +action.payload,
+        frames: generateFrames(
+          state.width * +action.payload,
+          state.totalSteps,
+          state.frames
+        ),
+      });
+
     case ACTION_TYPES.OPEN_NEW_PROGRAM:
       return saveState({
+        ...initialState(),
         ...state,
         ...action.payload,
         playing: false,
@@ -115,10 +162,10 @@ const editorReducer = (state, action) => {
       });
     case ACTION_TYPES.CHANGE_MICROCONTROLLER:
       let analogPin = state.analogPin;
-      if (action.payload === 'uno') {
-        analogPin = arduinoUnoPins.includes(analogPin) ? analogPin : 'A0';
-      } else if (action.payload === 'mega') {
-        analogPin = arduinoMegaPins.includes(analogPin) ? analogPin : 'A0';
+      if (action.payload === "uno") {
+        analogPin = arduinoUnoPins.includes(analogPin) ? analogPin : "A0";
+      } else if (action.payload === "mega") {
+        analogPin = arduinoMegaPins.includes(analogPin) ? analogPin : "A0";
       }
       return saveState({
         ...state,
@@ -182,11 +229,11 @@ const editorReducer = (state, action) => {
       // This will block users from being able to create 0,0 bounce patterns
       // I think case will be incredibly rare so for now i am blocking it.
       // In return for being able to auto set the right values for the users.
-      if (direction === 'bounce_right') {
+      if (direction === "bounce_right") {
         const firstFrame = state.frames[0];
         let highestFrame = 0;
         for (let i = 0; i < firstFrame.leds.length; i += 1) {
-          if (firstFrame.leds[i].color !== '#000000') {
+          if (firstFrame.leds[i].color !== "#000000") {
             highestFrame = i;
           }
         }
@@ -195,11 +242,11 @@ const editorReducer = (state, action) => {
         state.addFramesLoop2 = (highestFrame + 2) * -1;
       }
 
-      if (direction === 'bounce_left') {
+      if (direction === "bounce_left") {
         const firstFrame = state.frames[0];
         let highestFrame = 0;
         for (let i = firstFrame.leds.length - 1; i >= 0; i -= 1) {
-          if (firstFrame.leds[i].color !== '#000000') {
+          if (firstFrame.leds[i].color !== "#000000") {
             highestFrame = i;
           }
         }
@@ -223,7 +270,7 @@ const editorReducer = (state, action) => {
       return saveState({
         ...state,
         selectedColor: action.payload,
-        patternUsed: 'none',
+        patternUsed: "none",
       });
     case ACTION_TYPES.CHANGE_DRAG_MODE:
       return saveState({
@@ -237,18 +284,18 @@ const editorReducer = (state, action) => {
       ].reduce((acc, next) => {
         if (position === next.position) {
           switch (state.dragMode) {
-            case 'select':
+            case "select":
               next.selected = !selected;
               break;
-            case 'paint':
+            case "paint":
               next.color = state.selectedColor;
               break;
-            case 'erase':
-              next.color = '#000000';
+            case "erase":
+              next.color = "#000000";
               next.selected = false;
               break;
             default:
-              console.error(state.dragMode, 'not found');
+              console.error(state.dragMode, "not found");
           }
         }
 
@@ -256,7 +303,7 @@ const editorReducer = (state, action) => {
         return acc;
       }, []);
 
-      return saveState({ ...state, patternUsed: 'none' });
+      return saveState({ ...state, patternUsed: "none" });
     case ACTION_TYPES.SELECT_LED:
     case ACTION_TYPES.UN_SELECT_LED:
       state.frames[state.currentFrameIndex].leds = [
@@ -299,22 +346,22 @@ const editorReducer = (state, action) => {
         const ledPosition = led.position + 1;
 
         switch (action.payload) {
-          case 'all':
+          case "all":
             selected = true;
             break;
-          case 'unselect_all':
+          case "unselect_all":
             selected = false;
             break;
-          case 'odd':
+          case "odd":
             selected = ledPosition % 2 === 1;
             break;
-          case 'even':
+          case "even":
             selected = ledPosition % 2 === 0;
             break;
-          case 'thirds':
+          case "thirds":
             selected = ledPosition % 3 === 0;
             break;
-          case 'fourths':
+          case "fourths":
             selected = ledPosition % 4 === 0;
             break;
           default:
@@ -393,6 +440,7 @@ const editorReducer = (state, action) => {
   }
 };
 const saveState = (state) => {
+  console.log(state, "save state");
   return state;
 };
 
