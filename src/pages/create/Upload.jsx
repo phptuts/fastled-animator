@@ -1,35 +1,35 @@
-import React, { useContext, useEffect, useRef } from "react";
-import EditorContext from "../../context/editor/editorContext";
-import { frameToCode } from "../../framesToCode";
-import { toast } from "react-toastify";
-import ArduinoConfig from "../../components/ArduinoConfig";
-import AvrGirlArduino from "avrgirl-arduino/dist/avrgirl-arduino";
-import { ACTION_TYPES } from "../../context/editor/editorActions";
-import spinner from "../../assets/images/spinner.gif";
-import { saveAs } from "file-saver";
-import { Link } from "react-router-dom";
-import Code from "../../components/Code";
-import { useState } from "react";
+import React, { useContext, useEffect, useRef } from 'react';
+import EditorContext from '../../context/editor/editorContext';
+import { frameToCode } from '../../framesToCode';
+import { toast } from 'react-toastify';
+import ArduinoConfig from '../../components/ArduinoConfig';
+import AvrGirlArduino from 'avrgirl-arduino/dist/avrgirl-arduino';
+import { ACTION_TYPES } from '../../context/editor/editorActions';
+import spinner from '../../assets/images/spinner.gif';
+import { saveAs } from 'file-saver';
+import { Link } from 'react-router-dom';
+import Code from '../../components/Code';
+import { useState } from 'react';
 
 const Upload = () => {
   const { state, dispatch } = useContext(EditorContext);
   const isMounted = useRef(false);
 
-  const [codeState, setCodeState] = useState("loading");
+  const [codeState, setCodeState] = useState('loading');
   const [hasError, setHasError] = useState(false);
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState('');
 
   useEffect(() => {
     if (!isMounted.current) {
       let currentCode = frameToCode(state);
       if (currentCode.split(/\r\n|\r|\n/).length > 2000) {
-        setCodeState("no-code");
+        setCodeState('no-code');
       } else {
-        setCodeState("code");
+        setCodeState('code');
         setCode(frameToCode(state));
       }
     } else {
-      if (codeState === "code") {
+      if (codeState === 'code') {
         setCode(frameToCode(state));
       }
     }
@@ -38,11 +38,10 @@ const Upload = () => {
 
   const downloadCode = () => {
     saveAs(
-      new Blob([frameToCode(state)], { type: "text/play;charset=utf-8" }),
-      "led-animator.ino"
+      new Blob([frameToCode(state)], { type: 'text/play;charset=utf-8' }),
+      'led-animator.ino'
     );
   };
-
   const copyCode = () => {
     navigator.clipboard.writeText(frameToCode(state));
   };
@@ -66,17 +65,17 @@ const Upload = () => {
 
         if (!error) {
           setHasError(false);
-          toast.success("🦄 Upload Complete!!", {
-            position: "top-right",
+          toast.success('🦄 Upload Complete!!', {
+            position: 'top-right',
             autoClose: 2000,
             hideProgressBar: false,
             closeOnClick: true,
           });
         } else {
-          console.log(error, "avrgirl-error");
+          console.log(error, 'avrgirl-error');
           setHasError(true);
-          toast.error("There was an error uploading your code!", {
-            position: "top-right",
+          toast.error('There was an error uploading your code!', {
+            position: 'top-right',
             autoClose: 2000,
             hideProgressBar: false,
             closeOnClick: true,
@@ -84,11 +83,11 @@ const Upload = () => {
         }
       });
     } catch (e) {
-      console.log(e, "compiling error");
+      console.log(e, 'compiling error');
       setHasError(true);
       dispatch({ type: ACTION_TYPES.STOP_UPLOADING_CODE });
-      toast.error("There was an error uploading your code!", {
-        position: "top-right",
+      toast.error('There was an error uploading your code!', {
+        position: 'top-right',
         autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -98,12 +97,12 @@ const Upload = () => {
 
   const compileCode = async () => {
     const headers = new Headers();
-    headers.append("Content-Type", "text/plain");
+    headers.append('Content-Type', 'text/plain');
     const code = frameToCode(state);
     const response = await fetch(
       `https://compile.electroblocks.org/upload-code/${state.microController}`,
       {
-        method: "POST",
+        method: 'POST',
         body: code,
         headers,
       }
@@ -123,7 +122,7 @@ const Upload = () => {
           </div>
         )}
         {!state.uploadingCode &&
-          codeState === "code" &&
+          codeState === 'code' &&
           !hasError &&
           navigator.serial && (
             <div className="col">
@@ -137,11 +136,11 @@ const Upload = () => {
           <div className="col">
             <div className="alert alert-warning mt-3" role="alert">
               Your browser does not support uploading code to the Arduino.
-              Consider{" "}
+              Consider{' '}
               <span className="clickable" onClick={downloadCode}>
                 downloading the code
-              </span>{" "}
-              or using{" "}
+              </span>{' '}
+              or using{' '}
               <a href="https://www.google.com/chrome/downloads/">Chrome</a>. You
               can use the <Link to="/tutorial">tutorial page</Link> to learn how
               to upload the code using the Arduino IDE.
@@ -152,7 +151,7 @@ const Upload = () => {
         {hasError && (
           <div className="col">
             <div className="alert alert-danger mt-3" role="alert">
-              <strong>Error</strong> Error trying uplaod your code. Consider{" "}
+              <strong>Error</strong> Error trying uplaod your code. Consider{' '}
               <span className="clickable" onClick={downloadCode}>
                 downloading the code
               </span>
@@ -169,11 +168,11 @@ const Upload = () => {
           </button>
         </div>
       </div>
-      {codeState === "no-code" && (
+      {codeState === 'no-code' && (
         <div className="row">
           <div className="col">
             <div className="alert alert-warning mt-3" role="alert">
-              The code is too large to upload web. Consider{" "}
+              The code is too large to upload web. Consider{' '}
               <span className="clickable" onClick={downloadCode}>
                 downloading the code
               </span>
@@ -183,13 +182,13 @@ const Upload = () => {
           </div>
         </div>
       )}
-      {codeState === "loading" && (
+      {codeState === 'loading' && (
         <div className="col">
           <h3 className="text-center">Generating Code</h3>
           <img className="spinner-image" src={spinner} alt="uploading code" />
         </div>
       )}
-      {codeState === "code" && code && <Code code={code} />}
+      {codeState === 'code' && code && <Code code={code} />}
     </>
   );
 };
