@@ -1,78 +1,120 @@
-import React, { useContext } from 'react';
-import { ACTION_TYPES } from '../context/editor/editorActions';
-import EditorContext from '../context/editor/editorContext';
+import React, { useContext } from "react";
+import { ACTION_TYPES } from "../context/editor/editorActions";
+import EditorContext from "../context/editor/editorContext";
 
 const LedTool = () => {
   const {
     dispatch,
     dispatchDebounce,
-    state: { numberLeds, totalSteps, timePerStep },
+    state: { numberLeds, type, width, height },
   } = useContext(EditorContext);
+
+  const changeType = (type) => {
+    dispatch({ type: ACTION_TYPES.SET_TYPE, payload: type });
+  };
 
   return (
     <>
       <div className="row mb-3">
-        <div className="col-md-4 col-sm-12">
-          <label htmlFor="number-of-leds" className="form-label">
-            {numberLeds} LEDs
-          </label>
-          <input
-            type="range"
-            className="form-range"
-            min={1}
-            max={250}
-            id="number-of-leds"
-            placeholder="Number of leds"
-            value={numberLeds}
-            onChange={(e) => {
-              dispatchDebounce({
-                type: ACTION_TYPES.CHANGE_NUMBER_LEDS,
-                payload: +e.target.value,
-              });
-            }}
-          />
-        </div>
+        <div className="col-lg-2 col-md-2 col-sm-12">
+          <div
+            className="btn-group mt-3"
+            role="group"
+            aria-label="Basic radio toggle button group"
+          >
+            <input
+              type="radio"
+              className="btn-check"
+              name="type_radio"
+              id="strip-option"
+              value="strip"
+              checked={type === "strip"}
+              onChange={() => changeType("strip")}
+            />
+            <label className="btn btn-outline-primary" htmlFor="strip-option">
+              Strip
+            </label>
 
-        <div className="col-md-4 col-sm-12">
-          <label htmlFor="numSteps" className="form-label">
-            {totalSteps} frames
-          </label>
-          <input
-            type="range"
-            className="form-range"
-            id="numSteps"
-            step="1"
-            min="1"
-            max="500"
-            placeholder="Number of steps"
-            value={totalSteps}
-            onChange={(e) =>
-              dispatchDebounce({
-                type: ACTION_TYPES.CHANGE_TOTAL_STEPS,
-                payload: +e.target.value,
-              })
-            }
-          />
+            <input
+              type="radio"
+              className="btn-check"
+              name="type_radio"
+              id="matrix-btn"
+              value="matrix"
+              onChange={() => changeType("matrix")}
+              checked={type === "matrix"}
+            />
+            <label className="btn btn-outline-primary" htmlFor="matrix-btn">
+              Matrix
+            </label>
+          </div>
         </div>
-        <div className="col-md-4 col-sm-12">
-          <label htmlFor="seconds-per-step" className="form-label">
-            {timePerStep} seconds per frame
-          </label>
-          <input
-            type="number"
-            className="form-control"
-            id="seconds-per-step"
-            step=".01"
-            placeholder="Milliseconds per step"
-            value={timePerStep}
-            onChange={(e) =>
-              dispatch({
-                type: ACTION_TYPES.CHANGE_TIME_PER_STEP,
-                payload: e.target.value,
-              })
-            }
-          />
-        </div>
+        {type === "strip" && (
+          <>
+            <div className="col-md-3 col-sm-12">
+              <label htmlFor="number-of-leds" className="form-label">
+                {numberLeds} LEDs
+              </label>
+              <input
+                type="range"
+                className="form-range"
+                min={1}
+                max={256}
+                id="number-of-leds"
+                placeholder="Number of leds"
+                value={numberLeds}
+                onChange={(e) => {
+                  dispatchDebounce({
+                    type: ACTION_TYPES.CHANGE_NUMBER_LEDS,
+                    payload: +e.target.value,
+                  });
+                }}
+              />
+            </div>
+          </>
+        )}
+        {type === "matrix" && (
+          <>
+            <div className="col-md-3 col-sm-12">
+              <label htmlFor="leds-wide" className="form-label">
+                {width} LEDs wide
+              </label>
+              <input
+                type="range"
+                className="form-range"
+                min={1}
+                max={30}
+                id="leds-wide"
+                value={width}
+                onChange={(e) => {
+                  dispatchDebounce({
+                    type: ACTION_TYPES.SET_WIDTH,
+                    payload: +e.target.value,
+                  });
+                }}
+              />
+            </div>
+            <div className="col-md-3 col-sm-12">
+              <label htmlFor="led-tall" className="form-label">
+                {height} LEDs tall
+              </label>
+              <input
+                type="range"
+                className="form-range"
+                min={1}
+                max={30}
+                id="led-tall"
+                value={height}
+                onChange={(e) => {
+                  dispatchDebounce({
+                    type: ACTION_TYPES.SET_HEIGHT,
+                    payload: +e.target.value,
+                  });
+                }}
+              />
+            </div>
+          </>
+        )}
       </div>
     </>
   );

@@ -1,10 +1,11 @@
-import { useContext, useEffect } from 'react';
-import Leds from '../../components/LedStrip/Leds';
-import LedTool from '../../components/LedTool';
-import Player from '../../components/Player';
-import SelectionTools from '../../components/SelectionTools';
-import { ACTION_TYPES } from '../../context/editor/editorActions';
-import EditorContext from '../../context/editor/editorContext';
+import { useContext, useEffect } from "react";
+import FrameConfig from "../../components/FrameConfig";
+import Leds from "../../components/LedStrip/Leds";
+import LedTool from "../../components/LedTool";
+import Player from "../../components/Player";
+import SelectionTools from "../../components/SelectionTools";
+import { ACTION_TYPES } from "../../context/editor/editorActions";
+import EditorContext from "../../context/editor/editorContext";
 
 const Editor = () => {
   const { dispatch } = useContext(EditorContext);
@@ -30,13 +31,13 @@ const Editor = () => {
       });
     };
 
-    window.addEventListener('mousedown', mouseDragOn);
-    window.addEventListener('mouseup', mouseDragOff);
-    window.addEventListener('resize', resizeWindow);
+    window.addEventListener("mousedown", mouseDragOn);
+    window.addEventListener("mouseup", mouseDragOff);
+    window.addEventListener("resize", resizeWindow);
     return () => {
-      window.removeEventListener('resize', resizeWindow);
-      window.removeEventListener('mousedown', mouseDragOn);
-      window.removeEventListener('mouseup', mouseDragOff);
+      window.removeEventListener("resize", resizeWindow);
+      window.removeEventListener("mousedown", mouseDragOn);
+      window.removeEventListener("mouseup", mouseDragOff);
     };
   }, [dispatch]);
   return (
@@ -58,6 +59,8 @@ const Editor = () => {
       </div>
 
       <Player editable={true} />
+      <FrameConfig />
+
       <SelectionTools />
       <div className="row mb-3">
         <div className="col">
